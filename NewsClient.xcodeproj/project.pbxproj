@@ -14,6 +14,7 @@
 		B2F7254C235E2F7100808630 /* NewsClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F7254B235E2F7100808630 /* NewsClientTests.swift */; };
 		B2F72557235E2F7100808630 /* NewsClientUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F72556235E2F7100808630 /* NewsClientUITests.swift */; };
 		B2F72565235E32A700808630 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2F72564235E32A700808630 /* Main.storyboard */; };
+		B2F7256A235E335900808630 /* MBFingerTipWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F72568235E335900808630 /* MBFingerTipWindow.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,9 @@
 		B2F72556235E2F7100808630 /* NewsClientUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsClientUITests.swift; sourceTree = "<group>"; };
 		B2F72558235E2F7100808630 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B2F72564235E32A700808630 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		B2F72567235E335800808630 /* NewsClient-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NewsClient-Bridging-Header.h"; sourceTree = "<group>"; };
+		B2F72568235E335900808630 /* MBFingerTipWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBFingerTipWindow.m; sourceTree = "<group>"; };
+		B2F72569235E335900808630 /* MBFingerTipWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBFingerTipWindow.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +101,7 @@
 		B2F72533235E2F7000808630 /* NewsClient */ = {
 			isa = PBXGroup;
 			children = (
+				B2F72566235E333500808630 /* Service */,
 				B2F72534235E2F7000808630 /* AppDelegate.swift */,
 				B2F72538235E2F7000808630 /* ViewController.swift */,
 				B2F7253D235E2F7100808630 /* Assets.xcassets */,
@@ -123,6 +128,16 @@
 				B2F72558235E2F7100808630 /* Info.plist */,
 			);
 			path = NewsClientUITests;
+			sourceTree = "<group>";
+		};
+		B2F72566235E333500808630 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				B2F72569235E335900808630 /* MBFingerTipWindow.h */,
+				B2F72568235E335900808630 /* MBFingerTipWindow.m */,
+				B2F72567235E335800808630 /* NewsClient-Bridging-Header.h */,
+			);
+			path = Service;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -193,6 +208,7 @@
 				TargetAttributes = {
 					B2F72530235E2F7000808630 = {
 						CreatedOnToolsVersion = 11.0;
+						LastSwiftMigration = 1100;
 					};
 					B2F72546235E2F7100808630 = {
 						CreatedOnToolsVersion = 11.0;
@@ -258,6 +274,7 @@
 			files = (
 				B2F72539235E2F7000808630 /* ViewController.swift in Sources */,
 				B2F72535235E2F7000808630 /* AppDelegate.swift in Sources */,
+				B2F7256A235E335900808630 /* MBFingerTipWindow.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -422,6 +439,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4PCAM42G3V;
 				INFOPLIST_FILE = NewsClient/Info.plist;
@@ -432,6 +450,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.chih-hao.NewsClient";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "NewsClient/Service/NewsClient-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -441,6 +461,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4PCAM42G3V;
 				INFOPLIST_FILE = NewsClient/Info.plist;
@@ -451,6 +472,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.chih-hao.NewsClient";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "NewsClient/Service/NewsClient-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
