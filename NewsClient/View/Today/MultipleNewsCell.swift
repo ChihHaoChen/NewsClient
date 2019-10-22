@@ -13,12 +13,12 @@ class MultipleNewsCell: UICollectionViewCell {
         didSet  {
             nameLabel.text = article.source?.name
             companyLabel.text = article.title
-//            appRowIcon.sd_setImage(with: URL(string: app.artworkUrl100))
+            appRowIcon.sd_setImage(with: URL(string: article.urlToImage ?? ""))
         }
     }
     let screenWidth = UIScreen.main.bounds.width
     let appRowIcon = UIImageView(cornerRadius: 12)
-    let appRowButton = UIButton(title: "GET", titleColor: .blue, font: .boldSystemFont(ofSize: 16), width: UIScreen.main.bounds.width/5, height: 32, cornerRadius: 32/2)
+//    let appRowButton = UIButton(title: "GET", titleColor: .blue, font: .boldSystemFont(ofSize: 16), width: UIScreen.main.bounds.width/5, height: 32, cornerRadius: 32/2)
     let nameLabel = UILabel(text: "App Name", font: .systemFont(ofSize: 16*(UIScreen.main.bounds.width/320)))
     let companyLabel = UILabel(text: "Company Name", font: .systemFont(ofSize: 13))
     
@@ -32,10 +32,9 @@ class MultipleNewsCell: UICollectionViewCell {
         super.init(frame: frame)
         backgroundColor = .white
         // By the UIView+Layout helper
-        appRowIcon.constrainWidth(constant: self.frame.width/5.5 )
-        appRowIcon.constrainHeight(constant: self.frame.width/5.5)
-
-        let stackView = UIStackView(arrangedSubviews: [appRowIcon, VerticalStackView(arrangedSubviews: [nameLabel, companyLabel], spacing: 4), appRowButton])
+        appRowIcon.constrainWidth(constant: self.frame.width/2.5 )
+        appRowIcon.constrainHeight(constant: self.frame.width/4.5)
+        let stackView = UIStackView(arrangedSubviews: [appRowIcon, VerticalStackView(arrangedSubviews: [nameLabel, companyLabel], spacing: 4)])
         stackView.spacing = 12.8*(screenWidth/320)
         stackView.alignment = .center
         addSubview(stackView)

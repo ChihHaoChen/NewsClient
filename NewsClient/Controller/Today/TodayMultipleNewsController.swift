@@ -112,7 +112,7 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        let detailView = AppDetailController(appId: apps[indexPath.item].id)
-//        self.navigationController?.pushViewController(detailView, animated: true)
+        let detailView = NewsDetailController(url: articles[indexPath.item].url)
+        self.navigationController?.pushViewController(detailView, animated: true)
     }
 }

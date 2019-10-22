@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SDWebImage
 // 1.refactoring
 // 2. Add Today Tab
 // 3. Add Collection view in Search VC
