@@ -24,6 +24,13 @@ class Service   {
         guard let url: URL = URL(string: urlString) else { return }
         fetchGenericsJSONData(url: url, completion: completion)
     }
+    
+    func fetchNewsSearch(page: Int, limit: Int, search: String, completion: @escaping (newsGroup?, Error?)->Void)  {
+        let urlString: String = "https://newsapi.org/v2/everything?q=\(search)&page=page=\(String(page))&pageSize=\(String(limit))&apiKey=3db7a9ee619e49f0b297bccda7da5eb5"
+        guard let url: URL = URL(string: urlString) else { return }
+        fetchGenericsJSONData(url: url, completion: completion)
+    }
+    
         
     // A generic function to fetch different formats of JSON data.
     func fetchGenericsJSONData<tGeneric: Decodable>(url: URL, completion: @escaping (tGeneric?, Error?)->(Void))    {

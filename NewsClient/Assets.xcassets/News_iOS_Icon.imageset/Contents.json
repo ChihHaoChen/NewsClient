@@ -2,11 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "holiday.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
+      "filename" : "News_iOS_Icon.png",
       "scale" : "2x"
     },
     {

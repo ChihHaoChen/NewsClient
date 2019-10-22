@@ -64,6 +64,7 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
         closeButton.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: nil, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0.05*self.view.frame.height, left: 0, bottom: 0, right: 0.05*self.view.frame.width), size: .init(width: 32, height: 32))
     }
     
+    // MARK: Configuration of UICollectionView
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerId, for: indexPath) as! TodayMultipleNewsHeaderCell
         header.categoryLabel.text = articleCategory
@@ -93,8 +94,9 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let heightCell: CGFloat = (view.frame.height - 3*spacing)/4
+        let heightCellFullScreen: CGFloat = (view.frame.height - 7*spacing)/8
         if self.mode == .fullscreen {
-            return .init(width: view.frame.width - 32, height: 64)
+            return .init(width: view.frame.width - 32, height: heightCellFullScreen)
         }
         return .init(width: view.frame.width, height: heightCell)
     }
@@ -111,6 +113,7 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
         return .zero
     }
     
+    // MARK: Navigate users to the detailed News page
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let detailView = NewsDetailController(url: articles[indexPath.item].url)
         self.navigationController?.pushViewController(detailView, animated: true)

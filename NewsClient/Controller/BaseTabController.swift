@@ -20,7 +20,8 @@ class BaseTabController: UITabBarController {
         //tabBar.barTintColor = .gray
         
         viewControllers = [
-            createNavContoller(viewController: TodayController(), title: "Today", image: "today_icon")
+            createNavContoller(viewController: TodayController(), title: "Today", image: "today_icon"),
+            createNavContoller(viewController: NewsSearchController(), title: "Search", image: "search")
         ]
         
     }
