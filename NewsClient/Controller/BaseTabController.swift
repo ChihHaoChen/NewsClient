@@ -25,13 +25,16 @@ class BaseTabController: UITabBarController {
     }
     // Use this function to create the navigation controller for each individual tab
     fileprivate func createNavContoller(viewController: UIViewController, title: String, image: String) -> BackEnabledNavigationController   {
-        let navController = BackEnabledNavigationController(rootViewController: viewController)
+        let backEnableController = BackEnabledNavigationController(rootViewController: viewController)
         viewController.view.backgroundColor = .white
         viewController.navigationItem.title = title
         
-        navController.tabBarItem.title = title
-        navController.tabBarItem.image = UIImage.init(named: image)
-        navController.navigationBar.prefersLargeTitles = true
-        return navController
+        // In 2019 WWDC, Apple changed its Default Modal Presentation Style for UIModal.
+        // By default UIViewController resolves UIModalPresentationAutomatic to UIModalPresentationPageSheet, but other system-provided view controllers may resolve UIModalPresentationAutomatic to other concrete presentation styles.
+        backEnableController.modalPresentationStyle = .fullScreen
+        backEnableController.tabBarItem.title = title
+        backEnableController.tabBarItem.image = UIImage.init(named: image)
+        backEnableController.navigationBar.prefersLargeTitles = true
+        return backEnableController
     }
 }

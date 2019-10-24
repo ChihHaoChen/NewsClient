@@ -112,11 +112,6 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
         todayMultipleNewsController.articles = items[indexPath.item-1].newsFetch
         todayMultipleNewsController.articleCategory = items[indexPath.item-1].category
         todayMultipleNewsController.articleTitle = items[indexPath.item-1].title
-        // In 2019 WWDC, Apple changed its Default Modal Presentation Style for UIModal.
-        // By default UIViewController resolves UIModalPresentationAutomatic to UIModalPresentationPageSheet, but other system-provided view controllers may resolve UIModalPresentationAutomatic to other concrete presentation styles.
-//        let backEnableController = BackEnabledNavigationController(rootViewController: todayMultipleNewsController)
-//        backEnableController.modalPresentationStyle = .fullScreen
-//        present(backEnableController, animated: true, completion: nil)
         
         self.todayMultipleNewsController = todayMultipleNewsController
         self.todayMultipleNewsController.view.layer.cornerRadius = 16
