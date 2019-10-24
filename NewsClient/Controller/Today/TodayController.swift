@@ -113,6 +113,9 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
         todayMultipleNewsController.articleCategory = items[indexPath.item-1].category
         todayMultipleNewsController.articleTitle = items[indexPath.item-1].title
         
+        todayMultipleNewsController.dismissHandler = {
+            self.handleRemoveTodayMultipleNewsViewByButton()
+        }
         self.todayMultipleNewsController = todayMultipleNewsController
         self.todayMultipleNewsController.view.layer.cornerRadius = 16
         
@@ -351,9 +354,9 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
                    self.tabBarController?.tabBar.frame.origin.y = self.view.frame.size.height - tabBarFrame.height
                }
 
-//               guard let cell = self.newsFullScreenController.tableView.cellForRow(at: [0, 0]) as? NewsFullScreenHeaderCell else { return }
+            guard let cell = self.todayMultipleNewsController.collectionView.cellForItem(at: [0, 0]) as? TodayMultipleNewsHeaderCell else { return }
                self.todayMultipleNewsController.closeButton.alpha = 0
-//               cell.layoutIfNeeded()
+               cell.layoutIfNeeded()
                
            }, completion: { _ in
                self.todayMultipleNewsController.view.removeFromSuperview()
@@ -457,6 +460,6 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
        }
        
        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-           return .init(top: 20, left: 0, bottom: 20, right: 0)
+           return .init(top: 16, left: 0, bottom: 16, right: 0)
        }
 }

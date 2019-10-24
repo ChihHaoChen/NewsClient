@@ -12,6 +12,7 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
     var articles = [Article]()
     var articleCategory: String?
     var articleTitle: String?
+    var dismissHandler: (()->())?
     private let cellId = "cellId"
     private let headerId = "headerId"
     let screenRatio = UIScreen.main.bounds.width/414
@@ -23,8 +24,9 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
         return button
     }()
     
-    @objc func handleDismiss()  {
-        dismiss(animated: true, completion: nil)
+    @objc func handleDismiss(button: UIButton)  {
+        button.isHidden = true
+        dismissHandler?()
     }
     
     // New init to have mode selection of this controller.
