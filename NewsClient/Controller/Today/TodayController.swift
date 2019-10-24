@@ -96,19 +96,53 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
     
     var startFrame: CGRect?
     var newsFullScreenController: NewsFullScreenController!
-    
+    var todayMultipleNewsController: TodayMultipleNewsController!
     
     // MARK: To control rendering all items in fullscreen
     fileprivate func showDailyListFullScreen(_ indexPath: IndexPath) {
-        let fullViewController = TodayMultipleNewsController(mode: .fullscreen)
-        fullViewController.articles = items[indexPath.item-1].newsFetch
-        fullViewController.articleCategory = items[indexPath.item-1].category
-        fullViewController.articleTitle = items[indexPath.item-1].title
+        setupMultipleNewsFullScreen(indexPath)
+        
+        setupMultipleNewsStartPosition(indexPath)
+        
+        beginFullScreenAnimation()
+    }
+    
+    fileprivate func setupMultipleNewsFullScreen(_ indexPath: IndexPath)  {
+        let todayMultipleNewsController = TodayMultipleNewsController(mode: .fullscreen)
+        todayMultipleNewsController.articles = items[indexPath.item-1].newsFetch
+        todayMultipleNewsController.articleCategory = items[indexPath.item-1].category
+        todayMultipleNewsController.articleTitle = items[indexPath.item-1].title
         // In 2019 WWDC, Apple changed its Default Modal Presentation Style for UIModal.
         // By default UIViewController resolves UIModalPresentationAutomatic to UIModalPresentationPageSheet, but other system-provided view controllers may resolve UIModalPresentationAutomatic to other concrete presentation styles.
-        let backEnableController = BackEnabledNavigationController(rootViewController: fullViewController)
-        backEnableController.modalPresentationStyle = .fullScreen
-        present(backEnableController, animated: true, completion: nil)
+//        let backEnableController = BackEnabledNavigationController(rootViewController: todayMultipleNewsController)
+//        backEnableController.modalPresentationStyle = .fullScreen
+//        present(backEnableController, animated: true, completion: nil)
+        
+        self.todayMultipleNewsController = todayMultipleNewsController
+        self.todayMultipleNewsController.view.layer.cornerRadius = 16
+        
+        // To set up the pan gesture
+        let gesture = UIPanGestureRecognizer(target: self, action: #selector(handleDragTodayMultipleNews))
+        gesture.delegate = self
+        todayMultipleNewsController.view.addGestureRecognizer(gesture)
+
+    }
+    
+    fileprivate func setupMultipleNewsStartPosition(_ indexPath: IndexPath)   {
+        guard let todayMultipleNewsView = todayMultipleNewsController.view else { return }
+        
+        view.addSubview(todayMultipleNewsView)
+        addChild(todayMultipleNewsController)
+        self.collectionView.isUserInteractionEnabled = false
+        
+        setupStartingCellFrame(indexPath)
+        
+        guard let startFrame = self.startFrame else { return }
+//        todayMultipleNewsView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleRemoveTodayMultipleNewsByTapping)))
+
+        todayMultipleNewsView.translatesAutoresizingMaskIntoConstraints = false
+        self.anchoredConstraints = todayMultipleNewsView.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: startFrame.origin.y, left: startFrame.origin.x, bottom: 0, right: 0), size: .init(width: startFrame.width, height: startFrame.height))
+        self.view.layoutIfNeeded()
     }
     
     @objc fileprivate func handleMultipleNewsTap(gesture: UIGestureRecognizer)   {
@@ -166,6 +200,31 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
             }
             else if gesture.state == .ended {
                 handleRemoveFullScreenViewByButton()
+            }
+        }
+    }
+    
+    var todayMultipleNewsBeginOffset: CGFloat = 0
+    @objc fileprivate func handleDragTodayMultipleNews (gesture: UIPanGestureRecognizer)    {
+        if gesture.state == .began  {
+            todayMultipleNewsBeginOffset = todayMultipleNewsController.collectionView.contentOffset.y
+        }
+        let transitionY = gesture.translation(in: todayMultipleNewsController.view).y
+        if todayMultipleNewsController.collectionView.contentOffset.y > 0 {
+            return
+        }
+        if transitionY > 0  {
+            if gesture.state == .changed    {
+                let trueOffset = transitionY - todayMultipleNewsBeginOffset
+                var scale = 1 - trueOffset/1000
+                scale = min(1, scale)
+                scale = max(0.5, scale)
+                
+                let transform: CGAffineTransform = .init(scaleX: scale, y: scale)
+                self.todayMultipleNewsController.view.transform = transform
+            }
+            else if gesture.state == .ended {
+                handleRemoveTodayMultipleNewsViewByButton()
             }
         }
     }
@@ -274,6 +333,40 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
         })
     }
     
+    @objc func handleRemoveTodayMultipleNewsViewByButton()    {
+           if let StatusbarView = UIApplication.shared.statusBarUIView {
+               StatusbarView.backgroundColor = #colorLiteral(red: 0.9555236697, green: 0.9596020579, blue: 0.972651422, alpha: 1)
+           }
+           UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+               // By setting contentOffset = .zero, the content inside the cell, even after being scrolled down to the bottom, the animated content will still shows the top with higher priority
+               self.todayMultipleNewsController.collectionView.contentOffset = .zero
+               // To disalbe the blur effect
+               self.blurVisualEffect.alpha = 0
+               // To restore the transform
+               self.todayMultipleNewsController.view.transform = .identity
+
+               guard let startFrame = self.startFrame else { return }
+               self.anchoredConstraints?.top?.constant = startFrame.origin.y
+               self.anchoredConstraints?.leading?.constant = startFrame.origin.x
+               self.anchoredConstraints?.width?.constant = startFrame.width
+               self.anchoredConstraints?.height?.constant = startFrame.height
+               // Lays out the subviews immediately, if layout updates are pending.
+               self.view.layoutIfNeeded() // To start the animation
+               if let tabBarFrame = self.tabBarController?.tabBar.frame {
+                   self.tabBarController?.tabBar.frame.origin.y = self.view.frame.size.height - tabBarFrame.height
+               }
+
+//               guard let cell = self.newsFullScreenController.tableView.cellForRow(at: [0, 0]) as? NewsFullScreenHeaderCell else { return }
+               self.todayMultipleNewsController.closeButton.alpha = 0
+//               cell.layoutIfNeeded()
+               
+           }, completion: { _ in
+               self.todayMultipleNewsController.view.removeFromSuperview()
+               self.todayMultipleNewsController?.removeFromParent()
+               self.collectionView.isUserInteractionEnabled = true
+           })
+       }
+    
     @objc func handleRemoveFullScreenViewByTapping(gesture: UIGestureRecognizer) {
         if let StatusbarView = UIApplication.shared.statusBarUIView  {
             StatusbarView.backgroundColor = #colorLiteral(red: 0.9555236697, green: 0.9596020579, blue: 0.972651422, alpha: 1)
@@ -302,8 +395,37 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
             self.newsFullScreenController?.removeFromParent()
             self.collectionView.isUserInteractionEnabled = true
         })
-        
     }
+    
+    @objc func handleRemoveTodayMultipleNewsByTapping(gesture: UIGestureRecognizer) {
+           if let StatusbarView = UIApplication.shared.statusBarUIView  {
+               StatusbarView.backgroundColor = #colorLiteral(red: 0.9555236697, green: 0.9596020579, blue: 0.972651422, alpha: 1)
+           }
+           UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+               // By setting contentOffset = .zero, the content inside the cell, even after being scrolled down to the bottom, the animated content will still shows the top with higher priority
+               self.todayMultipleNewsController.collectionView.contentOffset = .zero
+               
+               // The previous method to use frame to restore the fullScreenView to cellView is not good enough
+               gesture.view?.frame = self.startFrame ?? .zero
+               guard let startFrame = self.startFrame else { return }
+               
+               self.anchoredConstraints?.top?.constant = startFrame.origin.y
+               self.anchoredConstraints?.leading?.constant = startFrame.origin.x
+               self.anchoredConstraints?.width?.constant = startFrame.width
+               self.anchoredConstraints?.height?.constant = startFrame.height
+               // Lays out the subviews immediately, if layout updates are pending.
+               self.view.layoutIfNeeded() // To start the animation
+               if let tabBarFrame = self.tabBarController?.tabBar.frame {
+                   self.tabBarController?.tabBar.frame.origin.y = self.view.frame.size.height - tabBarFrame.height
+               }
+               // To disalbe the blur effect
+               self.blurVisualEffect.alpha = 0
+           }, completion: { _ in
+               gesture.view?.removeFromSuperview()
+               self.todayMultipleNewsController?.removeFromParent()
+               self.collectionView.isUserInteractionEnabled = true
+           })
+       }
     
     // MARK: The setting of the UICollectionCell in UICollectionViewController
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

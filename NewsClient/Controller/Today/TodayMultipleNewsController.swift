@@ -46,6 +46,7 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.backgroundColor = .white
+        collectionView.layer.cornerRadius = 16
         collectionView.register(TodayMultipleNewsHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
         collectionView.register(MultipleNewsCell.self, forCellWithReuseIdentifier: cellId)
         // Never put the API fetch inside sub-viewController
@@ -56,7 +57,7 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
             collectionView.isScrollEnabled = false
         }
     }
-    
+
     override var prefersStatusBarHidden: Bool  { return true }
     
     func setupCloseButton() {
@@ -117,5 +118,6 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let detailView = NewsDetailController(url: articles[indexPath.item].url)
         self.navigationController?.pushViewController(detailView, animated: true)
+//        self.present(detailView, animated: true, completion: nil)
     }
 }
