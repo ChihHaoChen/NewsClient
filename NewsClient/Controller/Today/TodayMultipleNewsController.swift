@@ -30,7 +30,7 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
     }
     
     // New init to have mode selection of this controller.
-    fileprivate let mode: Mode
+    var mode: Mode
     
     enum Mode {
         case small, fullscreen
@@ -47,10 +47,8 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        collectionView.backgroundColor = .white
-        collectionView.layer.cornerRadius = 16
-        collectionView.register(TodayMultipleNewsHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
-        collectionView.register(MultipleNewsCell.self, forCellWithReuseIdentifier: cellId)
+        setupCollectionView()
+
         // Never put the API fetch inside sub-viewController
         if self.mode == .fullscreen {
             setupCloseButton()
@@ -62,12 +60,21 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
 
     override var prefersStatusBarHidden: Bool  { return true }
     
+    // MARK: - Register collectionViewCells and UI elements -
+    fileprivate func setupCollectionView() {
+        collectionView.backgroundColor = .white
+        collectionView.layer.cornerRadius = 16
+        collectionView.register(TodayMultipleNewsHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
+        collectionView.register(MultipleNewsCell.self, forCellWithReuseIdentifier: cellId)
+        
+    }
+    
     func setupCloseButton() {
         view.addSubview(closeButton)
         closeButton.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: nil, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0.05*self.view.frame.height, left: 0, bottom: 0, right: 0.05*self.view.frame.width), size: .init(width: 32, height: 32))
     }
     
-    // MARK: Configuration of UICollectionView
+    // MARK: - Configuration of UICollectionView -
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerId, for: indexPath) as! TodayMultipleNewsHeaderCell
         header.categoryLabel.text = articleCategory
@@ -97,7 +104,7 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let heightCell: CGFloat = (view.frame.height - 3*spacing)/4
-        let heightCellFullScreen: CGFloat = (view.frame.height - 7*spacing)/8
+        let heightCellFullScreen: CGFloat = (view.frame.height - 6.5*spacing)/7.5
         if self.mode == .fullscreen {
             return .init(width: view.frame.width - 32, height: heightCellFullScreen)
         }
@@ -116,9 +123,21 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
         return .zero
     }
     
-    // MARK: Navigate users to the detailed News page
+    // MARK: - Navigate users to the detailed News page -
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let detailView = NewsDetailController(url: articles[indexPath.item].url)
         self.navigationController?.pushViewController(detailView, animated: true)
+        self.tabBarController?.tabBar.isHidden = true
+        self.view.layoutIfNeeded()
+    }
+    
+    // MARK: - Fix of scrolling features
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        print("scroll y = \(scrollView.contentOffset.y)")
+
+        if scrollView.contentOffset.y < 0   {
+            print("scroll y = \(scrollView.contentOffset.y)")
+            scrollView.isScrollEnabled = false
+        }
     }
 }

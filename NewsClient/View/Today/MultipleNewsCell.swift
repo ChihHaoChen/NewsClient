@@ -32,7 +32,7 @@ class MultipleNewsCell: UICollectionViewCell {
         backgroundColor = .white
         // By the UIView+Layout helper
         newsRowIcon.constrainWidth(constant: self.frame.width/2.5 )
-        newsRowIcon.constrainHeight(constant: self.frame.width/4)
+        newsRowIcon.constrainHeight(constant: self.frame.width/4.2)
         let stackView = UIStackView(arrangedSubviews: [newsRowIcon, VerticalStackView(arrangedSubviews: [titleLabel, nameLabel], spacing: 4)])
         stackView.spacing = 12.8*(screenWidth/320)
         stackView.alignment = .center

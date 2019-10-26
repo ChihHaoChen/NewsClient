@@ -207,24 +207,34 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
         if gesture.state == .began  {
             todayMultipleNewsBeginOffset = todayMultipleNewsController.collectionView.contentOffset.y
         }
-        let transitionY = gesture.translation(in: todayMultipleNewsController.view).y
+        var transitionY = gesture.translation(in: todayMultipleNewsController.collectionView).y
         if todayMultipleNewsController.collectionView.contentOffset.y > 0 {
+            todayMultipleNewsController.collectionView.isScrollEnabled = true
             return
         }
+        print("transition Y \(transitionY)")
+        print("beginOffset \(todayMultipleNewsBeginOffset)")
         if transitionY > 0  {
             if gesture.state == .changed    {
                 let trueOffset = transitionY - todayMultipleNewsBeginOffset
+                print("true offset \(trueOffset)")
                 var scale = 1 - trueOffset/1000
                 scale = min(1, scale)
                 scale = max(0.5, scale)
                 
                 let transform: CGAffineTransform = .init(scaleX: scale, y: scale)
                 self.todayMultipleNewsController.view.transform = transform
+                gesture.reset()
             }
             else if gesture.state == .ended {
+                
                 handleRemoveTodayMultipleNewsViewByButton()
             }
         }
+        todayMultipleNewsController.collectionView.isScrollEnabled = true
+        todayMultipleNewsController.collectionView.scrollsToTop = true
+        todayMultipleNewsController.mode = .small
+        todayMultipleNewsController.view.layoutIfNeeded()
     }
     
     
