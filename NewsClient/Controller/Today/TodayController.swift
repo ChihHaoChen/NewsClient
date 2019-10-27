@@ -120,7 +120,7 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
         // To set up the pan gesture
         let gesture = UIPanGestureRecognizer(target: self, action: #selector(handleDragTodayMultipleNews))
         gesture.delegate = self
-        todayMultipleNewsController.view.addGestureRecognizer(gesture)
+        todayMultipleNewsController.collectionView.addGestureRecognizer(gesture)
 
     }
     
@@ -134,11 +134,10 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
         setupStartingCellFrame(indexPath)
         
         guard let startFrame = self.startFrame else { return }
-        todayMultipleNewsView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleRemoveTodayMultipleNewsByTapping)))
 
         todayMultipleNewsView.translatesAutoresizingMaskIntoConstraints = false
         self.anchoredConstraints = todayMultipleNewsView.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: startFrame.origin.y, left: startFrame.origin.x, bottom: 0, right: 0), size: .init(width: startFrame.width, height: startFrame.height))
-        self.view.layoutIfNeeded()
+        self.collectionView.layoutIfNeeded()
     }
     
     @objc fileprivate func handleMultipleNewsTap(gesture: UIGestureRecognizer)   {
@@ -160,11 +159,12 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
         if gesture.state == .began  {
             todayMultipleNewsBeginOffset = todayMultipleNewsController.collectionView.contentOffset.y
         }
-        let transitionY = gesture.translation(in: todayMultipleNewsController.collectionView).y
+        var transitionY = gesture.translation(in: todayMultipleNewsController.collectionView).y
         if todayMultipleNewsController.collectionView.contentOffset.y > 0 {
-            todayMultipleNewsController.collectionView.isScrollEnabled = true
+//            todayMultipleNewsController.collectionView.isScrollEnabled = true
             return
         }
+        print("transitionY OUTSIDE \(transitionY)")
         if transitionY > 0  {
             if gesture.state == .changed    {
                 print("transition Y > 0 => \(transitionY)")
@@ -175,14 +175,17 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
                 scale = max(0.5, scale)
 
                 let transform: CGAffineTransform = .init(scaleX: scale, y: scale)
-                self.todayMultipleNewsController.view.transform = transform
+                todayMultipleNewsController.collectionView.transform = transform
             }
             else if gesture.state == .ended {
 //                let point:CGPoint = .init(x: self.view.frame.width/2, y: self.view.frame.height/2)
-                todayMultipleNewsController.mode = .small
-                todayMultipleNewsController.closeButton.alpha = 0
-                todayMultipleNewsController.collectionView.contentOffset = .zero
-                todayMultipleNewsController.view.layoutIfNeeded()
+                print("Gesture Ended")
+//                transitionY = 0
+//                todayMultipleNewsBeginOffset = 0
+//                todayMultipleNewsController.mode = .small
+//                todayMultipleNewsController.closeButton.alpha = 0
+//                todayMultipleNewsController.collectionView.contentOffset = .zero
+//                todayMultipleNewsController.view.layoutIfNeeded()
                 handleRemoveTodayMultipleNewsViewByButton()
             }
         }
@@ -215,7 +218,7 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
             self.anchoredConstraints?.width?.constant = self.view.frame.width
             self.anchoredConstraints?.height?.constant = self.view.frame.height
             // Lays out the subviews immediately, if layout updates are pending.
-            self.view.layoutIfNeeded() // To start the animation
+            self.collectionView.layoutIfNeeded() // To start the animation
             self.tabBarController?.tabBar.frame.origin.y = self.view.frame.size.height
 
             // To set blur.alpha =  1 to blur the view under the tranformed cell
@@ -238,14 +241,16 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
                self.blurVisualEffect.alpha = 0
                // To restore the transform
                self.todayMultipleNewsController.view.transform = .identity
+            
 
                guard let startFrame = self.startFrame else { return }
                self.anchoredConstraints?.top?.constant = startFrame.origin.y
                self.anchoredConstraints?.leading?.constant = startFrame.origin.x
                self.anchoredConstraints?.width?.constant = startFrame.width
                self.anchoredConstraints?.height?.constant = startFrame.height
+ 
                // Lays out the subviews immediately, if layout updates are pending.
-               self.view.layoutIfNeeded() // To start the animation
+               self.collectionView.layoutIfNeeded() // To start the animation
                if let tabBarFrame = self.tabBarController?.tabBar.frame {
                    self.tabBarController?.tabBar.frame.origin.y = self.view.frame.size.height - tabBarFrame.height
                }
@@ -275,7 +280,7 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
                self.anchoredConstraints?.width?.constant = startFrame.width
                self.anchoredConstraints?.height?.constant = startFrame.height
                // Lays out the subviews immediately, if layout updates are pending.
-               self.view.layoutIfNeeded() // To start the animation
+               self.collectionView.layoutIfNeeded() // To start the animation
                if let tabBarFrame = self.tabBarController?.tabBar.frame {
                    self.tabBarController?.tabBar.frame.origin.y = self.view.frame.size.height - tabBarFrame.height
                }
@@ -319,7 +324,7 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
            if (indexPath.item == 0)    {
                return .init(width: view.frame.width - 32, height: 60)
            }
-           return .init(width: view.frame.width - 32, height: self.view.frame.width*1.4)
+           return .init(width: view.frame.width - 32, height: self.view.frame.width*1.35)
        }
        
        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

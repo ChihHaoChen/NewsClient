@@ -31,13 +31,14 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
     
     // New init to have mode selection of this controller.
     var mode: Mode
-    
+    fileprivate var numShownArticles: Int
     enum Mode {
         case small, fullscreen
     }
     
     init(mode: Mode)    {
         self.mode = mode
+        self.numShownArticles = 0
         super.init()
     }
     
@@ -85,21 +86,27 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! TodayMultipleNewsCell
         cell.article = articles[indexPath.item]
+        if(indexPath.item == numShownArticles-1)  {
+            cell.separator.alpha = 0
+        }
+        
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         if self.mode == .fullscreen {
-            return .init(width: collectionView.frame.width-32, height: 150)
+            return .init(width: collectionView.frame.width-32, height: 100)
         }
         return .init(width: collectionView.frame.width, height: 0)
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if self.mode == .fullscreen {
-            return articles.count
+            numShownArticles = articles.count
+            return numShownArticles
         }
-        return min(4, articles.count)
+        numShownArticles = min(4, articles.count)
+        return numShownArticles
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

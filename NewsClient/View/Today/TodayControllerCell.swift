@@ -20,8 +20,11 @@ class TodayControllerCell: BaseTodayCell    {
         }
     }
     
-    let categoryLabel = UILabel(text: "LIFE HACK", font: .boldSystemFont(ofSize: 16*(UIScreen.main.bounds.width/320)))
-    let NewsLabel = UILabel(text: "Utilizing Your Time", font: .boldSystemFont(ofSize: 25*(UIScreen.main.bounds.width/320)), numberOfLines: 1)
+//    let categoryLabel = UILabel(text: "LIFE HACK", font: .boldSystemFont(ofSize: 16*(UIScreen.main.bounds.width/320)))
+//    let NewsLabel = UILabel(text: "Utilizing Your Time", font: .boldSystemFont(ofSize: 25*(UIScreen.main.bounds.width/320)), numberOfLines: 1)
+    
+    let categoryLabel = UILabel(text: "LIFE HACK", font: .boldSystemFont(ofSize: 20))
+    let NewsLabel = UILabel(text: "Utilizing Your Time", font: .boldSystemFont(ofSize: 26), numberOfLines: 1)
     let todayMultipleNewsController = TodayMultipleNewsController(mode: .small)
     
     override init(frame: CGRect) {
