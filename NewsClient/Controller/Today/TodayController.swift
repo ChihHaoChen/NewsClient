@@ -159,36 +159,35 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
         if gesture.state == .began  {
             todayMultipleNewsBeginOffset = todayMultipleNewsController.collectionView.contentOffset.y
         }
-        var transitionY = gesture.translation(in: todayMultipleNewsController.collectionView).y
+        let transitionY = gesture.translation(in: todayMultipleNewsController.collectionView).y
         if todayMultipleNewsController.collectionView.contentOffset.y > 0 {
-//            todayMultipleNewsController.collectionView.isScrollEnabled = true
+            todayMultipleNewsController.collectionView.isScrollEnabled = true
             return
         }
-        print("transitionY OUTSIDE \(transitionY)")
+        var scale: CGFloat = 1
         if transitionY > 0  {
             if gesture.state == .changed    {
-                print("transition Y > 0 => \(transitionY)")
                 let trueOffset = transitionY - todayMultipleNewsBeginOffset
-                print("true offset \(trueOffset)")
-                var scale = 1 - trueOffset/1000
+                scale = 1 - trueOffset/1000
                 scale = min(1, scale)
-                scale = max(0.5, scale)
+                scale = max(0.8, scale)
 
                 let transform: CGAffineTransform = .init(scaleX: scale, y: scale)
-                todayMultipleNewsController.collectionView.transform = transform
+                todayMultipleNewsController.view.transform = transform
+                todayMultipleNewsController.collectionView.layoutIfNeeded()
             }
             else if gesture.state == .ended {
-//                let point:CGPoint = .init(x: self.view.frame.width/2, y: self.view.frame.height/2)
-                print("Gesture Ended")
-//                transitionY = 0
-//                todayMultipleNewsBeginOffset = 0
-//                todayMultipleNewsController.mode = .small
-//                todayMultipleNewsController.closeButton.alpha = 0
-//                todayMultipleNewsController.collectionView.contentOffset = .zero
-//                todayMultipleNewsController.view.layoutIfNeeded()
+                let point:CGPoint = .init(x: 0, y: todayMultipleNewsController.offsetHeader)
+
+                todayMultipleNewsController.closeButton.alpha = 0
+                todayMultipleNewsController.collectionView.contentOffset = point
                 handleRemoveTodayMultipleNewsViewByButton()
             }
         }
+//        if !(scale == 1)    {
+//            print("Scale != 1")
+//            todayMultipleNewsController.view.transform = .identity
+//        }
         todayMultipleNewsController.collectionView.isScrollEnabled = true
     }
     
@@ -250,7 +249,7 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
                self.anchoredConstraints?.height?.constant = startFrame.height
  
                // Lays out the subviews immediately, if layout updates are pending.
-               self.collectionView.layoutIfNeeded() // To start the animation
+               self.todayMultipleNewsController.view.layoutIfNeeded() // To start the animation
                if let tabBarFrame = self.tabBarController?.tabBar.frame {
                    self.tabBarController?.tabBar.frame.origin.y = self.view.frame.size.height - tabBarFrame.height
                }
@@ -324,7 +323,7 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
            if (indexPath.item == 0)    {
                return .init(width: view.frame.width - 32, height: 60)
            }
-           return .init(width: view.frame.width - 32, height: self.view.frame.width*1.35)
+        return .init(width: view.frame.width - 32, height: UIScreen.main.bounds.width*1.33)
        }
        
        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

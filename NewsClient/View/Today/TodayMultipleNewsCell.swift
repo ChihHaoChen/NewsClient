@@ -31,10 +31,12 @@ class TodayMultipleNewsCell: UICollectionViewCell {
         super.init(frame: frame)
         backgroundColor = .white
         // By the UIView+Layout helper
-        newsRowIcon.constrainWidth(constant: self.frame.width/3 )
-        newsRowIcon.constrainHeight(constant: self.frame.width/4.2)
+        //        newsRowIcon.constrainWidth(constant: self.frame.width/3 )
+        //        newsRowIcon.constrainHeight(constant: self.frame.width/4.2)
+        newsRowIcon.constrainWidth(constant: UIScreen.main.bounds.width/3.3)
+        newsRowIcon.constrainHeight(constant: UIScreen.main.bounds.width/4.5)
         let stackView = UIStackView(arrangedSubviews: [newsRowIcon, VerticalStackView(arrangedSubviews: [titleLabel, nameLabel], spacing: 4)])
-        stackView.spacing = 12.8*(screenWidth/320)
+        stackView.spacing = 16
         stackView.alignment = .center
         addSubview(stackView)
         stackView.fillSuperview()

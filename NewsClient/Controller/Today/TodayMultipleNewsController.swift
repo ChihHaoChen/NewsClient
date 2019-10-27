@@ -14,7 +14,8 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
     var articleTitle: String?
     var dismissHandler: (()->())?
     private let cellId = "cellId"
-    private let headerId = "headerId"
+    fileprivate let headerId = "headerId"
+    var offsetHeader: CGFloat
     let screenRatio = UIScreen.main.bounds.width/414
     let closeButton: UIButton = {
         let button = UIButton(type: .system)
@@ -39,6 +40,7 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
     init(mode: Mode)    {
         self.mode = mode
         self.numShownArticles = 0
+        self.offsetHeader = 0
         super.init()
     }
     
@@ -80,6 +82,13 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerId, for: indexPath) as! TodayMultipleNewsHeaderCell
         header.categoryLabel.text = articleCategory
         header.titleLabel.text = articleTitle
+        if let attributes = collectionView.layoutAttributesForSupplementaryElement(ofKind: kind, at: indexPath) {
+            var offsetY = attributes.frame.origin.y - self.collectionView.contentInset.top
+            if #available(iOS 11.0, *) {
+                offsetY -= collectionView.safeAreaInsets.top
+            }
+            self.offsetHeader = offsetY
+        }
         return header
     }
     
