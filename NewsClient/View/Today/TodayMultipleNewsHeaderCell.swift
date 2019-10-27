@@ -14,11 +14,11 @@ class TodayMultipleNewsHeaderCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         let vstack = VerticalStackView(arrangedSubviews: [
-            categoryLabel,
-            titleLabel
+            titleLabel,
+            categoryLabel
             ], spacing: 8)
         addSubview(vstack)
-        vstack.fillSuperview(padding: .init(top: 26, left: 20, bottom: 20, right: 20))
+        vstack.fillSuperview(padding: .init(top: 52, left: 16, bottom: 20, right: 16))
     }
     
     required init?(coder: NSCoder) {

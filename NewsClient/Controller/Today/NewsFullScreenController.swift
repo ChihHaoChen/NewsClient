@@ -147,17 +147,8 @@ class NewsFullScreenController: UIViewController, UITableViewDataSource, UITable
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row == 0   {
-            let headerCell = NewsFullScreenHeaderCell()
-            headerCell.todayCell.todayItem = todayItem
-            headerCell.clipsToBounds = true
-            headerCell.todayCell.backgroundView = nil
-            return headerCell
-        }
-        else {
-            let cell = NewsFullScreenDescriptionCell()
-            return cell
-        }
+        let cell = NewsFullScreenDescriptionCell()
+        return cell
     }
     
     @objc func handleDismiss(button: UIButton)    {

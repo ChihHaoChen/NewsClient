@@ -65,7 +65,7 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
         collectionView.backgroundColor = .white
         collectionView.layer.cornerRadius = 16
         collectionView.register(TodayMultipleNewsHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
-        collectionView.register(MultipleNewsCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView.register(TodayMultipleNewsCell.self, forCellWithReuseIdentifier: cellId)
         
     }
     
@@ -83,14 +83,14 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! MultipleNewsCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! TodayMultipleNewsCell
         cell.article = articles[indexPath.item]
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         if self.mode == .fullscreen {
-            return .init(width: collectionView.frame.width, height: 160)
+            return .init(width: collectionView.frame.width-32, height: 150)
         }
         return .init(width: collectionView.frame.width, height: 0)
     }
@@ -103,12 +103,11 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let heightCell: CGFloat = (view.frame.height - 3*spacing)/4
-        let heightCellFullScreen: CGFloat = (view.frame.height - 6.5*spacing)/7.5
+        let heightFixed: CGFloat = 100
         if self.mode == .fullscreen {
-            return .init(width: view.frame.width - 32, height: heightCellFullScreen)
+            return .init(width: view.frame.width - 32, height: heightFixed)
         }
-        return .init(width: view.frame.width, height: heightCell)
+        return .init(width: view.frame.width, height: heightFixed)
     }
     
     fileprivate let spacing: CGFloat = 16
@@ -118,7 +117,7 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         if self.mode == .fullscreen {
-            return .init(top: 12, left: 12, bottom: 12, right: 12)
+            return .init(top: 0, left: 16, bottom: 12, right: 16)
         }
         return .zero
     }
@@ -133,10 +132,7 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
     
     // MARK: - Fix of scrolling features
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        print("scroll y = \(scrollView.contentOffset.y)")
-
         if scrollView.contentOffset.y < 0   {
-            print("scroll y = \(scrollView.contentOffset.y)")
             scrollView.isScrollEnabled = false
         }
     }

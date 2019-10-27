@@ -9,6 +9,18 @@
 import UIKit
 import SDWebImage
 
+extension UIApplication {
+    var statusBarUIView: UIView? {
+        if #available(iOS 13.0, *) {
+            let statusBar = UIView(frame: UIApplication.shared.keyWindow?.windowScene?.statusBarManager?.statusBarFrame ?? CGRect.zero)
+            return statusBar
+        } else if responds(to: Selector(("statusBar"))) {
+            return value(forKey: "statusBar") as? UIView
+        } else {
+            return nil
+        }
+    }
+}
 
 class BaseTabController: UITabBarController {
     override func viewDidLoad() {
