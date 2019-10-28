@@ -13,7 +13,7 @@ class TodayMultipleNewsCell: UICollectionViewCell {
         didSet  {
             nameLabel.text = article.source?.name
             titleLabel.text = article.title
-            newsRowIcon.sd_setImage(with: URL(string: article.urlToImage ?? ""))
+            newsRowIcon.sd_setImage(with: URL(string: article.urlToImage ?? ""), placeholderImage: UIImage(named: "News_iOS_Icon"))
         }
     }
     let screenWidth = UIScreen.main.bounds.width
@@ -30,9 +30,7 @@ class TodayMultipleNewsCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
-        // By the UIView+Layout helper
-        //        newsRowIcon.constrainWidth(constant: self.frame.width/3 )
-        //        newsRowIcon.constrainHeight(constant: self.frame.width/4.2)
+        
         newsRowIcon.constrainWidth(constant: UIScreen.main.bounds.width/3.3)
         newsRowIcon.constrainHeight(constant: UIScreen.main.bounds.width/4.5)
         let stackView = UIStackView(arrangedSubviews: [newsRowIcon, VerticalStackView(arrangedSubviews: [titleLabel, nameLabel], spacing: 4)])

@@ -51,7 +51,6 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionView()
-
         // Never put the API fetch inside sub-viewController
         if self.mode == .fullscreen {
             setupCloseButton()
@@ -144,12 +143,5 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
         self.navigationController?.pushViewController(detailView, animated: true)
         self.tabBarController?.tabBar.isHidden = true
         self.view.layoutIfNeeded()
-    }
-    
-    // MARK: - Fix of scrolling features
-    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y < 0   {
-            scrollView.isScrollEnabled = false
-        }
     }
 }

@@ -110,13 +110,11 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
         todayMultipleNewsController.articles = items[indexPath.item-1].newsFetch
         todayMultipleNewsController.articleCategory = items[indexPath.item-1].category
         todayMultipleNewsController.articleTitle = items[indexPath.item-1].title
-        
         todayMultipleNewsController.dismissHandler = {
             self.handleRemoveTodayMultipleNewsViewByButton()
         }
         self.todayMultipleNewsController = todayMultipleNewsController
         self.todayMultipleNewsController.view.layer.cornerRadius = 16
-        
         // To set up the pan gesture
         let gesture = UIPanGestureRecognizer(target: self, action: #selector(handleDragTodayMultipleNews))
         gesture.delegate = self
@@ -129,7 +127,6 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
         
         view.addSubview(todayMultipleNewsView)
         addChild(todayMultipleNewsController)
-        self.collectionView.isUserInteractionEnabled = false
         
         setupStartingCellFrame(indexPath)
         
@@ -155,40 +152,37 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
     }
     
     var todayMultipleNewsBeginOffset: CGFloat = 0
+    
     @objc fileprivate func handleDragTodayMultipleNews (gesture: UIPanGestureRecognizer)    {
         if gesture.state == .began  {
             todayMultipleNewsBeginOffset = todayMultipleNewsController.collectionView.contentOffset.y
+            print("Begin!")
         }
+        let point:CGPoint = .init(x: 0, y: todayMultipleNewsController.offsetHeader)
         let transitionY = gesture.translation(in: todayMultipleNewsController.collectionView).y
         if todayMultipleNewsController.collectionView.contentOffset.y > 0 {
-            todayMultipleNewsController.collectionView.isScrollEnabled = true
             return
         }
         var scale: CGFloat = 1
-        if transitionY > 0  {
-            if gesture.state == .changed    {
-                let trueOffset = transitionY - todayMultipleNewsBeginOffset
-                scale = 1 - trueOffset/1000
-                scale = min(1, scale)
-                scale = max(0.8, scale)
 
-                let transform: CGAffineTransform = .init(scaleX: scale, y: scale)
-                todayMultipleNewsController.view.transform = transform
-                todayMultipleNewsController.collectionView.layoutIfNeeded()
+        if transitionY > 30  {
+            if gesture.state == .changed  {
+                let trueOffset = transitionY
+                    scale = 1 - trueOffset/1000
+                    scale = min(1, scale)
+                    scale = max(0.85, scale)
+                    let transform: CGAffineTransform = .init(scaleX: scale, y: scale)
+                    todayMultipleNewsController.collectionView.contentOffset = point
+                    todayMultipleNewsController.view.transform = transform
             }
             else if gesture.state == .ended {
-                let point:CGPoint = .init(x: 0, y: todayMultipleNewsController.offsetHeader)
-
                 todayMultipleNewsController.closeButton.alpha = 0
-                todayMultipleNewsController.collectionView.contentOffset = point
                 handleRemoveTodayMultipleNewsViewByButton()
             }
         }
-//        if !(scale == 1)    {
-//            print("Scale != 1")
-//            todayMultipleNewsController.view.transform = .identity
-//        }
-        todayMultipleNewsController.collectionView.isScrollEnabled = true
+        if (transitionY < 30 && transitionY > 0) || gesture.state == .failed || gesture.state == .cancelled {
+            todayMultipleNewsController.view.transform = .identity
+        }
     }
     
     
@@ -249,6 +243,10 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
                self.anchoredConstraints?.height?.constant = startFrame.height
  
                // Lays out the subviews immediately, if layout updates are pending.
+            let point:CGPoint = .init(x: 0, y: self.todayMultipleNewsController.offsetHeader)
+            self.todayMultipleNewsController.collectionView.contentOffset = point
+                
+            
                self.todayMultipleNewsController.view.layoutIfNeeded() // To start the animation
                if let tabBarFrame = self.tabBarController?.tabBar.frame {
                    self.tabBarController?.tabBar.frame.origin.y = self.view.frame.size.height - tabBarFrame.height
