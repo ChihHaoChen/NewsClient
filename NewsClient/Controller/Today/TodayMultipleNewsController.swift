@@ -142,6 +142,5 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
         let detailView = NewsDetailController(url: articles[indexPath.item].url)
         self.navigationController?.pushViewController(detailView, animated: true)
         self.tabBarController?.tabBar.isHidden = true
-        self.view.layoutIfNeeded()
     }
 }

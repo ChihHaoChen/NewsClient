@@ -255,6 +255,7 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
            }, completion: { _ in
                self.todayMultipleNewsController.view.removeFromSuperview()
                self.todayMultipleNewsController?.removeFromParent()
+               self.tabBarController?.tabBar.isHidden = false
                self.collectionView.isUserInteractionEnabled = true
            })
        }
