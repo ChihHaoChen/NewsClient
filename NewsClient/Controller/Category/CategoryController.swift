@@ -21,6 +21,7 @@ class CategoryController: BaseCollectionViewController, UICollectionViewDelegate
     }()
 
     var fetchNewsGroups = [categoryGroup]()
+    var savedGroup: newsGroup?
     var categoryArray = ["business", "technology", "science", "health", "sports", "entertainment"]
     
     override func viewDidLoad() {
@@ -34,7 +35,7 @@ class CategoryController: BaseCollectionViewController, UICollectionViewDelegate
         self.navigationController?.navigationBar.isHidden = true
                 collectionView.backgroundColor = .white
                 collectionView.register(NewsGroupCell.self, forCellWithReuseIdentifier: cellId)
-        //        collectionView.register(NewsPageHeaders.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
+                collectionView.register(SavedNewsHeaders.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
         view.addSubview(activityIndicatorView)
         activityIndicatorView.fillSuperview()
     }
@@ -44,7 +45,8 @@ class CategoryController: BaseCollectionViewController, UICollectionViewDelegate
     fileprivate func fetchData()   {
 
         var newsCategories = [categoryGroup?]()
-//        var featuredGroup: [SocialApp]?
+        
+        var group: newsGroup?
 
         // To sync fetch API requests
         let dispatchGroup = DispatchGroup()
@@ -54,8 +56,7 @@ class CategoryController: BaseCollectionViewController, UICollectionViewDelegate
             dispatchGroup.enter()
             Service.shared.fetchCategoryNews(type: type)   { (articlesGroup, error) in
                 if error != nil {
-                   print("API Fetch Error ->", error!)
-                   return
+                   
                 }
                 guard let articlesGroupFetched = articlesGroup else { return }
                 let groupFetched = categoryGroup(category: type, newsGroup: articlesGroupFetched)
@@ -64,6 +65,17 @@ class CategoryController: BaseCollectionViewController, UICollectionViewDelegate
             }
            
         }
+        
+        dispatchGroup.enter()
+        Service.shared.fetchCategoryNews(type: "general") { (savedGroup, error) in
+            if error != nil {
+                print("API Fetch Error ->", error!)
+                return
+            }
+            guard let savedFetchedGroup = savedGroup else { return }
+            group = savedFetchedGroup
+            dispatchGroup.leave()
+        }
 
         // Completion
         dispatchGroup.notify(queue: .main) {
@@ -71,13 +83,14 @@ class CategoryController: BaseCollectionViewController, UICollectionViewDelegate
                 guard let newsGroup = group else { return }
                 self.fetchNewsGroups.append(newsGroup)
             }
+            self.savedGroup = group
             print("number is \(newsCategories.count)")
             self.activityIndicatorView.stopAnimating()
             self.collectionView.reloadData()
         }
     }
     
-    // MARK: - To configure the collection cell and its funcation -
+    // MARK: - To configure the header, collection cell and their functions -
     fileprivate func pushView(url: String)->() {
         let detailView = NewsDetailController(url: url)
         self.navigationController?.pushViewController(detailView, animated: true)
@@ -97,6 +110,19 @@ class CategoryController: BaseCollectionViewController, UICollectionViewDelegate
         }
         return cell
     }
+    
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerId, for: indexPath) as! SavedNewsHeaders
+        
+        header.savedNewsHorizontalController.savedNews = self.savedGroup
+        header.savedNewsHorizontalController.collectionView.reloadData()
+        header.savedNewsHorizontalController.didSelectHandler = { [weak self] article in
+            self?.pushView(url: article.url)
+        }
+
+        return header
+    }
+    
     // MARK: - To set up the layout of the collection sections -
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return fetchNewsGroups.count
