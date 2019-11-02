@@ -21,6 +21,8 @@ class CategoryController: BaseCollectionViewController, UICollectionViewDelegate
     }()
 
     var fetchNewsGroups = [newsGroup]()
+    var categoryArray = ["business", "technology", "science", "health", "sport"]
+    
 //    var socialApps = [SocialApp]()
     
     override func viewDidLoad() {
@@ -38,27 +40,33 @@ class CategoryController: BaseCollectionViewController, UICollectionViewDelegate
     
     fileprivate func fetchData()   {
 
-        var group1, group2, group3, group4: newsGroup?
+        var newsCategories = [newsGroup?]()
 //        var featuredGroup: [SocialApp]?
 
         // To sync fetch API requests
         let dispatchGroup = DispatchGroup()
 
-        dispatchGroup.enter()
-        Service.shared.fetchJapanBusinessNews   { (newsGroup, error) in
-            if error != nil {
-                print("API Fetch Error ->", error!)
-                return
+        
+        categoryArray.forEach { (type) in
+            dispatchGroup.enter()
+            Service.shared.fetchCategoryNews(type: type)   { (articlesGroup, error) in
+                if error != nil {
+                   print("API Fetch Error ->", error!)
+                   return
+                }
+                newsCategories.append(articlesGroup)
+                dispatchGroup.leave()
             }
-            group1 = newsGroup
-            dispatchGroup.leave()
+           
         }
 
         // Completion
         dispatchGroup.notify(queue: .main) {
-            if let group = group1   {
-                self.fetchNewsGroups.append(group)
+            newsCategories.forEach { (group) in
+                guard let newsGroup = group else { return }
+                self.fetchNewsGroups.append(newsGroup)
             }
+            print("number is \(newsCategories.count)")
             self.activityIndicatorView.stopAnimating()
             self.collectionView.reloadData()
         }

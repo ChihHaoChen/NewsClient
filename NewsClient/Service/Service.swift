@@ -25,6 +25,13 @@ class Service   {
         fetchGenericsJSONData(url: url, completion: completion)
     }
     
+    func fetchCategoryNews(type: String, completion: @escaping (newsGroup?, Error?)->())   {
+        let urlString: String = "https://newsapi.org/v2/top-headlines?country=jp&category=\(type)&apiKey=3db7a9ee619e49f0b297bccda7da5eb5"
+        
+        guard let url: URL = URL(string: urlString) else { return }
+        fetchGenericsJSONData(url: url, completion: completion)
+    }
+    
     func fetchNewsSearch(page: Int, limit: Int, search: String, completion: @escaping (newsGroup?, Error?)->Void)  {
         let urlString: String = "https://newsapi.org/v2/everything?q=\(search)&page=page=\(String(page))&pageSize=\(String(limit))&apiKey=3db7a9ee619e49f0b297bccda7da5eb5"
         guard let url: URL = URL(string: urlString) else { return }
