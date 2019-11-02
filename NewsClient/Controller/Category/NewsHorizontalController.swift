@@ -33,12 +33,8 @@ class NewsHorizontalController: HorizontalSnappingController, UICollectionViewDe
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! NewsRowCell
-        
-        let article = newsGroup?.articles[indexPath.item]
-        cell.titleLabel.text = article?.title
-        cell.publisherLabel.text = article?.source?.name
-        cell.newsRowIcon.sd_setImage(with: URL(string: article?.urlToImage ?? ""))
-        
+        cell.article = newsGroup?.articles[indexPath.item]
+               
         return cell
     }
     // MARK: -- Cell layout settings inside HorizontalController

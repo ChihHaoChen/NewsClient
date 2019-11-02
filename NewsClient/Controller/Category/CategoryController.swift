@@ -20,8 +20,8 @@ class CategoryController: BaseCollectionViewController, UICollectionViewDelegate
         return aiv
     }()
 
-    var fetchNewsGroups = [newsGroup]()
-    var categoryArray = ["business", "technology", "science", "health", "sport"]
+    var fetchNewsGroups = [categoryGroup]()
+    var categoryArray = ["business", "technology", "science", "health", "sports", "entertainment"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,9 +40,10 @@ class CategoryController: BaseCollectionViewController, UICollectionViewDelegate
     }
     
     // MARK: - Function to fetch data from News API -
+    
     fileprivate func fetchData()   {
 
-        var newsCategories = [newsGroup?]()
+        var newsCategories = [categoryGroup?]()
 //        var featuredGroup: [SocialApp]?
 
         // To sync fetch API requests
@@ -56,7 +57,9 @@ class CategoryController: BaseCollectionViewController, UICollectionViewDelegate
                    print("API Fetch Error ->", error!)
                    return
                 }
-                newsCategories.append(articlesGroup)
+                guard let articlesGroupFetched = articlesGroup else { return }
+                let groupFetched = categoryGroup(category: type, newsGroup: articlesGroupFetched)
+                newsCategories.append(groupFetched)
                 dispatchGroup.leave()
             }
            
@@ -85,8 +88,8 @@ class CategoryController: BaseCollectionViewController, UICollectionViewDelegate
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! NewsGroupCell
 
         let group = fetchNewsGroups[indexPath.item]
-        cell.titleLabel.text = "CategoryType"
-        cell.horizontalController.newsGroup = group
+        cell.titleLabel.text = group.category.capitalizingFirstLetter()
+        cell.horizontalController.newsGroup = group.newsGroup
         // Very important to reload the data into cells after fetching API results
         cell.horizontalController.collectionView.reloadData()
         cell.horizontalController.didSelectHandler = { [weak self] article in

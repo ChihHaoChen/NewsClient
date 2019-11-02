@@ -9,6 +9,13 @@
 import UIKit
 
 class NewsRowCell: UICollectionViewCell    {
+    var article: Article! {
+        didSet  {
+            publisherLabel.text = article.source?.name
+            titleLabel.text = article.title
+            newsRowIcon.sd_setImage(with: URL(string: article.urlToImage ?? ""), placeholderImage: UIImage(named: "News_iOS_Icon"))
+        }
+    }
     let newsRowIcon = UIImageView(cornerRadius: 12)
     let titleLabel = UILabel(text: "News Title", font: .systemFont(ofSize: 16*(UIScreen.main.bounds.width/320)), numberOfLines: 2)
     let publisherLabel = UILabel(text: "Publisher", font: .systemFont(ofSize: 13*(UIScreen.main.bounds.width/320)))
@@ -24,7 +31,7 @@ class NewsRowCell: UICollectionViewCell    {
         newsRowIcon.backgroundColor = .white
         // By the UIView+Layout helper
         newsRowIcon.constrainWidth(constant: self.frame.width/3.3)
-        newsRowIcon.constrainHeight(constant: self.frame.width/4.5)
+        newsRowIcon.constrainHeight(constant: self.frame.width/5)
         
         let stackView = UIStackView(arrangedSubviews: [newsRowIcon, VerticalStackView(arrangedSubviews: [titleLabel, publisherLabel], spacing: 4)])
         stackView.spacing = 8

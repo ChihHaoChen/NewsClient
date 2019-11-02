@@ -12,7 +12,7 @@ class NewsSearchCell:  UICollectionViewCell  {
     var articleResult: Article!   {
         didSet  {
             nameLabel.text = articleResult.title
-            imageView.sd_setImage(with: URL(string: articleResult.urlToImage ?? ""), completed: nil)
+            imageView.sd_setImage(with: URL(string: articleResult.urlToImage ?? ""), placeholderImage: UIImage(named: "News_iOS_Icon"))
             descriptionLabel.text = "\(articleResult.source?.name ?? "") • \(articleResult.publishedAt?.prefix(10) ?? "")"
         }
     }
