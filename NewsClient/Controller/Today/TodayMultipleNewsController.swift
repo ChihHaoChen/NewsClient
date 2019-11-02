@@ -68,7 +68,6 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
         collectionView.layer.cornerRadius = 16
         collectionView.register(TodayMultipleNewsHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
         collectionView.register(TodayMultipleNewsCell.self, forCellWithReuseIdentifier: cellId)
-        
     }
     
     func setupCloseButton() {

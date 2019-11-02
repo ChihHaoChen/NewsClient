@@ -16,6 +16,7 @@ class NewsDetailController: UIViewController    {
         
         return view
     }()
+    
     private let detailUrl: String
     init(url: String)   {
         self.detailUrl = url
@@ -37,5 +38,10 @@ class NewsDetailController: UIViewController    {
     fileprivate func setupWebView()  {
         view.addSubview(webView)
         webView.fillSuperview(padding: .init(top: 0, left: 0, bottom: 0, right: 0))
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.tabBarController?.tabBar.isHidden = false
     }
 }
