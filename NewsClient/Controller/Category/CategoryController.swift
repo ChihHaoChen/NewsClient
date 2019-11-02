@@ -23,21 +23,23 @@ class CategoryController: BaseCollectionViewController, UICollectionViewDelegate
     var fetchNewsGroups = [newsGroup]()
     var categoryArray = ["business", "technology", "science", "health", "sport"]
     
-//    var socialApps = [SocialApp]()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        collectionView.backgroundColor = .white
-        collectionView.register(NewsGroupCell.self, forCellWithReuseIdentifier: cellId)
-//        collectionView.register(NewsPageHeaders.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
-        
-        view.addSubview(activityIndicatorView)
-        activityIndicatorView.fillSuperview()
-        
+        configCollectionView()
         fetchData()
     }
     
+    // MARK: - To configure the UICollectionView with activity indicator
+    fileprivate func configCollectionView()  {
+        self.navigationController?.navigationBar.isHidden = true
+                collectionView.backgroundColor = .white
+                collectionView.register(NewsGroupCell.self, forCellWithReuseIdentifier: cellId)
+        //        collectionView.register(NewsPageHeaders.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
+        view.addSubview(activityIndicatorView)
+        activityIndicatorView.fillSuperview()
+    }
+    
+    // MARK: - Function to fetch data from News API -
     fileprivate func fetchData()   {
 
         var newsCategories = [newsGroup?]()
@@ -71,15 +73,12 @@ class CategoryController: BaseCollectionViewController, UICollectionViewDelegate
             self.collectionView.reloadData()
         }
     }
-
+    
+    // MARK: - To configure the collection cell and its funcation -
     fileprivate func pushView(url: String)->() {
         let detailView = NewsDetailController(url: url)
         self.navigationController?.pushViewController(detailView, animated: true)
         self.tabBarController?.tabBar.isHidden = true
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return .init(width: collectionView.frame.width, height: 300)
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -95,9 +94,13 @@ class CategoryController: BaseCollectionViewController, UICollectionViewDelegate
         }
         return cell
     }
-    
+    // MARK: - To set up the layout of the collection sections -
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return fetchNewsGroups.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return .init(width: collectionView.frame.width, height: 300)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

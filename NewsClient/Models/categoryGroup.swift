@@ -9,6 +9,6 @@
 import Foundation
 
 struct categoryGroup: Decodable {
-    let category: String
-    let newsGroup: [newsGroup]
+    var category: String
+    var newsGroup: newsGroup
 }

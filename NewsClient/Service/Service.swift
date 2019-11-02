@@ -26,7 +26,7 @@ class Service   {
     }
     
     func fetchCategoryNews(type: String, completion: @escaping (newsGroup?, Error?)->())   {
-        let urlString: String = "https://newsapi.org/v2/top-headlines?country=jp&category=\(type)&apiKey=3db7a9ee619e49f0b297bccda7da5eb5"
+        let urlString: String = "https://newsapi.org/v2/top-headlines?country=jp&pageSize=24&category=\(type)&apiKey=3db7a9ee619e49f0b297bccda7da5eb5"
         
         guard let url: URL = URL(string: urlString) else { return }
         fetchGenericsJSONData(url: url, completion: completion)
