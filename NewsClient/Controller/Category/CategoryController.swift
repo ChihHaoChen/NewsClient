@@ -84,7 +84,6 @@ class CategoryController: BaseCollectionViewController, UICollectionViewDelegate
                 self.fetchNewsGroups.append(newsGroup)
             }
             self.savedGroup = group
-            print("number is \(newsCategories.count)")
             self.activityIndicatorView.stopAnimating()
             self.collectionView.reloadData()
         }
