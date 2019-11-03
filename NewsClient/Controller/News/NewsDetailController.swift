@@ -66,7 +66,7 @@ class NewsDetailController: UIViewController, UIScrollViewDelegate, WKNavigation
         // Add the floating "Save" button to the current view
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap)))
         
-        let getButton = UIButton(title: "GET", titleColor: .red, font: .boldSystemFont(ofSize: 16), width: 64, height: 32, cornerRadius: 16)
+        let getButton = UIButton(title: "SAVE", titleColor: .red, font: .boldSystemFont(ofSize: 12), width: 64, height: 32, cornerRadius: 16)
         getButton.addTarget(self, action: #selector(handleSave), for: .touchUpInside)
         floatingContainerView.addSubview(getButton)
         getButton.fillSuperview(padding: .init(top: 0, left: 16, bottom: 0, right: 16))

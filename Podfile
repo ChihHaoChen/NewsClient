@@ -7,4 +7,5 @@ target 'NewsClient' do
 
   # Pods for AppStoreJson
   pod 'SDWebImage'
+  pod 'RealmSwift'
 end
