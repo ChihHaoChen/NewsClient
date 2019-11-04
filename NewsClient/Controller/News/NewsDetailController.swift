@@ -8,8 +8,12 @@
 
 import UIKit
 import WebKit
+import RealmSwift
 
 class NewsDetailController: UIViewController, UIScrollViewDelegate, WKNavigationDelegate   {
+    let realm = try! Realm()
+    var detailedNews: Article?
+    let savedArtice = SavedArticle()
     let webView: WKWebView =    {
         let view = WKWebView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -18,8 +22,9 @@ class NewsDetailController: UIViewController, UIScrollViewDelegate, WKNavigation
     }()
     
     private let detailUrl: String
-    init(url: String)   {
+    init(url: String, article: Article)   {
         self.detailUrl = url
+        self.detailedNews = article
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -66,7 +71,7 @@ class NewsDetailController: UIViewController, UIScrollViewDelegate, WKNavigation
         // Add the floating "Save" button to the current view
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap)))
         
-        let getButton = UIButton(title: "SAVE", titleColor: .red, font: .boldSystemFont(ofSize: 12), width: 64, height: 32, cornerRadius: 16)
+        let getButton = UIButton(title: "SAVE", titleColor: .red, font: .boldSystemFont(ofSize: 12), width: 64, height: 16, cornerRadius: 16)
         getButton.addTarget(self, action: #selector(handleSave), for: .touchUpInside)
         floatingContainerView.addSubview(getButton)
         getButton.fillSuperview(padding: .init(top: 0, left: 16, bottom: 0, right: 16))
@@ -78,10 +83,6 @@ class NewsDetailController: UIViewController, UIScrollViewDelegate, WKNavigation
         }, completion: nil)
     }
     
-    @objc fileprivate func handleSave()   {
-        print("Article Saved")
-    }
-    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let translationY = -90 - (UIApplication.shared.statusBarUIView?.frame.height ?? 0)
         // Set up a transform variable to decide how the floatingContainerView would be rendered out
@@ -91,5 +92,29 @@ class NewsDetailController: UIViewController, UIScrollViewDelegate, WKNavigation
             self.floatingContainerView.transform = transform
         }, completion: nil)
     }
-
+    // MARK: - To set up operations to write persistent data with Realm
+    @objc fileprivate func handleSave()   {
+        mappingSavedArticle()
+        saveArticle(savedArticle: savedArtice)
+    }
+    
+    fileprivate func mappingSavedArticle()  {
+        guard let detailNewsChosen = detailedNews else { return }
+        savedArtice.title = detailNewsChosen.title ?? ""
+        savedArtice.newsDescription = detailNewsChosen.description ?? ""
+        savedArtice.url = detailNewsChosen.url
+        savedArtice.urlToImage = detailNewsChosen.urlToImage ?? ""
+        savedArtice.publishedAt = detailNewsChosen.publishedAt ?? ""
+        savedArtice.publisherName = detailNewsChosen.source?.name ?? ""
+    }
+    
+    fileprivate func saveArticle(savedArticle: SavedArticle)  {
+        do  {
+            try realm.write {
+                realm.add(savedArtice)
+            }
+        }   catch   {
+            print("Error saving context, \(error)")
+        }
+    }
 }

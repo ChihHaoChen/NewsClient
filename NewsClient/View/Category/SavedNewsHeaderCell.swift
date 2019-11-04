@@ -9,11 +9,11 @@
 import UIKit
 
 class SavedNewsHeaderCell: UICollectionViewCell  {
-    var article: Article! {
+    var article: SavedArticle! {
         didSet {
             newsTitle.text = article.title
-            pusblishedAt.text = "\(article.source?.name ?? "") • \(article.publishedAt?.prefix(10) ?? "")"
-            newsImageView.sd_setImage(with: URL(string: article.urlToImage ?? ""), placeholderImage: UIImage(named: "News_iOS_Icon"))
+            pusblishedAt.text = "\(article.publisherName) • \(article.publishedAt.prefix(10))"
+            newsImageView.sd_setImage(with: URL(string: article.urlToImage), placeholderImage: UIImage(named: "News_iOS_Icon"))
         }
     }
     let newsTitle = UILabel(text: "", font: .systemFont(ofSize: 20*(UIScreen.main.bounds.width/320)), numberOfLines: 2)

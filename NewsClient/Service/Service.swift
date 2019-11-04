@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RealmSwift
 
 class Service   {
     static let shared = Service()

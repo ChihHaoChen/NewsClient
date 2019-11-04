@@ -138,7 +138,7 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
     
     // MARK: - Navigate users to the detailed News page -
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let detailView = NewsDetailController(url: articles[indexPath.item].url)
+        let detailView = NewsDetailController(url: articles[indexPath.item].url, article: articles[indexPath.item])
         self.navigationController?.pushViewController(detailView, animated: true)
         self.tabBarController?.tabBar.isHidden = true
     }

@@ -7,8 +7,10 @@
 //
 
 import UIKit
+//import RealmSwift
 
 class CategoryController: BaseCollectionViewController, UICollectionViewDelegateFlowLayout  {
+//    let realm = try! Realm()
     let headerId: String = "headerId"
     let cellId: String = "cellId"
     
@@ -21,7 +23,7 @@ class CategoryController: BaseCollectionViewController, UICollectionViewDelegate
     }()
 
     var fetchNewsGroups = [categoryGroup]()
-    var savedGroup: newsGroup?
+//    var savedGroup: Results<SavedArticle>?
     var categoryArray = ["business", "technology", "science", "health", "sports", "entertainment"]
     
     override func viewDidLoad() {
@@ -83,15 +85,15 @@ class CategoryController: BaseCollectionViewController, UICollectionViewDelegate
                 guard let newsGroup = group else { return }
                 self.fetchNewsGroups.append(newsGroup)
             }
-            self.savedGroup = group
+//            self.savedGroup = group
             self.activityIndicatorView.stopAnimating()
             self.collectionView.reloadData()
         }
     }
     
     // MARK: - To configure the header, collection cell and their functions -
-    fileprivate func pushView(url: String)->() {
-        let detailView = NewsDetailController(url: url)
+    fileprivate func pushView(url: String, article: Article)->() {
+        let detailView = NewsDetailController(url: url, article: article)
         self.navigationController?.pushViewController(detailView, animated: true)
         self.tabBarController?.tabBar.isHidden = true
     }
@@ -105,7 +107,7 @@ class CategoryController: BaseCollectionViewController, UICollectionViewDelegate
         // Very important to reload the data into cells after fetching API results
         cell.horizontalController.collectionView.reloadData()
         cell.horizontalController.didSelectHandler = { [weak self] article in
-            self?.pushView(url: article.url)
+            self?.pushView(url: article.url, article: article)
         }
         return cell
     }
@@ -113,10 +115,9 @@ class CategoryController: BaseCollectionViewController, UICollectionViewDelegate
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerId, for: indexPath) as! SavedNewsHeaders
         
-        header.savedNewsHorizontalController.savedNews = self.savedGroup
         header.savedNewsHorizontalController.collectionView.reloadData()
         header.savedNewsHorizontalController.didSelectHandler = { [weak self] article in
-            self?.pushView(url: article.url)
+            self?.pushView(url: article.url, article: article)
         }
 
         return header
