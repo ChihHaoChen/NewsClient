@@ -48,7 +48,7 @@ class CategoryController: BaseCollectionViewController, UICollectionViewDelegate
 
         var newsCategories = [categoryGroup?]()
         
-        var group: newsGroup?
+//        var group: newsGroup?
 
         // To sync fetch API requests
         let dispatchGroup = DispatchGroup()
@@ -68,24 +68,12 @@ class CategoryController: BaseCollectionViewController, UICollectionViewDelegate
            
         }
         
-        dispatchGroup.enter()
-        Service.shared.fetchCategoryNews(type: "general") { (savedGroup, error) in
-            if error != nil {
-                print("API Fetch Error ->", error!)
-                return
-            }
-            guard let savedFetchedGroup = savedGroup else { return }
-            group = savedFetchedGroup
-            dispatchGroup.leave()
-        }
-
         // Completion
         dispatchGroup.notify(queue: .main) {
             newsCategories.forEach { (group) in
                 guard let newsGroup = group else { return }
                 self.fetchNewsGroups.append(newsGroup)
             }
-//            self.savedGroup = group
             self.activityIndicatorView.stopAnimating()
             self.collectionView.reloadData()
         }

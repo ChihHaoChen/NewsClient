@@ -80,8 +80,8 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
         // Completion
         dispatchGroup.notify(queue: .main)  {
             self.items = [
-                TodayItem.init(category: "THE DAILY LIST", title: "News" ?? "", image: #imageLiteral(resourceName: "News_iOS_Icon"), description: "All the New you are eager to know right way", backgroundColor: .white, cellType: .multiple, newsFetch: self.businessUS?.articles ?? []),
-                TodayItem.init(category: "THE DAILY LIST", title: "News" ?? "", image: #imageLiteral(resourceName: "News_iOS_Icon"), description: "All the New you are eager to know right way", backgroundColor: .white, cellType: .multiple, newsFetch: self.businessJapan?.articles ?? [])
+                TodayItem.init(category: "THE DAILY LIST", title: "News", image: #imageLiteral(resourceName: "News_iOS_Icon"), description: "All the New you are eager to know right way", backgroundColor: .white, cellType: .multiple, newsFetch: self.businessUS?.articles ?? []),
+                TodayItem.init(category: "THE DAILY LIST", title: "News", image: #imageLiteral(resourceName: "News_iOS_Icon"), description: "All the New you are eager to know right way", backgroundColor: .white, cellType: .multiple, newsFetch: self.businessJapan?.articles ?? [])
             ]
             self.activityIndicator.stopAnimating()
             self.collectionView.reloadData()
