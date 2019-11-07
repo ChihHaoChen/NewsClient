@@ -45,8 +45,9 @@ class SavedNewsHeaderHorizontalController: HorizontalSnappingController, UIColle
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let chosenSavedNews = savedNews?[indexPath.item] else { return }
+        let savedArticle = Article(source: nil, title: chosenSavedNews.title, description: chosenSavedNews.newsDescription, url: chosenSavedNews.url, urlToImage: chosenSavedNews.urlToImage, publishedAt: chosenSavedNews.publishedAt, content: nil)
         
-//        didSelectHandler?(news)
+        didSelectHandler?(savedArticle)
     }
 }
 

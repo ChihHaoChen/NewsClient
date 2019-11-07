@@ -15,13 +15,13 @@ struct newsGroup: Decodable  {
 }
 
 struct Article: Decodable  {
-    let source: Source?
-    let title: String?
-    let description: String?
-    let url: String
-    let urlToImage: String?
-    let publishedAt: String?
-    let content: String?
+    var source: Source?
+    var title: String?
+    var description: String?
+    var url: String
+    var urlToImage: String?
+    var publishedAt: String?
+    var content: String?
 }
 
 struct Source: Decodable {
