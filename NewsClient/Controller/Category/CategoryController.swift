@@ -80,8 +80,8 @@ class CategoryController: BaseCollectionViewController, UICollectionViewDelegate
     }
     
     // MARK: - To configure the header, collection cell and their functions -
-    fileprivate func pushView(url: String, article: Article)->() {
-        let detailView = NewsDetailController(url: url, article: article)
+    fileprivate func pushView(article: Article)->() {
+        let detailView = NewsDetailController(mode: .readUnSavedArticle, article: article)
         self.navigationController?.pushViewController(detailView, animated: true)
         self.tabBarController?.tabBar.isHidden = true
     }
@@ -95,7 +95,7 @@ class CategoryController: BaseCollectionViewController, UICollectionViewDelegate
         // Very important to reload the data into cells after fetching API results
         cell.horizontalController.collectionView.reloadData()
         cell.horizontalController.didSelectHandler = { [weak self] article in
-            self?.pushView(url: article.url, article: article)
+            self?.pushView(article: article)
         }
         return cell
     }
@@ -105,9 +105,8 @@ class CategoryController: BaseCollectionViewController, UICollectionViewDelegate
         
         header.savedNewsHorizontalController.collectionView.reloadData()
         header.savedNewsHorizontalController.didSelectHandler = { [weak self] article in
-            self?.pushView(url: article.url, article: article)
+            self?.pushView(article: article)
         }
-
         return header
     }
     

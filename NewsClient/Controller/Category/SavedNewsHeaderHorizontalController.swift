@@ -44,8 +44,8 @@ class SavedNewsHeaderHorizontalController: HorizontalSnappingController, UIColle
     }
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let news = savedNews?[indexPath.item] else { return }
-    
+        guard let chosenSavedNews = savedNews?[indexPath.item] else { return }
+        
 //        didSelectHandler?(news)
     }
 }

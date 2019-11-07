@@ -21,10 +21,18 @@ class NewsDetailController: UIViewController, UIScrollViewDelegate, WKNavigation
         return view
     }()
     
-    private let detailUrl: String
-    init(url: String, article: Article)   {
-        self.detailUrl = url
-        self.detailedNews = article
+    fileprivate let mode: Mode
+    enum Mode {
+        case readSavedArtile, readUnSavedArticle
+    }
+    
+    
+    init(mode: Mode, article: Article)   {
+        self.mode = mode
+        if mode == .readUnSavedArticle {
+            self.detailedNews = article
+            print("Article type \(article.self)")
+        }
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -34,7 +42,8 @@ class NewsDetailController: UIViewController, UIScrollViewDelegate, WKNavigation
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let url = URL(string: self.detailUrl)
+//        let url = URL(string: self.detailedNews?.url ?? "")
+        let url = URL(string: self.detailedNews?.url ?? "")
         let detailWeb = URLRequest(url: url!)
         setupWebView()
         webView.load(detailWeb)
