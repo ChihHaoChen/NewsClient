@@ -10,29 +10,27 @@ import UIKit
 import WebKit
 import RealmSwift
 
-class NewsDetailController: UIViewController, UIScrollViewDelegate, WKNavigationDelegate   {
+class NewsDetailController: UIViewController, UIScrollViewDelegate, WKNavigationDelegate{
+    
     let realm = try! Realm()
     var detailedNews: Article?
-    let savedArtice = SavedArticle()
+    var savedArticle = SavedArticle()
+    let filePathRealm = Realm.Configuration.defaultConfiguration.fileURL
     let webView: WKWebView =    {
         let view = WKWebView()
         view.translatesAutoresizingMaskIntoConstraints = false
         
         return view
     }()
-    
+    // Addition of mode to check if the current article has been saved
     fileprivate let mode: Mode
     enum Mode {
-        case readSavedArtile, readUnSavedArticle
+        case readSavedArticle, readUnSavedArticle
     }
-    
     
     init(mode: Mode, article: Article)   {
         self.mode = mode
-        if mode == .readUnSavedArticle {
-            self.detailedNews = article
-            print("Article type \(article.self)")
-        }
+        self.detailedNews = article
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -42,7 +40,6 @@ class NewsDetailController: UIViewController, UIScrollViewDelegate, WKNavigation
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        let url = URL(string: self.detailedNews?.url ?? "")
         let url = URL(string: self.detailedNews?.url ?? "")
         let detailWeb = URLRequest(url: url!)
         setupWebView()
@@ -80,8 +77,9 @@ class NewsDetailController: UIViewController, UIScrollViewDelegate, WKNavigation
         // Add the floating "Save" button to the current view
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap)))
         
-        let getButton = UIButton(title: "SAVE", titleColor: .red, font: .boldSystemFont(ofSize: 12), width: 64, height: 16, cornerRadius: 16)
-        getButton.addTarget(self, action: #selector(handleSave), for: .touchUpInside)
+        let buttonString = (self.mode == .readUnSavedArticle) ? "Save" : "Delete"
+        let getButton = UIButton(title: buttonString, titleColor: .red, font: .boldSystemFont(ofSize: 12), width: 64, height: 16, cornerRadius: 16)
+        getButton.addTarget(self, action: #selector(handlePressed), for: .touchUpInside)
         floatingContainerView.addSubview(getButton)
         getButton.fillSuperview(padding: .init(top: 0, left: 16, bottom: 0, right: 16))
     }
@@ -102,28 +100,50 @@ class NewsDetailController: UIViewController, UIScrollViewDelegate, WKNavigation
         }, completion: nil)
     }
     // MARK: - To set up operations to write persistent data with Realm
-    @objc fileprivate func handleSave()   {
+    @objc fileprivate func handlePressed()   {
         mappingSavedArticle()
-        saveArticle(savedArticle: savedArtice)
+        switch self.mode    {
+        case .readSavedArticle:
+            deleteArticle(title: savedArticle.title)
+            navigationController?.popViewController(animated: true)
+        case .readUnSavedArticle:
+            saveArticle(savedArticle: savedArticle)
+        }
     }
     
     fileprivate func mappingSavedArticle()  {
         guard let detailNewsChosen = detailedNews else { return }
-        savedArtice.title = detailNewsChosen.title ?? ""
-        savedArtice.newsDescription = detailNewsChosen.description ?? ""
-        savedArtice.url = detailNewsChosen.url
-        savedArtice.urlToImage = detailNewsChosen.urlToImage ?? ""
-        savedArtice.publishedAt = detailNewsChosen.publishedAt ?? ""
-        savedArtice.publisherName = detailNewsChosen.source?.name ?? ""
+        savedArticle.title = detailNewsChosen.title ?? ""
+        savedArticle.newsDescription = detailNewsChosen.description ?? ""
+        savedArticle.url = detailNewsChosen.url
+        savedArticle.urlToImage = detailNewsChosen.urlToImage ?? ""
+        savedArticle.publishedAt = detailNewsChosen.publishedAt ?? ""
+        savedArticle.publisherName = detailNewsChosen.source?.name ?? ""
     }
-    
+    // The function to save the interested article into Realm
     fileprivate func saveArticle(savedArticle: SavedArticle)  {
         do  {
             try realm.write {
-                realm.add(savedArtice)
+                realm.add(savedArticle)
+                self.floatingContainerView.isHidden = true
+                self.floatingContainerView.isUserInteractionEnabled = false
             }
         }   catch   {
             print("Error saving context, \(error)")
+        }
+    }
+    // The function to delete the chosen article from Realm
+    fileprivate func deleteArticle(title: String)   {
+        
+        let predictDeleted = NSPredicate(format: "title = %@", title)
+        let chosenToDeleteArticle = realm.objects(SavedArticle.self).filter(predictDeleted)
+        do  {
+            try self.realm.write {
+                self.realm.delete(chosenToDeleteArticle)
+            }
+        }
+        catch   {
+            print("Error deleting saved News article, \(error)")
         }
     }
 }

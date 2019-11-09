@@ -13,7 +13,7 @@ class CategoryController: BaseCollectionViewController, UICollectionViewDelegate
 //    let realm = try! Realm()
     let headerId: String = "headerId"
     let cellId: String = "cellId"
-    
+    var readingSavedArticle: Bool = false
     let activityIndicatorView: UIActivityIndicatorView = {
         let aiv = UIActivityIndicatorView(style: .whiteLarge)
         aiv.color = .darkGray
@@ -65,7 +65,6 @@ class CategoryController: BaseCollectionViewController, UICollectionViewDelegate
                 newsCategories.append(groupFetched)
                 dispatchGroup.leave()
             }
-           
         }
         
         // Completion
@@ -81,7 +80,7 @@ class CategoryController: BaseCollectionViewController, UICollectionViewDelegate
     
     // MARK: - To configure the header, collection cell and their functions -
     fileprivate func pushView(article: Article)->() {
-        let detailView = NewsDetailController(mode: .readUnSavedArticle, article: article)
+        let detailView = NewsDetailController(mode: self.readingSavedArticle ? .readSavedArticle : .readUnSavedArticle, article: article)
         self.navigationController?.pushViewController(detailView, animated: true)
         self.tabBarController?.tabBar.isHidden = true
     }
@@ -95,6 +94,7 @@ class CategoryController: BaseCollectionViewController, UICollectionViewDelegate
         // Very important to reload the data into cells after fetching API results
         cell.horizontalController.collectionView.reloadData()
         cell.horizontalController.didSelectHandler = { [weak self] article in
+            self?.readingSavedArticle = false
             self?.pushView(article: article)
         }
         return cell
@@ -105,6 +105,7 @@ class CategoryController: BaseCollectionViewController, UICollectionViewDelegate
         
         header.savedNewsHorizontalController.collectionView.reloadData()
         header.savedNewsHorizontalController.didSelectHandler = { [weak self] article in
+            self?.readingSavedArticle = true
             self?.pushView(article: article)
         }
         return header
