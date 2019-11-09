@@ -68,20 +68,25 @@ class NewsDetailController: UIViewController, UIScrollViewDelegate, WKNavigation
         floatingContainerView.layer.cornerRadius = 32
         self.view.addSubview(floatingContainerView)
         
-        floatingContainerView.anchor(top: nil, leading: self.view.leadingAnchor, bottom: self.view.bottomAnchor, trailing: self.view.trailingAnchor, padding: .init(top: 0, left: UIScreen.main.bounds.width/2 - 32, bottom: -90, right: UIScreen.main.bounds.width/2 - 32), size: .init(width: 0, height: 64))
-        
+        floatingContainerView.centerXInSuperview()
+        floatingContainerView.anchor(top: nil, leading: nil, bottom: self.view.bottomAnchor, trailing: nil, padding: .init(top: 0, left: 0, bottom: -90, right: 0), size: .init(width: 64, height: 64))
         let blurVisualEffect = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
-        floatingContainerView.addSubview(blurVisualEffect)
+        
         blurVisualEffect.fillSuperview()
         
         // Add the floating "Save" button to the current view
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap)))
-        
-        let buttonString = (self.mode == .readUnSavedArticle) ? "Save" : "Delete"
-        let getButton = UIButton(title: buttonString, titleColor: .red, font: .boldSystemFont(ofSize: 12), width: 64, height: 16, cornerRadius: 16)
+        floatingContainerView.addSubview(blurVisualEffect)
+        let buttonString = (self.mode == .readUnSavedArticle) ? "push-pin-90" : "unpin-90"
+        let getButton = UIButton(title: "", titleColor: .red, font: .boldSystemFont(ofSize: 12), width: 64, height: 64, cornerRadius: 0)
+        getButton.alpha = 0.9
+        getButton.setImage(UIImage(named: buttonString), for: .normal)
         getButton.addTarget(self, action: #selector(handlePressed), for: .touchUpInside)
+
+        floatingContainerView.backgroundColor = ((self.mode == .readUnSavedArticle) ? .green : .red)
         floatingContainerView.addSubview(getButton)
-        getButton.fillSuperview(padding: .init(top: 0, left: 16, bottom: 0, right: 16))
+               
+        getButton.fillSuperview()
     }
     
     @objc fileprivate func handleTap()   {
