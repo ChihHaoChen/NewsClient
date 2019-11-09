@@ -94,7 +94,6 @@ class NewsDetailController: UIViewController, UIScrollViewDelegate, WKNavigation
         let translationY = -90 - (UIApplication.shared.statusBarUIView?.frame.height ?? 0)
         // Set up a transform variable to decide how the floatingContainerView would be rendered out
         let transform = self.webView.scrollView.contentOffset.y > 300 ? CGAffineTransform(translationX: 0, y: translationY) : .identity
-        print("offset \(scrollView.contentOffset.y)")
         UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             self.floatingContainerView.transform = transform
         }, completion: nil)

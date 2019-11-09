@@ -9,9 +9,10 @@
 import UIKit
 import RealmSwift
 
-class SavedNewsHeaderHorizontalController: HorizontalSnappingController, UICollectionViewDelegateFlowLayout, UINavigationControllerDelegate  {
+class SavedNewsHeaderHorizontalController: HorizontalSnappingController, UICollectionViewDelegateFlowLayout  {
     fileprivate let cellId = "headerCellId"
     let realm = try! Realm()
+    
     var savedNews: Results<SavedArticle>?
     var didSelectHandler: ((Article)->())?
     override func viewDidLoad() {

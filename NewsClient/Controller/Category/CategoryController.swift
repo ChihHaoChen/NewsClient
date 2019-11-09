@@ -7,10 +7,10 @@
 //
 
 import UIKit
-//import RealmSwift
+import RealmSwift
 
-class CategoryController: BaseCollectionViewController, UICollectionViewDelegateFlowLayout  {
-//    let realm = try! Realm()
+class CategoryController: BaseCollectionViewController, UICollectionViewDelegateFlowLayout, UINavigationControllerDelegate  {
+    let realm = try! Realm()
     let headerId: String = "headerId"
     let cellId: String = "cellId"
     var readingSavedArticle: Bool = false
@@ -23,13 +23,21 @@ class CategoryController: BaseCollectionViewController, UICollectionViewDelegate
     }()
 
     var fetchNewsGroups = [categoryGroup]()
+    var savedNews: Results<SavedArticle>?
 //    var savedGroup: Results<SavedArticle>?
     var categoryArray = ["business", "technology", "science", "health", "sports", "entertainment"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.delegate = self
         configCollectionView()
         fetchData()
+    }
+    // MARK: - To update the header cell after adding or removing saved articles
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        savedNews = realm.objects(SavedArticle.self)
+        // reloadData will reload all the sections including header.
+        self.collectionView.reloadData()
     }
     
     // MARK: - To configure the UICollectionView with activity indicator
