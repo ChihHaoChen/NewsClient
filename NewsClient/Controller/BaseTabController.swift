@@ -30,7 +30,7 @@ class BaseTabController: UITabBarController {
         //tabBar.barTintColor = .gray
         
         viewControllers = [
-            createNavContoller(viewController: CategoryController(), title: "Category", image: "categoryIcon"),
+            createNavContoller(viewController: CategoryController(), title: "Category", image: "react-native-50"),
             createNavContoller(viewController: TodayController(), title: "Today", image: "today_icon"),
             createNavContoller(viewController: NewsSearchController(), title: "Search", image: "search")
         ]

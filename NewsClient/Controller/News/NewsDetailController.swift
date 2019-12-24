@@ -19,7 +19,6 @@ class NewsDetailController: UIViewController, UIScrollViewDelegate, WKNavigation
     let webView: WKWebView =    {
         let view = WKWebView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        
         return view
     }()
     // Addition of mode to check if the current article has been saved
