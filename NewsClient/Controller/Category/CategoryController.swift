@@ -15,7 +15,7 @@ class CategoryController: BaseCollectionViewController, UICollectionViewDelegate
     let cellId: String = "cellId"
     var readingSavedArticle: Bool = false
     let activityIndicatorView: UIActivityIndicatorView = {
-        let aiv = UIActivityIndicatorView(style: .whiteLarge)
+		let aiv = UIActivityIndicatorView(style: .large)
         aiv.color = .darkGray
         aiv.startAnimating()
         aiv.hidesWhenStopped = true

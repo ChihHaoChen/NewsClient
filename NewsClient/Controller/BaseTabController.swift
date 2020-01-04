@@ -12,8 +12,8 @@ import SDWebImage
 extension UIApplication {
     var statusBarUIView: UIView? {
         if #available(iOS 13.0, *) {
-            let statusBar = UIView(frame: UIApplication.shared.keyWindow?.windowScene?.statusBarManager?.statusBarFrame ?? CGRect.zero)
-            return statusBar
+			let statusBarFrame = UIView(frame: UIApplication.shared.windows[0].windowScene?.statusBarManager?.statusBarFrame ?? CGRect.zero)
+            return statusBarFrame
         } else if responds(to: Selector(("statusBar"))) {
             return value(forKey: "statusBar") as? UIView
         } else {
