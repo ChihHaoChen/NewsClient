@@ -17,8 +17,8 @@ class NewsRowCell: UICollectionViewCell    {
         }
     }
     let newsRowIcon = UIImageView(cornerRadius: 12)
-    let titleLabel = UILabel(text: "News Title", font: .systemFont(ofSize: 16*(UIScreen.main.bounds.width/320)), numberOfLines: 2)
-    let publisherLabel = UILabel(text: "Publisher", font: .systemFont(ofSize: 13*(UIScreen.main.bounds.width/320)))
+	let titleLabel = UILabel(text: "News Title", font: UIFont.preferredFont(forTextStyle: .body), numberOfLines: 2, color: .label)
+	let publisherLabel = UILabel(text: "Publisher", font: UIFont.preferredFont(forTextStyle: .caption1), numberOfLines: 1, color: .label)
     let separator: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(white: 0.3, alpha: 0.3)

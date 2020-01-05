@@ -18,8 +18,8 @@ class NewsSearchCell:  UICollectionViewCell  {
     }
     let screenWidth = UIScreen.main.bounds.width
     let imageView = UIImageView(cornerRadius: 12)
-    let nameLabel = UILabel(text: "News Title", font: .systemFont(ofSize: 16*(UIScreen.main.bounds.width/320)), numberOfLines: 3)
-    let descriptionLabel = UILabel(text: "Author Label", font: .systemFont(ofSize: 13))
+	let nameLabel = UILabel(text: "News Title", font: UIFont.preferredFont(forTextStyle: .subheadline), numberOfLines: 3, color: .label)
+	let descriptionLabel = UILabel(text: "Author Label", font: UIFont.preferredFont(forTextStyle: .body), numberOfLines: 1, color: .label)
     let separator: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(white: 0.3, alpha: 0.3)

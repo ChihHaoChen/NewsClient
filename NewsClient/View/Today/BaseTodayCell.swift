@@ -17,7 +17,7 @@ class BaseTodayCell: UICollectionViewCell   {
         self.backgroundView = UIView()
         addSubview(self.backgroundView!)
         self.backgroundView?.fillSuperview()
-        self.backgroundView?.backgroundColor = .white
+		self.backgroundView?.backgroundColor = .systemGroupedBackground
         self.backgroundView?.layer.cornerRadius = 16
         
         self.backgroundView?.layer.shadowOpacity = 0.1
@@ -25,6 +25,9 @@ class BaseTodayCell: UICollectionViewCell   {
         self.backgroundView?.layer.shadowOffset = .init(width: 0, height: 10)
         // The next line is to enhance the frame rate
         self.backgroundView?.layer.shouldRasterize = true
+		
+		self.backgroundView?.layer.borderWidth = 2
+		self.backgroundView?.layer.borderColor = UIColor.systemGray4.cgColor
         
     }
     

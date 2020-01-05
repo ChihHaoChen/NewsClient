@@ -18,21 +18,23 @@ class TodayMultipleNewsCell: UICollectionViewCell {
     }
     let screenWidth = UIScreen.main.bounds.width
     let newsRowIcon = UIImageView(cornerRadius: 12)
-    let titleLabel = UILabel(text: "News Name", font: .systemFont(ofSize: 16*(UIScreen.main.bounds.width/320)), numberOfLines: 2)
-    let nameLabel = UILabel(text: "Publisher Name", font: .systemFont(ofSize: 13))
+	let titleLabel = UILabel(text: "News Name", font: UIFont.preferredFont(forTextStyle: .headline), numberOfLines: 2, color: .label)
+	let nameLabel = UILabel(text: "Publisher Name", font: UIFont.preferredFont(forTextStyle: .body), numberOfLines: 1, color: .label)
     
     let separator: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(white: 0.3, alpha: 0.3)
+		view.backgroundColor = .systemGroupedBackground
         return view
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .white
+		backgroundColor = .systemGroupedBackground
         
         newsRowIcon.constrainWidth(constant: UIScreen.main.bounds.width/3.3)
         newsRowIcon.constrainHeight(constant: UIScreen.main.bounds.width/4.5)
+		newsRowIcon.layer.borderWidth = 2
+		newsRowIcon.layer.borderColor = UIColor.systemGray4.cgColor
         let stackView = UIStackView(arrangedSubviews: [newsRowIcon, VerticalStackView(arrangedSubviews: [titleLabel, nameLabel], spacing: 4)])
         stackView.spacing = 16
         stackView.alignment = .center

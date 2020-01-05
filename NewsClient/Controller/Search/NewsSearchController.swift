@@ -16,7 +16,7 @@ class NewsSearchController: BaseCollectionViewController, UICollectionViewDelega
     fileprivate let searchController = UISearchController(searchResultsController: nil)
     fileprivate var searchTerm: String = ""
     fileprivate var searchCount: Int = 0
-    let noResultsLabel = UILabel(text: "No reults found. \nPlease enter other search words.", font: UIFont.systemFont(ofSize: 18), numberOfLines: 0)
+	let noResultsLabel = UILabel(text: "No reults found. \nPlease enter other search words.", font: UIFont.preferredFont(forTextStyle: .callout), numberOfLines: 0, color: .label)
     
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -11,7 +11,7 @@ import UIKit
 class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate   {
     let activityIndicator: UIActivityIndicatorView = {
         let aiv = UIActivityIndicatorView(style: .large)
-        aiv.color = .darkGray
+        aiv.color = .systemGray4
         aiv.startAnimating()
         aiv.hidesWhenStopped = true
         return aiv
@@ -23,7 +23,7 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
     let blurVisualEffect = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.setNavigationBarHidden(true, animated: false)
+	    navigationController?.setNavigationBarHidden(true, animated: false)
         setCollectionView()
         fetchAPI()
         setActivityIndicator()
@@ -38,7 +38,7 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
     }
     
     fileprivate func setCollectionView()    {
-        collectionView.backgroundColor = #colorLiteral(red: 0.9555236697, green: 0.9596020579, blue: 0.972651422, alpha: 1)
+		collectionView.backgroundColor = .systemBackground
         collectionView.register(TitleCell.self, forCellWithReuseIdentifier: "titleCell")
         collectionView.register(TodayControllerCell.self, forCellWithReuseIdentifier: TodayItem.CellType.multiple.rawValue)
     }
@@ -80,8 +80,8 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
         // Completion
         dispatchGroup.notify(queue: .main)  {
             self.items = [
-                TodayItem.init(category: "THE DAILY LIST", title: "News", image: #imageLiteral(resourceName: "News_iOS_Icon"), description: "All the New you are eager to know right way", backgroundColor: .white, cellType: .multiple, newsFetch: self.businessUS?.articles ?? []),
-                TodayItem.init(category: "THE DAILY LIST", title: "News", image: #imageLiteral(resourceName: "News_iOS_Icon"), description: "All the New you are eager to know right way", backgroundColor: .white, cellType: .multiple, newsFetch: self.businessJapan?.articles ?? [])
+                TodayItem.init(category: "THE DAILY LIST", title: "News", image: #imageLiteral(resourceName: "News_iOS_Icon"), description: "All the New you are eager to know right way", backgroundColor: .systemGroupedBackground, cellType: .multiple, newsFetch: self.businessUS?.articles ?? []),
+                TodayItem.init(category: "THE DAILY LIST", title: "News", image: #imageLiteral(resourceName: "News_iOS_Icon"), description: "All the New you are eager to know right way", backgroundColor: .systemGroupedBackground, cellType: .multiple, newsFetch: self.businessJapan?.articles ?? [])
             ]
             self.activityIndicator.stopAnimating()
             self.collectionView.reloadData()

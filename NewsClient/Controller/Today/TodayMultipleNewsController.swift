@@ -64,7 +64,7 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
     
     // MARK: - Register collectionViewCells and UI elements -
     fileprivate func setupCollectionView() {
-        collectionView.backgroundColor = .white
+		collectionView.backgroundColor = .systemGroupedBackground
         collectionView.layer.cornerRadius = 16
         collectionView.register(TodayMultipleNewsHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
         collectionView.register(TodayMultipleNewsCell.self, forCellWithReuseIdentifier: cellId)
@@ -117,7 +117,7 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let heightFixed: CGFloat = 100
+        let heightFixed: CGFloat = 90
         if self.mode == .fullscreen {
             return .init(width: view.frame.width - 32, height: heightFixed)
         }

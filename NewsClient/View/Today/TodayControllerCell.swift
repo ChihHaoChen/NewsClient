@@ -12,7 +12,7 @@ class TodayControllerCell: BaseTodayCell    {
     override var todayItem: TodayItem!    {
         didSet  {
             categoryLabel.text = todayItem.category
-            NewsLabel.text = todayItem.title
+            newsLabel.text = todayItem.title
             todayMultipleNewsController.articles = todayItem.newsFetch
             todayMultipleNewsController.articleCategory = todayItem.category
             todayMultipleNewsController.articleTitle = todayItem.title
@@ -20,20 +20,15 @@ class TodayControllerCell: BaseTodayCell    {
         }
     }
     
-//    let categoryLabel = UILabel(text: "LIFE HACK", font: .boldSystemFont(ofSize: 16*(UIScreen.main.bounds.width/320)))
-//    let NewsLabel = UILabel(text: "Utilizing Your Time", font: .boldSystemFont(ofSize: 25*(UIScreen.main.bounds.width/320)), numberOfLines: 1)
-    
-    let categoryLabel = UILabel(text: "LIFE HACK", font: .boldSystemFont(ofSize: 20))
-    let NewsLabel = UILabel(text: "Utilizing Your Time", font: .boldSystemFont(ofSize: 26), numberOfLines: 1)
+	let categoryLabel = UILabel(text: "LIFE HACK", font: UIFont.preferredFont(forTextStyle: .title1), color: .label)
+	let newsLabel = UILabel(text: "NewsLabel", font: UIFont.preferredFont(forTextStyle: .largeTitle), numberOfLines: 1, color: .secondaryLabel)
     let todayMultipleNewsController = TodayMultipleNewsController(mode: .small)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .white
         layer.cornerRadius = 16
-        
         let vstack = VerticalStackView(arrangedSubviews: [
-            NewsLabel,
+            newsLabel,
             categoryLabel,
             todayMultipleNewsController.view
             ], spacing: 8)

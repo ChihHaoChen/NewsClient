@@ -17,7 +17,7 @@ class NewsLoadingFooter: UICollectionReusableView  {
         aiv.color = .darkGray
         aiv.startAnimating()
         
-        let loadingLabel = UILabel(text: "Loading...", font: .systemFont(ofSize: 16))
+		let loadingLabel = UILabel(text: "Loading...", font: UIFont.preferredFont(forTextStyle: .body), color: .label)
         
         let verticalStack = VerticalStackView(arrangedSubviews: [aiv, loadingLabel], spacing: 8)
         addSubview(verticalStack)
