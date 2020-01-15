@@ -14,9 +14,9 @@ class CategoryController: BaseCollectionViewController, UICollectionViewDelegate
     let headerId: String = "headerId"
     let cellId: String = "cellId"
     var readingSavedArticle: Bool = false
+	let cellPadding: CGFloat = 8
     let activityIndicatorView: UIActivityIndicatorView = {
 		let aiv = UIActivityIndicatorView(style: .large)
-        aiv.color = .darkGray
         aiv.startAnimating()
         aiv.hidesWhenStopped = true
         return aiv
@@ -24,7 +24,6 @@ class CategoryController: BaseCollectionViewController, UICollectionViewDelegate
 
     var fetchNewsGroups = [categoryGroup]()
     var savedNews: Results<SavedArticle>?
-//    var savedGroup: Results<SavedArticle>?
     var categoryArray = ["business", "technology", "science", "health", "sports", "entertainment"]
     
     override func viewDidLoad() {
@@ -43,21 +42,17 @@ class CategoryController: BaseCollectionViewController, UICollectionViewDelegate
     // MARK: - To configure the UICollectionView with activity indicator
     fileprivate func configCollectionView()  {
         self.navigationController?.navigationBar.isHidden = true
-                collectionView.backgroundColor = .white
-                collectionView.register(NewsGroupCell.self, forCellWithReuseIdentifier: cellId)
-                collectionView.register(SavedNewsHeaders.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
+		collectionView.backgroundColor = .systemBackground
+		collectionView.register(NewsGroupCell.self, forCellWithReuseIdentifier: cellId)
+		collectionView.register(SavedNewsHeaders.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
         view.addSubview(activityIndicatorView)
         activityIndicatorView.fillSuperview()
     }
     
     // MARK: - Function to fetch data from News API -
-    
     fileprivate func fetchData()   {
 
         var newsCategories = [categoryGroup?]()
-        
-//        var group: newsGroup?
-
         // To sync fetch API requests
         let dispatchGroup = DispatchGroup()
 
@@ -66,7 +61,7 @@ class CategoryController: BaseCollectionViewController, UICollectionViewDelegate
             dispatchGroup.enter()
             Service.shared.fetchCategoryNews(type: type)   { (articlesGroup, error) in
                 if error != nil {
-                   
+					print("Error Message")
                 }
                 guard let articlesGroupFetched = articlesGroup else { return }
                 let groupFetched = categoryGroup(category: type, newsGroup: articlesGroupFetched)
@@ -129,10 +124,10 @@ class CategoryController: BaseCollectionViewController, UICollectionViewDelegate
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return .init(width: self.view.frame.width, height: self.view.frame.width*0.8)
+        return .init(width: self.view.frame.width, height: self.view.frame.width*0.93)
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return .init(top: 16, left: 0, bottom: 0, right: 0)
-    }
+	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+		return 0
+	}
 }

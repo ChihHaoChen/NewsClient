@@ -12,12 +12,12 @@ class SavedNewsHeaders: UICollectionReusableView {
     let savedNewsHorizontalController = SavedNewsHeaderHorizontalController()
     let separatorBot: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(white: 0.3, alpha: 0.3)
+		view.backgroundColor = .separator
         return view
     }()
     let separatorTop: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(white: 0.3, alpha: 0.3)
+		view.backgroundColor = .separator
         return view
     }()
     
@@ -27,7 +27,7 @@ class SavedNewsHeaders: UICollectionReusableView {
         savedNewsHorizontalController.view.fillSuperview(padding: .init(top: 8, left: 0, bottom: 0, right: 0))
 
         addSubview(separatorBot)
-        separatorBot.anchor(top: savedNewsHorizontalController.view.bottomAnchor, leading: savedNewsHorizontalController.view.leadingAnchor, bottom: nil, trailing: savedNewsHorizontalController.view.trailingAnchor, padding: .init(top: 16, left: 0, bottom: 0, right: 0), size: .init(width: 0, height: 0.5))
+        separatorBot.anchor(top: savedNewsHorizontalController.view.bottomAnchor, leading: savedNewsHorizontalController.view.leadingAnchor, bottom: nil, trailing: savedNewsHorizontalController.view.trailingAnchor, padding: .init(top: 8, left: 8, bottom: 0, right: 8), size: .init(width: 0, height: 1))
     }
     
     required init?(coder aDecoder: NSCoder) {

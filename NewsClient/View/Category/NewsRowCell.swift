@@ -17,29 +17,31 @@ class NewsRowCell: UICollectionViewCell    {
         }
     }
     let newsRowIcon = UIImageView(cornerRadius: 12)
-	let titleLabel = UILabel(text: "News Title", font: UIFont.preferredFont(forTextStyle: .body), numberOfLines: 2, color: .label)
-	let publisherLabel = UILabel(text: "Publisher", font: UIFont.preferredFont(forTextStyle: .caption1), numberOfLines: 1, color: .label)
+	let titleLabel = UILabel(text: "News Title", font: UIFont.preferredFont(forTextStyle: .body), numberOfLines: 3, color: .label)
+	let publisherLabel = UILabel(text: "Publisher", font: UIFont.preferredFont(forTextStyle: .caption1), numberOfLines: 1, color: .secondaryLabel)
+	let cellPadding: CGFloat = 8
     let separator: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(white: 0.3, alpha: 0.3)
+		view.backgroundColor = .separator
         return view
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .white
-        newsRowIcon.backgroundColor = .white
+		backgroundColor = .systemGroupedBackground
         // By the UIView+Layout helper
-        newsRowIcon.constrainWidth(constant: self.frame.width/3.3)
-        newsRowIcon.constrainHeight(constant: self.frame.width/5)
-        
-        let stackView = UIStackView(arrangedSubviews: [newsRowIcon, VerticalStackView(arrangedSubviews: [titleLabel, publisherLabel], spacing: 4)])
+		newsRowIcon.constrainWidth(constant: self.frame.width/3.3)
+		newsRowIcon.constrainHeight(constant: self.frame.width/4.1)
+        newsRowIcon.layer.borderWidth = 2
+		newsRowIcon.layer.borderColor = UIColor.systemGray4.cgColor
+        let stackView = UIStackView(arrangedSubviews: [newsRowIcon, VerticalStackView(arrangedSubviews: [titleLabel, publisherLabel], spacing: 8)])
+		publisherLabel.textAlignment = .right
         stackView.spacing = 8
         stackView.alignment = .center
         addSubview(stackView)
-        stackView.fillSuperview(padding: .init(top: 0, left: 0, bottom: 0, right: 0))
+        stackView.fillSuperview(padding: .init(top: 0, left: 0, bottom: 0, right: cellPadding))
         addSubview(separator)
-        separator.anchor(top: nil, leading: titleLabel.leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 0, left: 0, bottom: -8, right: 0), size: .init(width: 0, height: 0.5))
+        separator.anchor(top: nil, leading: titleLabel.leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 0, left: 0, bottom: -4, right: 0), size: .init(width: 0, height: 1))
         
     }
     

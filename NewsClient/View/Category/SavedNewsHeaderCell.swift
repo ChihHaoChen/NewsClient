@@ -16,18 +16,21 @@ class SavedNewsHeaderCell: UICollectionViewCell  {
             newsImageView.sd_setImage(with: URL(string: article.urlToImage), placeholderImage: UIImage(named: "News_iOS_Icon"))
         }
     }
-	let newsTitle = UILabel(text: " ", font: UIFont.preferredFont(forTextStyle: .subheadline), numberOfLines: 2, color: .label)
-	let publishedAt = UILabel(text: " ", font: UIFont.preferredFont(forTextStyle: .body), numberOfLines: 1, color: .label)
-    let newsImageView = UIImageView(cornerRadius: 8)
+	let newsTitle = UILabel(text: " ", font: UIFont.preferredFont(forTextStyle: .body), numberOfLines: 2, color: .label)
+	let publishedAt = UILabel(text: " ", font: UIFont.preferredFont(forTextStyle: .subheadline), numberOfLines: 1, color: .label)
+    let newsImageView = UIImageView(cornerRadius: 12)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .white
-        newsImageView.constrainHeight(constant: self.frame.width/2)
+        backgroundColor = .systemBackground
+		newsImageView.constrainHeight(constant: self.frame.width/1.67)
+		newsImageView.layer.borderWidth = 2
+		newsImageView.layer.borderColor = UIColor.systemGray4.cgColor
         let vstack = VerticalStackView(arrangedSubviews: [newsImageView, newsTitle, publishedAt], spacing: 4)
         addSubview(vstack)
-        vstack.fillSuperview(padding: .init(top: 12, left: 0, bottom: 0, right: 0))
-        publishedAt.textColor = .lightGray
+        vstack.fillSuperview(padding: .init(top: 0, left: 0, bottom: 0, right: 0))
+        publishedAt.textColor = .secondaryLabel
+		publishedAt.textAlignment = .right
     }
     
     required init?(coder aDecoder: NSCoder) {

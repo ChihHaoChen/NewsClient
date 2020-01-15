@@ -27,7 +27,6 @@ class BaseTabController: UITabBarController {
         super.viewDidLoad()
         
 		tabBar.tintColor = .systemOrange
-        //tabBar.barTintColor = .gray
         
         viewControllers = [
             createNavContoller(viewController: CategoryController(), title: "Category", image: "react-native-50"),

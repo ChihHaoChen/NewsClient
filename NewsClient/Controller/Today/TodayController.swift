@@ -11,7 +11,7 @@ import UIKit
 class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate   {
     let activityIndicator: UIActivityIndicatorView = {
         let aiv = UIActivityIndicatorView(style: .large)
-        aiv.color = .systemGray4
+		aiv.color = .systemGray4
         aiv.startAnimating()
         aiv.hidesWhenStopped = true
         return aiv
@@ -81,7 +81,7 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
         dispatchGroup.notify(queue: .main)  {
             self.items = [
                 TodayItem.init(category: "THE DAILY LIST", title: "News", image: #imageLiteral(resourceName: "News_iOS_Icon"), description: "All the New you are eager to know right way", backgroundColor: .systemGroupedBackground, cellType: .multiple, newsFetch: self.businessUS?.articles ?? []),
-                TodayItem.init(category: "THE DAILY LIST", title: "News", image: #imageLiteral(resourceName: "News_iOS_Icon"), description: "All the New you are eager to know right way", backgroundColor: .systemGroupedBackground, cellType: .multiple, newsFetch: self.businessJapan?.articles ?? [])
+				TodayItem.init(category: "THE DAILY LIST", title: "News", image: #imageLiteral(resourceName: "News_iOS_Icon"), description: "All the New you are eager to know right way", backgroundColor: .systemGroupedBackground, cellType: .multiple, newsFetch: self.businessJapan?.articles ?? [])
             ]
             self.activityIndicator.stopAnimating()
             self.collectionView.reloadData()
@@ -225,7 +225,7 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
     
     @objc func handleRemoveTodayMultipleNewsViewByButton()    {
            if let StatusbarView = UIApplication.shared.statusBarUIView {
-               StatusbarView.backgroundColor = #colorLiteral(red: 0.9555236697, green: 0.9596020579, blue: 0.972651422, alpha: 1)
+			StatusbarView.backgroundColor = .systemGroupedBackground
            }
            UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                // By setting contentOffset = .zero, the content inside the cell, even after being scrolled down to the bottom, the animated content will still shows the top with higher priority
@@ -262,7 +262,7 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
     
     @objc func handleRemoveTodayMultipleNewsByTapping(gesture: UIGestureRecognizer) {
            if let StatusbarView = UIApplication.shared.statusBarUIView  {
-               StatusbarView.backgroundColor = #colorLiteral(red: 0.9555236697, green: 0.9596020579, blue: 0.972651422, alpha: 1)
+			StatusbarView.backgroundColor = .systemGroupedBackground
            }
            UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                // By setting contentOffset = .zero, the content inside the cell, even after being scrolled down to the bottom, the animated content will still shows the top with higher priority

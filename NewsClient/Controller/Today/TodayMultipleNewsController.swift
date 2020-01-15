@@ -54,7 +54,9 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
         // Never put the API fetch inside sub-viewController
         if self.mode == .fullscreen {
             setupCloseButton()
-            navigationController?.navigationBar.isHidden = true
+			view.layer.borderWidth = 2
+			view.layer.borderColor = UIColor.systemGray4.cgColor
+			navigationController?.navigationBar.isHidden = true
         }   else    {
             collectionView.isScrollEnabled = false
         }

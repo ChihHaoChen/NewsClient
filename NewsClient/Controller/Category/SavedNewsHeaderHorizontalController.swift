@@ -18,7 +18,7 @@ class SavedNewsHeaderHorizontalController: HorizontalSnappingController, UIColle
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.register(SavedNewsHeaderCell.self, forCellWithReuseIdentifier: cellId)
-        collectionView.backgroundColor = .white
+        collectionView.backgroundColor = .systemBackground
         collectionView.contentInset = .init(top: 0, left: 12, bottom: 0, right: 12)
         loadSavedArticles()
     }

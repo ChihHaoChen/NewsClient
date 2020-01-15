@@ -15,9 +15,7 @@ class NewsHorizontalController: HorizontalSnappingController, UICollectionViewDe
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.register(NewsRowCell.self, forCellWithReuseIdentifier: cellId)
-        collectionView.backgroundColor = .white
-
-        collectionView.contentInset = .init(top: 0, left: 12, bottom: 0, right: 12)
+        configureCollectionViewOutlook()
     }
     // MARK: -- Configure the cells and their functions for the controller
     var didSelectHandler: ((Article)->())?
@@ -34,13 +32,23 @@ class NewsHorizontalController: HorizontalSnappingController, UICollectionViewDe
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! NewsRowCell
         cell.article = newsGroup?.articles[indexPath.item]
-               
+		if(indexPath.item % 3 == 2)  {
+            cell.separator.alpha = 0
+        }
         return cell
     }
+	
+	func configureCollectionViewOutlook()	{
+		collectionView.backgroundColor = .systemGroupedBackground
+        collectionView.contentInset = .init(top: 0, left: 12, bottom: 0, right: 12)
+		collectionView.layer.borderWidth = 2
+		collectionView.layer.borderColor = UIColor.systemGray4.cgColor
+		collectionView.layer.cornerRadius = 12
+	}
     // MARK: -- Cell layout settings inside HorizontalController
     let topBottomPadding: CGFloat = 12
-    let linespacing: CGFloat = 10
-    let rightLeftPadding: CGFloat = 12
+	let linespacing: CGFloat = 12
+    let rightLeftPadding: CGFloat = 8
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let height = (view.frame.height - 2*topBottomPadding - 2*linespacing)/3
@@ -52,6 +60,6 @@ class NewsHorizontalController: HorizontalSnappingController, UICollectionViewDe
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return linespacing
+        return 8
     }
 }

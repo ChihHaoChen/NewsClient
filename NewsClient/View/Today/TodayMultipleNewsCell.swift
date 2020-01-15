@@ -23,14 +23,13 @@ class TodayMultipleNewsCell: UICollectionViewCell {
     
     let separator: UIView = {
         let view = UIView()
-		view.backgroundColor = .systemGroupedBackground
+		view.backgroundColor = .separator
         return view
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
 		backgroundColor = .systemGroupedBackground
-        
         newsRowIcon.constrainWidth(constant: UIScreen.main.bounds.width/3.3)
         newsRowIcon.constrainHeight(constant: UIScreen.main.bounds.width/4.5)
 		newsRowIcon.layer.borderWidth = 2
@@ -42,7 +41,7 @@ class TodayMultipleNewsCell: UICollectionViewCell {
         stackView.fillSuperview()
         
         addSubview(separator)
-        separator.anchor(top: nil, leading: nameLabel.leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 0, left: 0, bottom: -8, right: 0), size: .init(width: 0, height: 0.5))
+        separator.anchor(top: nil, leading: nameLabel.leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 0, left: 0, bottom: -8, right: 0), size: .init(width: 0, height: 1))
     }
     
     
