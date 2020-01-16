@@ -11,14 +11,14 @@ import UIKit
 class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate   {
     let activityIndicator: UIActivityIndicatorView = {
         let aiv = UIActivityIndicatorView(style: .large)
-		aiv.color = .systemGray4
+		aiv.color = .systemGray
         aiv.startAnimating()
         aiv.hidesWhenStopped = true
         return aiv
     }()
     
     var items = [TodayItem]()
-    var businessUS, businessJapan: newsGroup?
+    var topNewsUS, topNewsJapan, topNewsCanada, topNewsTaiwan: newsGroup?
     let screenRatio = UIScreen.main.bounds.width/414
     let blurVisualEffect = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
     override func viewDidLoad() {
@@ -59,29 +59,49 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
         let dispatchGroup = DispatchGroup()
         
         dispatchGroup.enter()
-        Service.shared.fetchUSBusinessNews  { (newsGroup, error) in
+        Service.shared.fetchUSTopNews  { (newsGroup, error) in
             if error != nil {
                 print("API Fetch Error ->", error!)
                 return
             }
-            self.businessUS = newsGroup
+            self.topNewsUS = newsGroup
             dispatchGroup.leave()
         }
         dispatchGroup.enter()
-        Service.shared.fetchJapanBusinessNews   { (newsGroup, error) in
+        Service.shared.fetchJapanTopNews   { (newsGroup, error) in
             if error != nil {
                 print("API Fetch Error ->", error!)
                 return
             }
-            self.businessJapan = newsGroup
+            self.topNewsJapan = newsGroup
             dispatchGroup.leave()
         }
-        
+		dispatchGroup.enter()
+        Service.shared.fetchCanadaTopNews   { (newsGroup, error) in
+            if error != nil {
+                print("API Fetch Error ->", error!)
+                return
+            }
+            self.topNewsCanada = newsGroup
+            dispatchGroup.leave()
+        }
+        dispatchGroup.enter()
+        Service.shared.fetchTaiwanTopNews   { (newsGroup, error) in
+            if error != nil {
+                print("API Fetch Error ->", error!)
+                return
+            }
+            self.topNewsTaiwan = newsGroup
+            dispatchGroup.leave()
+        }
         // Completion
         dispatchGroup.notify(queue: .main)  {
             self.items = [
-                TodayItem.init(category: "THE DAILY LIST", title: "News", image: #imageLiteral(resourceName: "News_iOS_Icon"), description: "All the New you are eager to know right way", backgroundColor: .systemGroupedBackground, cellType: .multiple, newsFetch: self.businessUS?.articles ?? []),
-				TodayItem.init(category: "THE DAILY LIST", title: "News", image: #imageLiteral(resourceName: "News_iOS_Icon"), description: "All the New you are eager to know right way", backgroundColor: .systemGroupedBackground, cellType: .multiple, newsFetch: self.businessJapan?.articles ?? [])
+				TodayItem.init(category: "日本", title: "トップ", image: #imageLiteral(resourceName: "News_iOS_Icon"), description: "All the New you are eager to know right way", backgroundColor: .systemGroupedBackground, cellType: .multiple, newsFetch: self.topNewsJapan?.articles ?? []),
+				TodayItem.init(category: "Canada", title: "Top News", image: #imageLiteral(resourceName: "News_iOS_Icon"), description: "All the New you are eager to know right way", backgroundColor: .systemGroupedBackground, cellType: .multiple, newsFetch: self.topNewsCanada?.articles ?? []),
+                TodayItem.init(category: "US", title: "Top News", image: #imageLiteral(resourceName: "News_iOS_Icon"), description: "All the New you are eager to know right way", backgroundColor: .systemGroupedBackground, cellType: .multiple, newsFetch: self.topNewsUS?.articles ?? []),
+				TodayItem.init(category: "台灣", title: "頭條", image: #imageLiteral(resourceName: "News_iOS_Icon"), description: "All the New you are eager to know right way", backgroundColor: .systemGroupedBackground, cellType: .multiple, newsFetch: self.topNewsTaiwan?.articles ?? []),
+
             ]
             self.activityIndicator.stopAnimating()
             self.collectionView.reloadData()
@@ -156,7 +176,6 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
     @objc fileprivate func handleDragTodayMultipleNews (gesture: UIPanGestureRecognizer)    {
         if gesture.state == .began  {
             todayMultipleNewsBeginOffset = todayMultipleNewsController.collectionView.contentOffset.y
-            print("Begin!")
         }
         let point:CGPoint = .init(x: 0, y: todayMultipleNewsController.offsetHeader)
         let transitionY = gesture.translation(in: todayMultipleNewsController.collectionView).y
@@ -320,9 +339,9 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
     static let heightCell: CGFloat = 500
        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
            if (indexPath.item == 0)    {
-               return .init(width: view.frame.width - 32, height: 60)
+               return .init(width: view.frame.width - 16, height: 60)
            }
-        return .init(width: view.frame.width - 32, height: UIScreen.main.bounds.width*1.33)
+        return .init(width: view.frame.width - 16, height: UIScreen.main.bounds.width*1.33)
        }
        
        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -330,6 +349,6 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
        }
        
        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-           return .init(top: 16, left: 0, bottom: 16, right: 0)
+           return .init(top: 12, left: 0, bottom: 12, right: 0)
        }
 }

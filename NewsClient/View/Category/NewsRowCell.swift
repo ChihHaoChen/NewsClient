@@ -33,7 +33,7 @@ class NewsRowCell: UICollectionViewCell    {
 		newsRowIcon.constrainWidth(constant: self.frame.width/3.3)
 		newsRowIcon.constrainHeight(constant: self.frame.width/4.1)
         newsRowIcon.layer.borderWidth = 2
-		newsRowIcon.layer.borderColor = UIColor.systemGray4.cgColor
+		newsRowIcon.layer.borderColor = UIColor.systemGray.cgColor
         let stackView = UIStackView(arrangedSubviews: [newsRowIcon, VerticalStackView(arrangedSubviews: [titleLabel, publisherLabel], spacing: 8)])
 		publisherLabel.textAlignment = .right
         stackView.spacing = 8
@@ -41,7 +41,7 @@ class NewsRowCell: UICollectionViewCell    {
         addSubview(stackView)
         stackView.fillSuperview(padding: .init(top: 0, left: 0, bottom: 0, right: cellPadding))
         addSubview(separator)
-        separator.anchor(top: nil, leading: titleLabel.leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 0, left: 0, bottom: -4, right: 0), size: .init(width: 0, height: 1))
+        separator.anchor(top: nil, leading: titleLabel.leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 0, left: 0, bottom: -8, right: 0), size: .init(width: 0, height: 1))
         
     }
     

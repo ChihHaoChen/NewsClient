@@ -25,7 +25,7 @@ class SavedNewsHeaderCell: UICollectionViewCell  {
         backgroundColor = .systemBackground
 		newsImageView.constrainHeight(constant: self.frame.width/1.67)
 		newsImageView.layer.borderWidth = 2
-		newsImageView.layer.borderColor = UIColor.systemGray4.cgColor
+		newsImageView.layer.borderColor = UIColor.systemGray.cgColor
         let vstack = VerticalStackView(arrangedSubviews: [newsImageView, newsTitle, publishedAt], spacing: 4)
         addSubview(vstack)
         vstack.fillSuperview(padding: .init(top: 0, left: 0, bottom: 0, right: 0))

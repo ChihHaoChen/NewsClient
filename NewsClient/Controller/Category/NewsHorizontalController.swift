@@ -32,9 +32,9 @@ class NewsHorizontalController: HorizontalSnappingController, UICollectionViewDe
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! NewsRowCell
         cell.article = newsGroup?.articles[indexPath.item]
-		if(indexPath.item % 3 == 2)  {
-            cell.separator.alpha = 0
-        }
+//		if(indexPath.item % 3 == 2)  {
+//            cell.separator.alpha = 0
+//        }
         return cell
     }
 	
@@ -42,11 +42,11 @@ class NewsHorizontalController: HorizontalSnappingController, UICollectionViewDe
 		collectionView.backgroundColor = .systemGroupedBackground
         collectionView.contentInset = .init(top: 0, left: 12, bottom: 0, right: 12)
 		collectionView.layer.borderWidth = 2
-		collectionView.layer.borderColor = UIColor.systemGray4.cgColor
+		collectionView.layer.borderColor = UIColor.systemGray.cgColor
 		collectionView.layer.cornerRadius = 12
 	}
     // MARK: -- Cell layout settings inside HorizontalController
-    let topBottomPadding: CGFloat = 12
+    let topBottomPadding: CGFloat = 8
 	let linespacing: CGFloat = 12
     let rightLeftPadding: CGFloat = 8
     

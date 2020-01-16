@@ -27,7 +27,7 @@ class BaseTodayCell: UICollectionViewCell   {
         self.backgroundView?.layer.shouldRasterize = true
 		
 		self.backgroundView?.layer.borderWidth = 2
-		self.backgroundView?.layer.borderColor = UIColor.systemGray4.cgColor
+		self.backgroundView?.layer.borderColor = UIColor.systemGray.cgColor
         
     }
     

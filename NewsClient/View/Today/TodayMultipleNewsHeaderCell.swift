@@ -9,8 +9,8 @@
 import UIKit
 
 class TodayMultipleNewsHeaderCell: UICollectionViewCell {
-	let categoryLabel = UILabel(text: "Top News", font: UIFont.preferredFont(forTextStyle: .subheadline), numberOfLines: 1, color: .label)
-	let titleLabel = UILabel(text: " ", font: UIFont.preferredFont(forTextStyle: .subheadline), numberOfLines: 1, color: .label)
+	let titleLabel = UILabel(text: "News Label", font: UIFont.preferredFont(forTextStyle: .largeTitle), numberOfLines: 1, color: .label)
+	let categoryLabel = UILabel(text: "Country", font: UIFont.preferredFont(forTextStyle: .title1), numberOfLines: 1, color: .secondaryLabel)
     override init(frame: CGRect) {
         super.init(frame: frame)
         let vstack = VerticalStackView(arrangedSubviews: [

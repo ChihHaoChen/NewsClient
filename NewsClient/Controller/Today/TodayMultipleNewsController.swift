@@ -119,7 +119,7 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let heightFixed: CGFloat = 90
+        let heightFixed: CGFloat = 100
         if self.mode == .fullscreen {
             return .init(width: view.frame.width - 32, height: heightFixed)
         }
