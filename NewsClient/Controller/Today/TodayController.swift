@@ -256,14 +256,15 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
             
 
                guard let startFrame = self.startFrame else { return }
+			print("starFrame.width = \(startFrame.width)", "frame.width = \(self.view.frame.width)")
                self.anchoredConstraints?.top?.constant = startFrame.origin.y
                self.anchoredConstraints?.leading?.constant = startFrame.origin.x
                self.anchoredConstraints?.width?.constant = startFrame.width
                self.anchoredConstraints?.height?.constant = startFrame.height
  
                // Lays out the subviews immediately, if layout updates are pending.
-            let point:CGPoint = .init(x: 0, y: self.todayMultipleNewsController.offsetHeader)
-            self.todayMultipleNewsController.collectionView.contentOffset = point
+			   let point:CGPoint = .init(x: 0, y: self.todayMultipleNewsController.offsetHeader)
+               self.todayMultipleNewsController.collectionView.contentOffset = point
                 
             
                self.todayMultipleNewsController.view.layoutIfNeeded() // To start the animation
@@ -275,41 +276,6 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
                self.todayMultipleNewsController.view.removeFromSuperview()
                self.todayMultipleNewsController?.removeFromParent()
                self.tabBarController?.tabBar.isHidden = false
-               self.collectionView.isUserInteractionEnabled = true
-           })
-       }
-    
-    @objc func handleRemoveTodayMultipleNewsByTapping(gesture: UIGestureRecognizer) {
-           if let StatusbarView = UIApplication.shared.statusBarUIView  {
-			StatusbarView.backgroundColor = .systemGroupedBackground
-           }
-           UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-               // By setting contentOffset = .zero, the content inside the cell, even after being scrolled down to the bottom, the animated content will still shows the top with higher priority
-               self.todayMultipleNewsController.collectionView.contentOffset = .zero
-            self.todayMultipleNewsController.view.transform = .identity
-
-               // The previous method to use frame to restore the fullScreenView to cellView is not good enough
-//               gesture.view?.frame = self.startFrame ?? .zero
-               guard let startFrame = self.startFrame else { return }
-
-               self.anchoredConstraints?.top?.constant = startFrame.origin.y
-               self.anchoredConstraints?.leading?.constant = startFrame.origin.x
-               self.anchoredConstraints?.width?.constant = startFrame.width
-               self.anchoredConstraints?.height?.constant = startFrame.height
-               // Lays out the subviews immediately, if layout updates are pending.
-               self.collectionView.layoutIfNeeded() // To start the animation
-               if let tabBarFrame = self.tabBarController?.tabBar.frame {
-                   self.tabBarController?.tabBar.frame.origin.y = self.view.frame.size.height - tabBarFrame.height
-               }
-               // To disalbe the blur effect
-               self.blurVisualEffect.alpha = 0
-
-               guard let cell = self.todayMultipleNewsController.collectionView.cellForItem(at: [0, 0]) as? TodayMultipleNewsHeaderCell else { return }
-               self.todayMultipleNewsController.closeButton.alpha = 0
-               cell.layoutIfNeeded()
-           }, completion: { _ in
-               self.todayMultipleNewsController.view?.removeFromSuperview()
-               self.todayMultipleNewsController?.removeFromParent()
                self.collectionView.isUserInteractionEnabled = true
            })
        }
@@ -339,7 +305,7 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
     static let heightCell: CGFloat = 500
        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
            if (indexPath.item == 0)    {
-               return .init(width: view.frame.width - 16, height: 60)
+               return .init(width: view.frame.width - 16, height: UIScreen.main.bounds.width*1.33)
            }
         return .init(width: view.frame.width - 16, height: UIScreen.main.bounds.width*1.33)
        }
