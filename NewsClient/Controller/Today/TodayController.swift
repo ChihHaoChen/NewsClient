@@ -23,6 +23,7 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
     let blurVisualEffect = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
     override func viewDidLoad() {
         super.viewDidLoad()
+	
 	    navigationController?.setNavigationBarHidden(true, animated: false)
         setCollectionView()
         fetchAPI()
@@ -39,7 +40,7 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
     
     fileprivate func setCollectionView()    {
 		collectionView.backgroundColor = .systemBackground
-        collectionView.register(TitleCell.self, forCellWithReuseIdentifier: "titleCell")
+//        collectionView.register(TitleCell.self, forCellWithReuseIdentifier: "titleCell")
         collectionView.register(TodayControllerCell.self, forCellWithReuseIdentifier: TodayItem.CellType.multiple.rawValue)
     }
     
@@ -127,9 +128,9 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
     
     fileprivate func setupMultipleNewsFullScreen(_ indexPath: IndexPath)  {
         let todayMultipleNewsController = TodayMultipleNewsController(mode: .fullscreen)
-        todayMultipleNewsController.articles = items[indexPath.item-1].newsFetch
-        todayMultipleNewsController.articleCategory = items[indexPath.item-1].category
-        todayMultipleNewsController.articleTitle = items[indexPath.item-1].title
+        todayMultipleNewsController.articles = items[indexPath.item].newsFetch
+        todayMultipleNewsController.articleCategory = items[indexPath.item].category
+        todayMultipleNewsController.articleTitle = items[indexPath.item].title
         todayMultipleNewsController.dismissHandler = {
             self.handleRemoveTodayMultipleNewsViewByButton()
         }
@@ -282,31 +283,31 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
     
     // MARK: - The setting of the UICollectionCell in UICollectionViewController -
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return items.count+1
+        return items.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if (indexPath.item == 0)    {
-            let cellId = "titleCell"
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
-            return cell
-        }
-        else    {
-            let cellId = items[indexPath.item-1].cellType.rawValue
+//        if (indexPath.item == 0)    {
+//            let cellId = "titleCell"
+//            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
+//            return cell
+//        }
+//        else    {
+            let cellId = items[indexPath.item].cellType.rawValue
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! BaseTodayCell
             
-            cell.todayItem = items[indexPath.item-1]
+            cell.todayItem = items[indexPath.item]
             
             (cell as? TodayControllerCell)?.todayMultipleNewsController.collectionView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleMultipleNewsTap)))
             return cell
-        }
+//        }
     }
     
     static let heightCell: CGFloat = 500
        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-           if (indexPath.item == 0)    {
-               return .init(width: view.frame.width - 16, height: UIScreen.main.bounds.width*1.33)
-           }
+//           if (indexPath.item == 0)    {
+//               return .init(width: view.frame.width - 16, height: UIScreen.main.bounds.width*1.33)
+//           }
         return .init(width: view.frame.width - 16, height: UIScreen.main.bounds.width*1.33)
        }
        
