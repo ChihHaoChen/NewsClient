@@ -56,7 +56,6 @@ class CategoryController: BaseCollectionViewController, UICollectionViewDelegate
         // To sync fetch API requests
         let dispatchGroup = DispatchGroup()
 
-        print("Fetch oncesr")
         categoryArray.forEach { (type) in
             dispatchGroup.enter()
             Service.shared.fetchCategoryNews(type: type)   { (articlesGroup, error) in

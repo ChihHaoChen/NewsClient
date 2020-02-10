@@ -104,7 +104,7 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         if self.mode == .fullscreen {
-            return .init(width: collectionView.frame.width-32, height: 100)
+            return .init(width: collectionView.frame.width-16, height: 100)
         }
         return .init(width: collectionView.frame.width, height: 0)
     }
@@ -121,7 +121,7 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let heightFixed: CGFloat = 100
         if self.mode == .fullscreen {
-            return .init(width: view.frame.width - 32, height: heightFixed)
+            return .init(width: view.frame.width - 16, height: heightFixed)
         }
         return .init(width: view.frame.width, height: heightFixed)
     }
@@ -133,7 +133,7 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         if self.mode == .fullscreen {
-            return .init(top: 0, left: 16, bottom: 12, right: 16)
+            return .init(top: 0, left: 8, bottom: 12, right: 8)
         }
         return .zero
     }

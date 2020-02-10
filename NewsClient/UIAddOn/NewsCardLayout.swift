@@ -9,13 +9,13 @@
 import Foundation
 
 struct NewsCardLayout {
+	
 	static func createNewsCardLayout(in view: UIView) -> UICollectionViewFlowLayout {
-		let padding: CGFloat = 8
-		let itemWidth: CGFloat = view.frame.width - 2*padding
 		
 		let flowLayout = UICollectionViewFlowLayout()
-		flowLayout.sectionInset = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
-		flowLayout.itemSize = CGSize(width: itemWidth, height: 560)
+		flowLayout.sectionInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+		flowLayout.itemSize = CGSize(width: view.frame.width - 16, height: UIScreen.main.bounds.width*1.33)
+		flowLayout.minimumLineSpacing = 16
 		
 		return flowLayout
 	}

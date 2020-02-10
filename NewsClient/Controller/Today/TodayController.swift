@@ -9,6 +9,7 @@
 import UIKit
 
 class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate   {
+	
     let activityIndicator: UIActivityIndicatorView = {
         let aiv = UIActivityIndicatorView(style: .large)
 		aiv.color = .systemGray
@@ -17,10 +18,16 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
         return aiv
     }()
     
+	fileprivate let headerId = "headerId"
     var items = [TodayItem]()
     var topNewsUS, topNewsJapan, topNewsCanada, topNewsTaiwan: newsGroup?
-    let screenRatio = UIScreen.main.bounds.width/414
-    let blurVisualEffect = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
+	
+	let screenRatio = UIScreen.main.bounds.width/414
+	let blurVisualEffect = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
+	
+	var todayMultipleNewsBeginOffset: CGFloat = 0
+	var anchoredConstraints: AnchoredConstraints?
+	
     override func viewDidLoad() {
         super.viewDidLoad()
 	
@@ -31,24 +38,29 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
         setVisualEffect()
     }
     
-    fileprivate func setVisualEffect()  {
-        // Add blur effect to the frame
-        view.addSubview(blurVisualEffect)
-        blurVisualEffect.fillSuperview()
-        blurVisualEffect.alpha = 0
-    }
-    
-    fileprivate func setCollectionView()    {
+	
+	fileprivate func setVisualEffect()  {
+		// Add blur effect to the frame
+		view.addSubview(blurVisualEffect)
+		blurVisualEffect.fillSuperview()
+		blurVisualEffect.alpha = 0
+	}
+	
+	
+	fileprivate func setCollectionView() {
 		collectionView.backgroundColor = .systemBackground
-//        collectionView.register(TitleCell.self, forCellWithReuseIdentifier: "titleCell")
-        collectionView.register(TodayControllerCell.self, forCellWithReuseIdentifier: TodayItem.CellType.multiple.rawValue)
-    }
+		
+		collectionView.register(TodayWorldwideHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
+		collectionView.register(TodayControllerCell.self, forCellWithReuseIdentifier: TodayItem.CellType.multiple.rawValue)
+	}
+	
+	
+	fileprivate func setActivityIndicator() {
+		view.addSubview(activityIndicator)
+		activityIndicator.centerInSuperview()
+	}
     
-    fileprivate func setActivityIndicator() {
-        view.addSubview(activityIndicator)
-        activityIndicator.centerInSuperview()
-    }
-    
+	
     // To clear the issue of wrong layout of the tab-bar after dismissing the TodayMultipleAppsController.
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -126,6 +138,7 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
         beginFullScreenAnimation()
     }
     
+	
     fileprivate func setupMultipleNewsFullScreen(_ indexPath: IndexPath)  {
         let todayMultipleNewsController = TodayMultipleNewsController(mode: .fullscreen)
         todayMultipleNewsController.articles = items[indexPath.item].newsFetch
@@ -143,6 +156,7 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
 
     }
     
+	
     fileprivate func setupMultipleNewsStartPosition(_ indexPath: IndexPath)   {
         guard let todayMultipleNewsView = todayMultipleNewsController.view else { return }
         
@@ -158,21 +172,21 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
         self.collectionView.layoutIfNeeded()
     }
     
-    @objc fileprivate func handleMultipleNewsTap(gesture: UIGestureRecognizer)   {
-        let collectionView = gesture.view
-        // To figure out which cell was clicking at
-        var superView =  collectionView?.superview
-        while (superView != nil)   {
-            if let cell = superView as? TodayControllerCell    {
-                guard let indexPath = self.collectionView.indexPath(for: cell) else { return }
-                showDailyListFullScreen(indexPath)
-                return
-            }
-            superView = superView?.superview
-        }
-    }
+	
+	@objc fileprivate func handleMultipleNewsTap(gesture: UIGestureRecognizer)   {
+		let collectionView = gesture.view
+		// To figure out which cell was clicking at
+		var superView =  collectionView?.superview
+		while (superView != nil)   {
+			if let cell = superView as? TodayControllerCell    {
+				guard let indexPath = self.collectionView.indexPath(for: cell) else { return }
+				showDailyListFullScreen(indexPath)
+				return
+			}
+			superView = superView?.superview
+		}
+	}
     
-    var todayMultipleNewsBeginOffset: CGFloat = 0
     
     @objc fileprivate func handleDragTodayMultipleNews (gesture: UIPanGestureRecognizer)    {
         if gesture.state == .began  {
@@ -211,6 +225,7 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
         return true
     }
     
+	
     fileprivate func setupStartingCellFrame(_ indexPath: IndexPath) {
         guard let cell = collectionView.cellForItem(at: indexPath)  else { return }
         
@@ -222,27 +237,27 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
     
     
     // MARK: - To store the start position of animation, and controll the animation -
-    var anchoredConstraints: AnchoredConstraints?
+	fileprivate func beginFullScreenAnimation() {
+		UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+			self.anchoredConstraints?.top?.constant = 0
+			self.anchoredConstraints?.leading?.constant = 0
+			self.anchoredConstraints?.width?.constant = self.view.frame.width
+			self.anchoredConstraints?.height?.constant = self.view.frame.height
+			// Lays out the subviews immediately, if layout updates are pending.
+			self.collectionView.layoutIfNeeded() // To start the animation
+			self.tabBarController?.tabBar.frame.origin.y = self.view.frame.size.height
+			
+			// To set blur.alpha =  1 to blur the view under the tranformed cell
+			self.blurVisualEffect.alpha = 1
+		}, completion: nil)
+	}
     
-    fileprivate func beginFullScreenAnimation() {
-        UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-            self.anchoredConstraints?.top?.constant = 0
-            self.anchoredConstraints?.leading?.constant = 0
-            self.anchoredConstraints?.width?.constant = self.view.frame.width
-            self.anchoredConstraints?.height?.constant = self.view.frame.height
-            // Lays out the subviews immediately, if layout updates are pending.
-            self.collectionView.layoutIfNeeded() // To start the animation
-            self.tabBarController?.tabBar.frame.origin.y = self.view.frame.size.height
-
-            // To set blur.alpha =  1 to blur the view under the tranformed cell
-            self.blurVisualEffect.alpha = 1
-        }, completion: nil)
-    }
-    
+	
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         showDailyListFullScreen(indexPath)
     }
     
+	
     @objc func handleRemoveTodayMultipleNewsViewByButton()    {
            if let StatusbarView = UIApplication.shared.statusBarUIView {
 			StatusbarView.backgroundColor = .systemGroupedBackground
@@ -280,42 +295,52 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
                self.collectionView.isUserInteractionEnabled = true
            })
        }
+	
+	
+	// MARK: - The setting of the header in TodayCotnroller
+	override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+		let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerId, for: indexPath) as! TodayWorldwideHeaderCell
+		
+		return header
+	}
     
+	
+	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+		return .init(width: collectionView.frame.width, height: 60)
+	}
+	
+	
     // MARK: - The setting of the UICollectionCell in UICollectionViewController -
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return items.count
     }
     
+	
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        if (indexPath.item == 0)    {
-//            let cellId = "titleCell"
-//            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
-//            return cell
-//        }
-//        else    {
-            let cellId = items[indexPath.item].cellType.rawValue
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! BaseTodayCell
-            
-            cell.todayItem = items[indexPath.item]
-            
-            (cell as? TodayControllerCell)?.todayMultipleNewsController.collectionView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleMultipleNewsTap)))
-            return cell
-//        }
+		let cellId = items[indexPath.item].cellType.rawValue
+		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! BaseTodayCell
+		
+		cell.todayItem = items[indexPath.item]
+		
+		(cell as? TodayControllerCell)?.todayMultipleNewsController.collectionView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleMultipleNewsTap)))
+		return cell
     }
     
-    static let heightCell: CGFloat = 500
-       func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//           if (indexPath.item == 0)    {
-//               return .init(width: view.frame.width - 16, height: UIScreen.main.bounds.width*1.33)
-//           }
-        return .init(width: view.frame.width - 16, height: UIScreen.main.bounds.width*1.33)
-       }
-       
-       func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-           return 16
-       }
-       
-       func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-           return .init(top: 12, left: 0, bottom: 12, right: 0)
-       }
+	
+	static let heightCell: CGFloat = 500
+	
+	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+		
+		return .init(width: view.frame.width - 16, height: UIScreen.main.bounds.width*1.33)
+	}
+	
+	
+	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+		return 16
+	}
+	
+	
+	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+		return .init(top: 12, left: 0, bottom: 12, right: 0)
+	}
 }
