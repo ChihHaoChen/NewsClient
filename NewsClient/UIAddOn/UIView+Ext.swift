@@ -43,6 +43,7 @@ extension UIView {
         return anchoredConstraints
     }
     
+	
     func fillSuperview(padding: UIEdgeInsets = .zero) {
         translatesAutoresizingMaskIntoConstraints = false
         if let superviewTopAnchor = superview?.topAnchor {
@@ -62,6 +63,7 @@ extension UIView {
         }
     }
     
+	
     func centerInSuperview(size: CGSize = .zero) {
         translatesAutoresizingMaskIntoConstraints = false
         if let superviewCenterXAnchor = superview?.centerXAnchor {
@@ -81,6 +83,7 @@ extension UIView {
         }
     }
     
+	
     func centerXInSuperview() {
         translatesAutoresizingMaskIntoConstraints = false
         if let superViewCenterXAnchor = superview?.centerXAnchor {
@@ -88,6 +91,7 @@ extension UIView {
         }
     }
     
+	
     func centerYInSuperview() {
         translatesAutoresizingMaskIntoConstraints = false
         if let centerY = superview?.centerYAnchor {
@@ -95,16 +99,24 @@ extension UIView {
         }
     }
     
+	
     func constrainWidth(constant: CGFloat) {
         translatesAutoresizingMaskIntoConstraints = false
         widthAnchor.constraint(equalToConstant: constant).isActive = true
     }
     
+	
     func constrainHeight(constant: CGFloat) {
         translatesAutoresizingMaskIntoConstraints = false
         heightAnchor.constraint(equalToConstant: constant).isActive = true
     }
+	
+	
+	func addSubviews(_ views: UIView...) {
+		for view in views { addSubview(view) }
+	}
 }
+
 
 struct AnchoredConstraints {
     var top, leading, bottom, trailing, width, height: NSLayoutConstraint?

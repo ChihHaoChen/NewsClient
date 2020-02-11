@@ -9,7 +9,7 @@
 import UIKit
 
 class NewsGroupCell: UICollectionViewCell   {
-	let titleLabel = UILabel(text: "News Selection", font: UIFont.preferredFont(forTextStyle: .largeTitle), numberOfLines: 1, color: .label)
+	let titleLabel = UILabel(text: "News Selection", font: UIFont.preferredFont(forTextStyle: .largeTitle).bold(), numberOfLines: 1, color: .label)
     let horizontalController = NewsHorizontalController()
     
     override init(frame: CGRect) {

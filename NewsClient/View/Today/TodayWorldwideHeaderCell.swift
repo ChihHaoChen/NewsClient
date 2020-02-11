@@ -16,7 +16,7 @@ class TodayWorldwideHeaderCell: UICollectionViewCell {
 		super.init(frame: frame)
 		
 		addSubview(worldwideNewsLabel)
-		worldwideNewsLabel.fillSuperview(padding: .init(top: 20, left: 16, bottom: 8, right: 16))
+		worldwideNewsLabel.fillSuperview(padding: .init(top: 16, left: 8, bottom: 8, right: 8))
 		backgroundColor = .systemBackground
 	}
 	
