@@ -48,24 +48,40 @@ class Service   {
     }
     
     func fetchNewsSearch(page: Int, limit: Int, search: String, completion: @escaping (newsGroup?, Error?)->Void)  {
-        let urlString: String = "https://newsapi.org/v2/everything?q=\(search)&page=page=\(String(page))&pageSize=\(String(limit))&sortBy=publishedAt&apiKey=3db7a9ee619e49f0b297bccda7da5eb5"
-        guard let url: URL = URL(string: urlString) else { return }
-        fetchGenericsJSONData(url: url, completion: completion)
+		
+		var components = URLComponents(string: "https://newsapi.org/v2/everything")!
+		components.queryItems = [
+			URLQueryItem(name: "q", value: search),
+			URLQueryItem(name: "page=page", value: String(page)),
+			URLQueryItem(name: "pageSize", value: String(limit)),
+			URLQueryItem(name: "sortBy", value: "publishedAt"),
+			URLQueryItem(name: "apiKey", value: "3db7a9ee619e49f0b297bccda7da5eb5")
+		]
+		
+		components.percentEncodedQuery = components.percentEncodedQuery?.replacingOccurrences(of: "+", with: "%2B")
+
+		guard let url: URL = components.url else { return }
+	
+		fetchGenericsJSONData(url: url, completion: completion)
     }
     
         
     // A generic function to fetch different formats of JSON data.
     func fetchGenericsJSONData<tGeneric: Decodable>(url: URL, completion: @escaping (tGeneric?, Error?)->(Void))    {
         URLSession.shared.dataTask(with: url) { (data, response, error) in
+			print(data!)
             if let error = error {
                 print("Some mistakes in fetching API -> \(error)")
                 completion(nil, error)
                 return
             }
+			
             guard let data = data else { return }
+			
             do {
                 let decoder = JSONDecoder()
                 decoder.keyDecodingStrategy = .convertFromSnakeCase
+				
                 let news = try decoder.decode(tGeneric.self, from: data)
                 completion(news, nil)
             }   catch let jsonErr   {
