@@ -18,6 +18,7 @@ extension UILabel   {
     }
 }
 
+
 extension UIImageView   {
     convenience init(cornerRadius: CGFloat) {
         self.init(frame: .zero)
@@ -26,6 +27,7 @@ extension UIImageView   {
         self.contentMode = .scaleAspectFill
     }
 }
+
 
 extension UIButton  {
     convenience init(title: String, titleColor: UIColor, font: UIFont, width: CGFloat, height: CGFloat, cornerRadius: CGFloat) {
@@ -41,12 +43,14 @@ extension UIButton  {
     }
 }
 
+
 extension UIStackView   {
     convenience init(arrangedSubviews: [UIView], customSpacing: CGFloat = 0)    {
         self.init(arrangedSubviews: arrangedSubviews)
         self.spacing = customSpacing
     }
 }
+
 
 extension String {
     func capitalizingFirstLetter() -> String {
@@ -56,4 +60,15 @@ extension String {
     mutating func capitalizeFirstLetter() {
         self = self.capitalizingFirstLetter()
     }
+}
+
+
+extension UIActivityIndicatorView {
+	convenience init(color: UIColor, style: UIActivityIndicatorView.Style) {
+		self.init(frame: .zero)
+		self.color = color
+		self.hidesWhenStopped = true
+		self.style = style
+		self.startAnimating()
+	}
 }

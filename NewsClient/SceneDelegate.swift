@@ -26,7 +26,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     // MARK: - To adjust the UI of the generic NC
     func configureNavigationBar() {
-        UINavigationBar.appearance().tintColor = .systemGreen
+        UINavigationBar.appearance().tintColor = .systemOrange
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

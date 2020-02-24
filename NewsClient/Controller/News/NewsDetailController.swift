@@ -14,8 +14,12 @@ class NewsDetailController: UIViewController, UIScrollViewDelegate, WKNavigation
     
     let realm = try! Realm()
     var detailedNews: Article?
-    var savedArticle = SavedArticle()
+    let activityIndicator = UIActivityIndicatorView(color: .systemGray, style: .large)
+	
+	var savedArticle = SavedArticle()
     let filePathRealm = Realm.Configuration.defaultConfiguration.fileURL
+	
+	
     let webView: WKWebView =    {
         let view = WKWebView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -33,10 +37,12 @@ class NewsDetailController: UIViewController, UIScrollViewDelegate, WKNavigation
         super.init(nibName: nil, bundle: nil)
     }
     
+	
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+	
     override func viewDidLoad() {
         super.viewDidLoad()
         let url = URL(string: self.detailedNews?.url ?? "")
@@ -46,21 +52,31 @@ class NewsDetailController: UIViewController, UIScrollViewDelegate, WKNavigation
         setupFloatingControls()
     }
     
+	
+	func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+		activityIndicator.stopAnimating()
+	}
+	
     // MARK: - To configure WebView -
     fileprivate func setupWebView()  {
         webView.scrollView.frame = webView.frame
         webView.navigationDelegate = self
         webView.scrollView.delegate = self
-        view.addSubview(webView)
+	
+		view.addSubviews(webView, activityIndicator)
+		
+		activityIndicator.centerInSuperview()
         webView.fillSuperview(padding: .init(top: 0, left: 0, bottom: 0, right: 0))
     }
     
+	
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.tabBarController?.tabBar.isHidden = false
     }
     
-    // MARK: - To setup a floating view to save the interested news and its function -
+	
+    // MARK: - To setup a floating view to save news of interest and its function -
     let floatingContainerView = UIView()
     fileprivate func setupFloatingControls()    {
         floatingContainerView.clipsToBounds = true
@@ -88,12 +104,14 @@ class NewsDetailController: UIViewController, UIScrollViewDelegate, WKNavigation
         getButton.fillSuperview()
     }
     
+	
     @objc fileprivate func handleTap()   {
         UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             self.floatingContainerView.transform = .identity
         }, completion: nil)
     }
     
+	
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let translationY = -90 - (UIApplication.shared.statusBarUIView?.frame.height ?? 0)
         // Set up a transform variable to decide how the floatingContainerView would be rendered out
@@ -102,6 +120,8 @@ class NewsDetailController: UIViewController, UIScrollViewDelegate, WKNavigation
             self.floatingContainerView.transform = transform
         }, completion: nil)
     }
+	
+	
     // MARK: - To set up operations to write persistent data with Realm
     @objc fileprivate func handlePressed()   {
         mappingSavedArticle()
@@ -114,6 +134,7 @@ class NewsDetailController: UIViewController, UIScrollViewDelegate, WKNavigation
         }
     }
     
+	
     fileprivate func mappingSavedArticle()  {
         guard let detailNewsChosen = detailedNews else { return }
         savedArticle.title = detailNewsChosen.title ?? ""
@@ -123,6 +144,8 @@ class NewsDetailController: UIViewController, UIScrollViewDelegate, WKNavigation
         savedArticle.publishedAt = detailNewsChosen.publishedAt ?? ""
         savedArticle.publisherName = detailNewsChosen.source?.name ?? ""
     }
+	
+	
     // The function to save the interested article into Realm
     fileprivate func saveArticle(savedArticle: SavedArticle)  {
         do  {
@@ -135,6 +158,8 @@ class NewsDetailController: UIViewController, UIScrollViewDelegate, WKNavigation
             print("Error saving context, \(error)")
         }
     }
+	
+	
     // The function to delete the chosen article from Realm
     fileprivate func deleteArticle(title: String)   {
         

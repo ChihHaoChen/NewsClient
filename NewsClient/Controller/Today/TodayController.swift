@@ -10,13 +10,7 @@ import UIKit
 
 class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate   {
 	
-    let activityIndicator: UIActivityIndicatorView = {
-        let aiv = UIActivityIndicatorView(style: .large)
-		aiv.color = .systemGray
-        aiv.startAnimating()
-        aiv.hidesWhenStopped = true
-        return aiv
-    }()
+	let activityIndicator = UIActivityIndicatorView(color: .systemGray, style: .large)
     
 	fileprivate let headerId = "headerId"
     var items = [TodayItem]()

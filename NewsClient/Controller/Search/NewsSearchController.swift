@@ -146,7 +146,8 @@ class NewsSearchController: BaseCollectionViewController, UICollectionViewDelega
 	
     // MARK: - Navigate users to the detailed News page
       override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let detailView = NewsDetailController(mode: .readUnSavedArticle,article: articleResults[indexPath.item])
-          self.navigationController?.pushViewController(detailView, animated: true)
+		let detailView = NewsDetailController(mode: .readUnSavedArticle,article: articleResults[indexPath.item])
+		self.navigationController?.pushViewController(detailView, animated: true)
+		self.tabBarController?.tabBar.isHidden = true
       }
 }

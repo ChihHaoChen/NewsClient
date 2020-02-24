@@ -61,7 +61,6 @@ class Service   {
 		components.percentEncodedQuery = components.percentEncodedQuery?.replacingOccurrences(of: "+", with: "%2B")
 
 		guard let url: URL = components.url else { return }
-	
 		fetchGenericsJSONData(url: url, completion: completion)
     }
     
@@ -69,7 +68,6 @@ class Service   {
     // A generic function to fetch different formats of JSON data.
     func fetchGenericsJSONData<tGeneric: Decodable>(url: URL, completion: @escaping (tGeneric?, Error?)->(Void))    {
         URLSession.shared.dataTask(with: url) { (data, response, error) in
-			print(data!)
             if let error = error {
                 print("Some mistakes in fetching API -> \(error)")
                 completion(nil, error)
