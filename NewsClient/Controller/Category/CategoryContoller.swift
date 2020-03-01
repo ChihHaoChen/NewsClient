@@ -1,5 +1,5 @@
 //
-//  CategoryTopContainerContoller.swift
+//  CategoryContoller.swift
 //  NewsClient
 //
 //  Created by ChihHao on 2020/02/27.
@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 
-class CategoryTopContainerContoller: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
+class CategoryContoller: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
 	
 	let realm = try! Realm()
 	
@@ -34,6 +34,16 @@ class CategoryTopContainerContoller: UIViewController, UICollectionViewDataSourc
     }
 	
 	
+	// MARK: - To update the header cell after adding or removing saved articles
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		savedNews = realm.objects(SavedArticle.self)
+        // reloadData will reload all the sections including header.
+        categoryCollectionView.reloadData()
+	}
+	
+	
+	// MARK: - TO configure all the UI elements
 	func configureUIElements() {
 		self.navigationController?.navigationBar.isHidden = true
 		view.addSubviews(categoryCollectionView, activityIndicator)
@@ -55,12 +65,7 @@ class CategoryTopContainerContoller: UIViewController, UICollectionViewDataSourc
 	}
 	
 	
-	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		return fetchNewsGroups.count
-	}
-	
-	
-    // MARK: - To configure the header, collection cell and their functions -
+    // MARK: - To configure the navigation, and hide tabBar
     fileprivate func pushView(article: Article)->() {
         let detailView = NewsDetailController(mode: self.readingSavedArticle ? .readSavedArticle : .readUnSavedArticle, article: article)
         self.navigationController?.pushViewController(detailView, animated: true)
@@ -68,6 +73,7 @@ class CategoryTopContainerContoller: UIViewController, UICollectionViewDataSourc
     }
 	
 	
+	// MARK: - To configure the header, collection cell and their functions -
 	func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
 		let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerId, for: indexPath) as! SavedNewsHeaders
 
@@ -93,6 +99,11 @@ class CategoryTopContainerContoller: UIViewController, UICollectionViewDataSourc
 			self?.pushView(article: article)
 		}
 		return cell
+	}
+	
+	
+	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+		return fetchNewsGroups.count
 	}
 	
 	
@@ -124,7 +135,6 @@ class CategoryTopContainerContoller: UIViewController, UICollectionViewDataSourc
 			}
 			self.activityIndicator.stopAnimating()
 			self.categoryCollectionView.reloadData()
-			
 		}
 	}
 }

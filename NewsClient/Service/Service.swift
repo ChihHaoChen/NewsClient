@@ -13,35 +13,35 @@ class Service   {
     static let shared = Service()
     
     func fetchUSTopNews(completion: @escaping (newsGroup?, Error?)->())   {
-        let urlString: String = "https://newsapi.org/v2/top-headlines?country=us&apiKey=3db7a9ee619e49f0b297bccda7da5eb5"
+        let urlString: String = "https://newsapi.org/v2/top-headlines?country=us&apiKey=\(apiKey)"
         
         guard let url: URL = URL(string: urlString) else { return }
         fetchGenericsJSONData(url: url, completion: completion)
     }
     
     func fetchJapanTopNews(completion: @escaping (newsGroup?, Error?)->())   {
-        let urlString: String = "https://newsapi.org/v2/top-headlines?country=jp&apiKey=3db7a9ee619e49f0b297bccda7da5eb5"
+        let urlString: String = "https://newsapi.org/v2/top-headlines?country=jp&apiKey=\(apiKey)"
         
         guard let url: URL = URL(string: urlString) else { return }
         fetchGenericsJSONData(url: url, completion: completion)
     }
     
 	func fetchCanadaTopNews(completion: @escaping (newsGroup?, Error?)->())   {
-        let urlString: String = "https://newsapi.org/v2/top-headlines?country=ca&apiKey=3db7a9ee619e49f0b297bccda7da5eb5"
+        let urlString: String = "https://newsapi.org/v2/top-headlines?country=ca&apiKey=\(apiKey)"
         
         guard let url: URL = URL(string: urlString) else { return }
         fetchGenericsJSONData(url: url, completion: completion)
     }
 	
 	func fetchTaiwanTopNews(completion: @escaping (newsGroup?, Error?)->())   {
-        let urlString: String = "https://newsapi.org/v2/top-headlines?country=tw&apiKey=3db7a9ee619e49f0b297bccda7da5eb5"
+        let urlString: String = "https://newsapi.org/v2/top-headlines?country=tw&apiKey=\(apiKey)"
         
         guard let url: URL = URL(string: urlString) else { return }
         fetchGenericsJSONData(url: url, completion: completion)
     }
 	
     func fetchCategoryNews(type: String, completion: @escaping (newsGroup?, Error?)->())   {
-        let urlString: String = "https://newsapi.org/v2/top-headlines?country=us&pageSize=24&category=\(type)&apiKey=3db7a9ee619e49f0b297bccda7da5eb5"
+        let urlString: String = "https://newsapi.org/v2/top-headlines?country=us&pageSize=24&category=\(type)&apiKey=\(apiKey)"
         
         guard let url: URL = URL(string: urlString) else { return }
         fetchGenericsJSONData(url: url, completion: completion)
@@ -55,7 +55,7 @@ class Service   {
 			URLQueryItem(name: "page=page", value: String(page)),
 			URLQueryItem(name: "pageSize", value: String(limit)),
 			URLQueryItem(name: "sortBy", value: "publishedAt"),
-			URLQueryItem(name: "apiKey", value: "3db7a9ee619e49f0b297bccda7da5eb5")
+			URLQueryItem(name: "apiKey", value: apiKey)
 		]
 		
 		components.percentEncodedQuery = components.percentEncodedQuery?.replacingOccurrences(of: "+", with: "%2B")
