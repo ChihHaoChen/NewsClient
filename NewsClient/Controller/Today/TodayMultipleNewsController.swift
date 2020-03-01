@@ -9,14 +9,18 @@
 import UIKit
 
 class TodayMultipleNewsController: BaseCollectionViewController, UICollectionViewDelegateFlowLayout {
+	
     var articles = [Article]()
     var articleCategory: String?
     var articleTitle: String?
     var dismissHandler: (()->())?
+	
     private let cellId = "cellId"
     fileprivate let headerId = "headerId"
+	
     var offsetHeader: CGFloat
     let screenRatio = UIScreen.main.bounds.width/414
+	
     let closeButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "close_button"), for: .normal)
@@ -38,9 +42,9 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
     }
     
     init(mode: Mode)    {
-        self.mode = mode
-        self.numShownArticles = 0
-        self.offsetHeader = 0
+		self.mode = mode
+        numShownArticles = 0
+        offsetHeader = 0
         super.init()
     }
     
@@ -54,16 +58,26 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
         // Never put the API fetch inside sub-viewController
         if self.mode == .fullscreen {
             setupCloseButton()
-			view.layer.borderWidth = 2
-			view.layer.borderColor = UIColor.systemGray4.cgColor
+//			view.layer.borderWidth = 2
+//			view.layer.borderColor = UIColor.systemGray.cgColor
 			navigationController?.navigationBar.isHidden = true
         }   else    {
             collectionView.isScrollEnabled = false
-        }
+		}
     }
+	
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		if self.mode == .fullscreen {
+			tabBarController?.tabBar.isHidden = true
+		}
+	}
 
+	
     override var prefersStatusBarHidden: Bool  { return true }
     
+	
     // MARK: - Register collectionViewCells and UI elements -
     fileprivate func setupCollectionView() {
 		collectionView.backgroundColor = .systemGroupedBackground
@@ -132,8 +146,9 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+		let tabBarHeight = tabBarController?.tabBar.frame.size.height ?? 0
         if self.mode == .fullscreen {
-            return .init(top: 0, left: 8, bottom: 12, right: 8)
+			return .init(top: 0, left: 8, bottom: 12 - tabBarHeight, right: 8)
         }
         return .zero
     }

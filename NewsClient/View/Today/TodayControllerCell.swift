@@ -25,7 +25,7 @@ class TodayControllerCell: BaseTodayCell    {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        layer.cornerRadius = 12
+//        layer.cornerRadius = 16
         let vstack = VerticalStackView(arrangedSubviews: [
             newsLabel,
             countryLabel,

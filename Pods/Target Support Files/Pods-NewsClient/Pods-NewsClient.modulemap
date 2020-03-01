@@ -1,4 +1,4 @@
-framework module Pods_NewsClient {
+module Pods_NewsClient {
   umbrella header "Pods-NewsClient-umbrella.h"
 
   export *

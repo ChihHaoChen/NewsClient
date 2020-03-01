@@ -72,3 +72,42 @@ extension UIActivityIndicatorView {
 		self.startAnimating()
 	}
 }
+
+
+extension UIViewController	{
+	func presentAlertOnMainThread(title: String, message: String, buttonTitle: String)	{
+		DispatchQueue.main.async {
+			let alertVC = UIAlertViewController(alertTitle: title, message: message, buttonTitle: buttonTitle)
+			alertVC.modalPresentationStyle = .overFullScreen
+			alertVC.modalTransitionStyle = .crossDissolve
+			
+			self.present(alertVC, animated: true, completion: nil)
+		}
+	}
+}
+
+extension CAShapeLayer {
+	func curveCorner(in view: UIView) {
+		// 1st step: Mask round corner
+		let layerCornerRadius: CGFloat = 44
+		let pathWithRadius = UIBezierPath(roundedRect: view.bounds, cornerRadius: layerCornerRadius)
+		let roundLayer = CAShapeLayer()
+		roundLayer.path = pathWithRadius.cgPath
+		roundLayer.frame = view.bounds
+		view.layer.mask = roundLayer
+		
+		// 2nd step: Add border to round curve
+		let roundPath = UIBezierPath()
+		roundPath.move(to: CGPoint(x: 0, y: layerCornerRadius))
+		roundPath.addQuadCurve(to: CGPoint(x: layerCornerRadius, y: 0), controlPoint: CGPoint(x: 0, y: 0))
+		roundPath.addLine(to: CGPoint(x: view.frame.width-layerCornerRadius, y: 0))
+		roundPath.addQuadCurve(to: CGPoint(x: view.frame.width, y: layerCornerRadius), controlPoint: CGPoint(x: view.frame.width, y: 0))
+		
+		let borderLayer = CAShapeLayer()
+		borderLayer.lineWidth = 4
+		borderLayer.borderColor = UIColor.systemGray4.cgColor
+		borderLayer.path = roundPath.cgPath
+		borderLayer.fillColor = UIColor.systemGray4.cgColor
+		view.layer.addSublayer(borderLayer)
+	}
+}

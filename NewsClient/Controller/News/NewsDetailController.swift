@@ -57,6 +57,7 @@ class NewsDetailController: UIViewController, UIScrollViewDelegate, WKNavigation
 		activityIndicator.stopAnimating()
 	}
 	
+	
     // MARK: - To configure WebView -
     fileprivate func setupWebView()  {
         webView.scrollView.frame = webView.frame
