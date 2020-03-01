@@ -9,6 +9,7 @@
 import UIKit
 
 class NewsSearchCell:  UICollectionViewCell  {
+	
     var articleResult: Article!   {
         didSet  {
             nameLabel.text = articleResult.title
@@ -16,7 +17,7 @@ class NewsSearchCell:  UICollectionViewCell  {
             descriptionLabel.text = "\(articleResult.source?.name ?? "") • \(articleResult.publishedAt?.prefix(10) ?? "")"
         }
     }
-    let screenWidth = UIScreen.main.bounds.width
+   
     let imageView = UIImageView(cornerRadius: 12)
 	let nameLabel = UILabel(text: "News Title", font: UIFont.preferredFont(forTextStyle: .subheadline), numberOfLines: 3, color: .label)
 	let descriptionLabel = UILabel(text: "Author Label", font: UIFont.preferredFont(forTextStyle: .body), numberOfLines: 1, color: .label)
@@ -38,7 +39,7 @@ class NewsSearchCell:  UICollectionViewCell  {
             imageView,
             VerticalStackView(arrangedSubviews: [nameLabel, descriptionLabel], spacing: 4)
             ], customSpacing: 4)
-        stackView.spacing = 12.8*(screenWidth/320)
+		stackView.spacing = 12.8*(ScreenSize.width/320)
         addSubview(stackView)
         stackView.fillSuperview(padding: .init(top: 0, left: 16, bottom: 0, right: 16))
         stackView.alignment = .center

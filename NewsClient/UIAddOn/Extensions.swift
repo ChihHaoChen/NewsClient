@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 extension UILabel   {
 	convenience init(text: String, font: UIFont, numberOfLines: Int = 1, color: UIColor)    {
@@ -84,7 +85,24 @@ extension UIViewController	{
 			self.present(alertVC, animated: true, completion: nil)
 		}
 	}
+	
+	
+	// The function to delete the chosen article from Realm
+    func deleteArticle(title: String)   {
+        let realm = try! Realm()
+        let predictDeleted = NSPredicate(format: "title = %@", title)
+        let chosenToDeleteArticle = realm.objects(SavedArticle.self).filter(predictDeleted)
+        do  {
+            try realm.write {
+                realm.delete(chosenToDeleteArticle)
+            }
+        }
+        catch   {
+            print("Error deleting saved News article, \(error)")
+        }
+    }
 }
+
 
 extension CAShapeLayer {
 	func curveCorner(in view: UIView) {
@@ -110,4 +128,20 @@ extension CAShapeLayer {
 		borderLayer.fillColor = UIColor.systemGray4.cgColor
 		view.layer.addSublayer(borderLayer)
 	}
+}
+
+
+extension UITableView	{
+	
+	func removeExcessCells() {
+		tableFooterView = UIView(frame: .zero)
+	}
+	
+	
+	func reloadDataOnMainThread() {
+		DispatchQueue.main.async {
+			self.reloadData()
+		}
+	}
+	
 }

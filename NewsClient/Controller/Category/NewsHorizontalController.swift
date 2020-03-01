@@ -32,9 +32,7 @@ class NewsHorizontalController: HorizontalSnappingController, UICollectionViewDe
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! NewsRowCell
         cell.article = newsGroup?.articles[indexPath.item]
-//		if(indexPath.item % 3 == 2)  {
-//            cell.separator.alpha = 0
-//        }
+
         return cell
     }
 	

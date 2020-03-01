@@ -47,6 +47,8 @@ class NewsDetailController: UIViewController, UIScrollViewDelegate, WKNavigation
         super.viewDidLoad()
         let url = URL(string: self.detailedNews?.url ?? "")
         let detailWeb = URLRequest(url: url!)
+		self.navigationController?.setNavigationBarHidden(true, animated: true)
+		
         setupWebView()
         webView.load(detailWeb)
         setupFloatingControls()
@@ -73,6 +75,7 @@ class NewsDetailController: UIViewController, UIScrollViewDelegate, WKNavigation
 	
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+	
         self.tabBarController?.tabBar.isHidden = false
     }
     
@@ -157,22 +160,6 @@ class NewsDetailController: UIViewController, UIScrollViewDelegate, WKNavigation
             }
         }   catch   {
             print("Error saving context, \(error)")
-        }
-    }
-	
-	
-    // The function to delete the chosen article from Realm
-    fileprivate func deleteArticle(title: String)   {
-        
-        let predictDeleted = NSPredicate(format: "title = %@", title)
-        let chosenToDeleteArticle = realm.objects(SavedArticle.self).filter(predictDeleted)
-        do  {
-            try self.realm.write {
-                self.realm.delete(chosenToDeleteArticle)
-            }
-        }
-        catch   {
-            print("Error deleting saved News article, \(error)")
         }
     }
 }
