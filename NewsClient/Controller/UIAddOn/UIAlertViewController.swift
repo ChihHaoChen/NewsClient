@@ -10,17 +10,17 @@ import UIKit
 
 class UIAlertViewController: UIViewController {
 	
-	let containerView = AlertContainerView()
-	let titleLabel = UILabel(text: "No Saved Articles", font: UIFont.preferredFont(forTextStyle: .largeTitle), color: .label)
-	let messageLabel = UILabel(text: "Save the articles of your interest by pinning them.", font: UIFont.preferredFont(forTextStyle: .body), color: .label)
-	let actionButton = UIButton(title: "Gotcha", titleColor: .systemOrange, font: UIFont.preferredFont(forTextStyle: .headline), width: 80, height: 40, cornerRadius: 16)
-	
 	var alertTitle: String?
 	var message: String?
 	var buttonTitle: String?
 	
 	var padding: CGFloat = 20
+	let containerWidth: CGFloat = ScreenSize.width*0.67
 	
+	let containerView = AlertContainerView()
+	let titleLabel = UILabel(text: "No Saved Articles", font: UIFont.preferredFont(forTextStyle: .title2).bold(), color: .systemOrange)
+	let messageLabel = UILabel(text: "Save the articles of your interest by pinning them.", font: UIFont.preferredFont(forTextStyle: .body), color: .label)
+	let actionButton = UIButton(title: "Gotcha", titleColor: .label, font: UIFont.preferredFont(forTextStyle: .headline).bold(), width: ScreenSize.width-2*20, height: 44, cornerRadius: 16)
 	
 	init(alertTitle: String, message: String, buttonTitle: String)   {
 		super.init(nibName: nil, bundle: nil)
@@ -37,7 +37,9 @@ class UIAlertViewController: UIViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		view.backgroundColor = UIColor.black.withAlphaComponent(0.75)
+//		view.backgroundColor = UIColor.black.withAlphaComponent(0.75)
+		view.backgroundColor = .systemBackground
+		
 		configureUIElements()
 	}
 	
@@ -45,6 +47,10 @@ class UIAlertViewController: UIViewController {
 	// MARK: - Configure the UI elements in AlertView Container
 	func configureUIElements()	{
 		view.addSubviews(containerView, titleLabel, actionButton, messageLabel)
+		
+		titleLabel.translatesAutoresizingMaskIntoConstraints = false
+		actionButton.translatesAutoresizingMaskIntoConstraints = false
+		messageLabel.translatesAutoresizingMaskIntoConstraints = false
 		
 		configureContainerView()
 		configureTitleLabel()
@@ -54,24 +60,15 @@ class UIAlertViewController: UIViewController {
 	
 	
 	func configureContainerView()   {
-		NSLayoutConstraint.activate([
-			containerView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-			containerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-			containerView.widthAnchor.constraint(equalToConstant: 280),
-			containerView.heightAnchor.constraint(equalToConstant: 200)
-		])
+		containerView.centerInSuperview(size: .init(width: containerWidth, height: 200))
 	}
 	
 	
 	func configureTitleLabel()  {
 		titleLabel.text = alertTitle ?? "Some other title"
+		titleLabel.textAlignment = .center
 		
-		NSLayoutConstraint.activate([
-			titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: padding),
-			titleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: padding),
-			titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -padding),
-			titleLabel.heightAnchor.constraint(equalToConstant: 28)
-		])
+		titleLabel.anchor(top: containerView.topAnchor, leading: containerView.leadingAnchor, bottom: nil, trailing: containerView.trailingAnchor, padding: .init(top: padding, left: padding, bottom: 0, right: padding), size: .init(width: containerWidth-2*padding, height: 28))
 	}
 	
 	
@@ -80,12 +77,9 @@ class UIAlertViewController: UIViewController {
 		
 		actionButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
 		
-		NSLayoutConstraint.activate([
-			actionButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -padding),
-			actionButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: padding),
-			actionButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -padding),
-			actionButton.heightAnchor.constraint(equalToConstant: 44)
-		])
+		
+		actionButton.anchor(top: nil, leading: containerView.leadingAnchor, bottom: containerView.bottomAnchor, trailing: containerView.trailingAnchor, padding: .init(top: 0, left: padding, bottom: padding, right: padding))
+		actionButton.backgroundColor = .systemOrange
 	}
 	
 	
@@ -96,14 +90,10 @@ class UIAlertViewController: UIViewController {
 	
 	func configureMessageLabel()	{
 		messageLabel.text = message ?? "Unable to complete the request"
-		messageLabel.numberOfLines = 4
+		messageLabel.numberOfLines = 2
+		messageLabel.textAlignment = .center
 		
-		NSLayoutConstraint.activate([
-			messageLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
-			messageLabel.bottomAnchor.constraint(equalTo: actionButton.topAnchor, constant: -8),
-			messageLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: padding),
-			messageLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -padding)
-		])
+		messageLabel.anchor(top: titleLabel.bottomAnchor, leading: containerView.leadingAnchor, bottom: actionButton.topAnchor, trailing: containerView.trailingAnchor, padding: .init(top: 8, left: padding, bottom: 8, right: padding))
 	}
 }
 

@@ -10,14 +10,15 @@ import UIKit
 
 class NewsSearchController: BaseCollectionViewController, UICollectionViewDelegateFlowLayout, UISearchBarDelegate {
 	
-    fileprivate let cellId = "cellId",
-                    footerId = "footerId"
+    fileprivate let cellId = "cellId"
+	fileprivate let footerId = "footerId"
     var articleResults = [Article]()
 	
     fileprivate let searchLimit: Int =  20
     fileprivate let searchController = UISearchController(searchResultsController: nil)
     fileprivate var searchTerm: String = ""
     fileprivate var searchCount: Int = 0
+	
 	let noResultsLabel = UILabel(text: "No reults found. \nPlease enter other search words.", font: UIFont.preferredFont(forTextStyle: .callout), numberOfLines: 0, color: .label)
 	
     fileprivate var isPaginating = false
@@ -31,7 +32,7 @@ class NewsSearchController: BaseCollectionViewController, UICollectionViewDelega
         setupNoResultsLabel()
     }
     
-	
+
     fileprivate func configCollectionView() {
 		collectionView.backgroundColor = .systemBackground
         collectionView.register(NewsSearchCell.self, forCellWithReuseIdentifier: cellId)
@@ -46,6 +47,7 @@ class NewsSearchController: BaseCollectionViewController, UICollectionViewDelega
         noResultsLabel.centerXInSuperview()
         noResultsLabel.fillSuperview(padding: .init(top: 32, left: 16, bottom: 16, right: 16))
         noResultsLabel.isHidden = true
+//		presentAlertOnMainThread(title: "No results found", message: "Please key in other search terms.", buttonTitle: "I got it!")
     }
     
 	
@@ -63,9 +65,9 @@ class NewsSearchController: BaseCollectionViewController, UICollectionViewDelega
         self.isDonePaginating = false
         searchTerm = searchBar.text ?? ""
         articleResults = []
-        collectionView.reloadData()
+        collectionView.reloadDataOnMainThread()
         self.noResultsLabel.isHidden = true
-		
+
         fetchAPI(offset: 0)
     }
 	
@@ -88,7 +90,8 @@ class NewsSearchController: BaseCollectionViewController, UICollectionViewDelega
             DispatchQueue.main.async {
                 self.noResultsLabel.isHidden =
                     (self.articleResults.count == 0 && self.searchCount > 1) ? false: true
-                self.collectionView.reloadData()
+				
+                self.collectionView.reloadDataOnMainThread()
             }
             self.isPaginating = false
         }
@@ -97,6 +100,8 @@ class NewsSearchController: BaseCollectionViewController, UICollectionViewDelega
 	
 	func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
 		self.isDonePaginating = true
+		articleResults.removeAll()
+		collectionView.reloadDataOnMainThread()
 	}
 	
 	
@@ -109,31 +114,32 @@ class NewsSearchController: BaseCollectionViewController, UICollectionViewDelega
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! NewsSearchCell
         cell.articleResult = self.articleResults[indexPath.item]
-        
+
         if indexPath.item == self.articleResults.count - 1 && !self.isPaginating && !self.isDonePaginating  {
             self.isPaginating = true
             fetchAPI(offset: self.articleResults.count)
         }
-       
+
         return cell
     }
     
 	
+	// MARK: - To configure the collectionView
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let heightCellFullScreen: CGFloat = (view.frame.height - 6*spacing)/7
         return .init(width: view.frame.width, height: heightCellFullScreen)
     }
-    
-	
+
+
     fileprivate let spacing: CGFloat = 12
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return spacing
     }
     
-	
+
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: footerId, for: indexPath)
-        
+
         return footer
     }
     

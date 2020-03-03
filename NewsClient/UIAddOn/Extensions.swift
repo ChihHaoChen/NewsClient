@@ -81,9 +81,19 @@ extension UIViewController	{
 			let alertVC = UIAlertViewController(alertTitle: title, message: message, buttonTitle: buttonTitle)
 			alertVC.modalPresentationStyle = .overFullScreen
 			alertVC.modalTransitionStyle = .crossDissolve
+			alertVC.view.layoutIfNeeded()
 			
-			self.present(alertVC, animated: true, completion: nil)
+			self.present(alertVC, animated: true)
 		}
+	}
+	
+	
+	func presentAlert(title: String, message: String, buttonTitle: String) {
+		let alertVC = UIAlertViewController(alertTitle: title, message: message, buttonTitle: buttonTitle)
+		alertVC.modalPresentationStyle = .overFullScreen
+		alertVC.modalTransitionStyle = .crossDissolve
+		
+		present(alertVC, animated: true)
 	}
 	
 	
@@ -131,7 +141,7 @@ extension CAShapeLayer {
 }
 
 
-extension UITableView	{
+extension UITableView {
 	
 	func removeExcessCells() {
 		tableFooterView = UIView(frame: .zero)
@@ -143,5 +153,14 @@ extension UITableView	{
 			self.reloadData()
 		}
 	}
+}
+
+
+extension UICollectionView {
 	
+	func reloadDataOnMainThread() {
+		DispatchQueue.main.async {
+			self.reloadData()
+		}
+	}
 }

@@ -32,7 +32,7 @@ class BaseTabController: UITabBarController {
 			createNavContoller(viewController: SavedNewsController(), title: "Favorite", image: "starFavorite"),
             createNavContoller(viewController: CategoryContoller(), title: "Category", image: "react-native-50"),
 			createNavContoller(viewController: TodayController(), title: "Today", image: "today_icon"),
-            createNavContoller(viewController: NewsSearchController(), title: "Search", image: "search")
+            createNavContoller(viewController: NewsSearchViewController(), title: "Search", image: "search")
         ]
         
     }

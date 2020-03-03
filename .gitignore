@@ -6,7 +6,7 @@
 build/
 DerivedData/
 Pods/
-./NewsClient/Utilities/
+NewsClient/Utilities/
 ## Various settings
 *.pbxuser
 !default.pbxuser

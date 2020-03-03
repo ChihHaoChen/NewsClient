@@ -20,4 +20,16 @@ struct NewsCardLayout {
 		
 		return flowLayout
 	}
+	
+	
+	static func createSearchCellLayout(in view: UIView) -> UICollectionViewFlowLayout {
+		let spacing: CGFloat = 12
+		let searchCellLayout = UICollectionViewFlowLayout()
+		
+		searchCellLayout.itemSize = CGSize(width: view.frame.width, height: (view.frame.height - 6*spacing)/7)
+		searchCellLayout.minimumLineSpacing = spacing
+		searchCellLayout.sectionInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
+		
+		return searchCellLayout
+	}
 }
