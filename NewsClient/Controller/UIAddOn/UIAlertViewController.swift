@@ -18,6 +18,8 @@ class UIAlertViewController: UIViewController {
 	let containerWidth: CGFloat = ScreenSize.width*0.67
 	
 	let containerView = AlertContainerView()
+	let blurVisualEffect = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
+	
 	let titleLabel = UILabel(text: "No Saved Articles", font: UIFont.preferredFont(forTextStyle: .title2).bold(), color: .systemOrange)
 	let messageLabel = UILabel(text: "Save the articles of your interest by pinning them.", font: UIFont.preferredFont(forTextStyle: .body), color: .label)
 	let actionButton = UIButton(title: "Gotcha", titleColor: .label, font: UIFont.preferredFont(forTextStyle: .headline).bold(), width: ScreenSize.width-2*20, height: 44, cornerRadius: 16)
@@ -37,8 +39,8 @@ class UIAlertViewController: UIViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-//		view.backgroundColor = UIColor.black.withAlphaComponent(0.75)
 		view.backgroundColor = .systemBackground
+		
 		
 		configureUIElements()
 	}
@@ -46,11 +48,14 @@ class UIAlertViewController: UIViewController {
 	
 	// MARK: - Configure the UI elements in AlertView Container
 	func configureUIElements()	{
-		view.addSubviews(containerView, titleLabel, actionButton, messageLabel)
+		view.addSubviews(blurVisualEffect, containerView, titleLabel, actionButton, messageLabel)
 		
+		blurVisualEffect.translatesAutoresizingMaskIntoConstraints = false
 		titleLabel.translatesAutoresizingMaskIntoConstraints = false
 		actionButton.translatesAutoresizingMaskIntoConstraints = false
 		messageLabel.translatesAutoresizingMaskIntoConstraints = false
+		
+		blurVisualEffect.fillSuperview()
 		
 		configureContainerView()
 		configureTitleLabel()

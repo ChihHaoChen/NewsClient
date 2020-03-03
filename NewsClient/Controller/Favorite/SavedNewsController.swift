@@ -34,6 +34,7 @@ class SavedNewsController: UIViewController {
 		savedNews = realm.objects(SavedArticle.self)
 		
 		savedNewsTable.reloadDataOnMainThread()
+		alertWhenNoSavedArticles()
 	}
 
 	
@@ -65,6 +66,13 @@ class SavedNewsController: UIViewController {
     fileprivate func loadSavedArticles()    {
         savedNews = realm.objects(SavedArticle.self)
     }
+	
+	
+	fileprivate func alertWhenNoSavedArticles() {
+		if savedNews?.count == 0 {
+			presentAlertOnMainThread(title: "No Saved News", message: "Add the news article you'd like to read/collect.", buttonTitle: "Gotcha!")
+		}
+	}
 }
 
 

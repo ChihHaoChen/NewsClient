@@ -162,20 +162,13 @@ class NewsSearchViewController: UIViewController, UICollectionViewDelegate, UICo
             self.articleResults += result?.articles ?? []
            
             DispatchQueue.main.async {
-//                self.noResultsLabel.isHidden =
-//                    (self.articleResults.count == 0 && self.searchCount > 1) ? false : true
 				if self.articleResults.count == 0 && self.searchCount == 1 {
 					self.presentAlert(title: "No Found Results", message: "Please enter other search words.", buttonTitle: "Gotcha!")
 				}
 				
 				self.activityIndicator.stopAnimating()
 				self.searchCollectionView.reloadData()
-				
             }
-			
-				
-				
-			
 			
 			self.isPaginating = false
 		}
