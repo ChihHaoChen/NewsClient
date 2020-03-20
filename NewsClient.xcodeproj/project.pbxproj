@@ -339,8 +339,8 @@
 		B2F7256B235E346200808630 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				B2F7256C235E349300808630 /* BaseTabController.swift */,
 				B26D02C8240BB42200B1CD3F /* Favorite */,
+				B2F7256C235E349300808630 /* BaseTabController.swift */,
 				B23E9189236929A8003032EA /* Category */,
 				B20FB765235F4447007B5188 /* Search */,
 				B2F725A5235E90B800808630 /* News */,

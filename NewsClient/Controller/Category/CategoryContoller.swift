@@ -61,7 +61,6 @@ class CategoryContoller: UIViewController, UICollectionViewDataSource, UICollect
 		categoryCollectionView.dataSource = self
 		
 		categoryCollectionView.register(NewsGroupCell.self, forCellWithReuseIdentifier: cellId)
-		categoryCollectionView.register(SavedNewsHeaders.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
 	}
 	
 	
@@ -71,19 +70,6 @@ class CategoryContoller: UIViewController, UICollectionViewDataSource, UICollect
         self.navigationController?.pushViewController(detailView, animated: true)
         self.tabBarController?.tabBar.isHidden = true
     }
-	
-	
-	// MARK: - To configure the header, collection cell and their functions -
-	func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-		let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerId, for: indexPath) as! SavedNewsHeaders
-
-        header.savedNewsHorizontalController.collectionView.reloadData()
-        header.savedNewsHorizontalController.didSelectHandler = { [weak self] article in
-            self?.readingSavedArticle = true
-            self?.pushView(article: article)
-        }
-        return header
-	}
 	
 	
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

@@ -256,7 +256,7 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
            if let StatusbarView = UIApplication.shared.statusBarUIView {
 			StatusbarView.backgroundColor = .systemGroupedBackground
            }
-           UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+           UIView.animate(withDuration: 0.1, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                // By setting contentOffset = .zero, the content inside the cell, even after being scrolled down to the bottom, the animated content will still shows the top with higher priority
                self.todayMultipleNewsController.collectionView.contentOffset = .zero
                // To disalbe the blur effect
@@ -282,6 +282,7 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
                    self.tabBarController?.tabBar.frame.origin.y = self.view.frame.size.height - tabBarFrame.height
                }
                self.todayMultipleNewsController.closeButton.alpha = 0
+			   
            }, completion: { _ in
                self.todayMultipleNewsController.view.removeFromSuperview()
                self.todayMultipleNewsController?.removeFromParent()

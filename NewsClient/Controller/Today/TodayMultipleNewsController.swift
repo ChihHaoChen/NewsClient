@@ -20,6 +20,7 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
 	
     var offsetHeader: CGFloat
     let screenRatio = UIScreen.main.bounds.width/414
+	let screenWidth: CGFloat = UIScreen.main.bounds.width
 	
     let closeButton: UIButton = {
         let button = UIButton(type: .system)
@@ -86,11 +87,13 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
         collectionView.register(TodayMultipleNewsCell.self, forCellWithReuseIdentifier: cellId)
     }
     
+	
     func setupCloseButton() {
         view.addSubview(closeButton)
         closeButton.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: nil, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0.05*self.view.frame.height, left: 0, bottom: 0, right: 0.05*self.view.frame.width), size: .init(width: 32, height: 32))
     }
     
+	
     // MARK: - Configuration of UICollectionView -
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerId, for: indexPath) as! TodayMultipleNewsHeaderCell
@@ -106,6 +109,7 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
         return header
     }
     
+	
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! TodayMultipleNewsCell
         cell.article = articles[indexPath.item]
@@ -116,12 +120,14 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
         return cell
     }
     
+	
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         if self.mode == .fullscreen {
             return .init(width: collectionView.frame.width-16, height: 100)
         }
         return .init(width: collectionView.frame.width, height: 0)
     }
+	
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if self.mode == .fullscreen {
@@ -132,6 +138,7 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
         return numShownArticles
     }
     
+	
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let heightFixed: CGFloat = 100
         if self.mode == .fullscreen {
@@ -139,7 +146,8 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
         }
         return .init(width: view.frame.width, height: heightFixed)
     }
-    
+	
+	
     fileprivate let spacing: CGFloat = 16
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return spacing

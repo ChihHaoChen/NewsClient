@@ -29,9 +29,9 @@ class BaseTabController: UITabBarController {
 		tabBar.tintColor = .systemOrange
         
         viewControllers = [
-			createNavContoller(viewController: SavedNewsController(), title: "Favorite", image: "starFavorite"),
-            createNavContoller(viewController: CategoryContoller(), title: "Category", image: "react-native-50"),
 			createNavContoller(viewController: TodayController(), title: "Today", image: "today_icon"),
+            createNavContoller(viewController: CategoryContoller(), title: "Category", image: "categoryIcon"),
+			createNavContoller(viewController: SavedNewsController(), title: "Favorites", image: "starFavorite"),
             createNavContoller(viewController: NewsSearchViewController(), title: "Search", image: "search")
         ]
         

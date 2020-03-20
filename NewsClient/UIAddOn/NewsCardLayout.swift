@@ -16,7 +16,6 @@ struct NewsCardLayout {
 		flowLayout.sectionInset = UIEdgeInsets(top: 16, left: 0, bottom: 8, right: 0)
 		flowLayout.itemSize = CGSize(width: view.frame.width, height: UIScreen.main.bounds.width*0.93)
 		flowLayout.minimumLineSpacing = 0
-		flowLayout.headerReferenceSize = CGSize(width: view.frame.width, height: 360)
 		
 		return flowLayout
 	}
