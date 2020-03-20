@@ -53,7 +53,7 @@ class CategoryContoller: UIViewController, UICollectionViewDataSource, UICollect
 	
 	func configureCategoryCollectionView() {
 		
-		categoryCollectionView = UICollectionView(frame: view.bounds, collectionViewLayout: NewsCardLayout.createCategoryCardLayout(in: view))
+		categoryCollectionView = UICollectionView(frame: view.bounds, collectionViewLayout: NewsCollectionCellLayout.createCategoryCardLayout(in: view))
 		
 		categoryCollectionView.backgroundColor = .systemBackground
 		

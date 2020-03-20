@@ -326,7 +326,7 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
 	
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 		
-		return .init(width: view.frame.width - 16, height: UIScreen.main.bounds.width*1.33)
+		return .init(width: view.frame.width - 16, height: ScreenSize.width*1.33)
 	}
 	
 	

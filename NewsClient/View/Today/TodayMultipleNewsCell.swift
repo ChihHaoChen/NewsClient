@@ -9,6 +9,7 @@
 import UIKit
 
 class TodayMultipleNewsCell: UICollectionViewCell {
+	
     var article: Article! {
         didSet  {
             nameLabel.text = article.source?.name
@@ -16,33 +17,32 @@ class TodayMultipleNewsCell: UICollectionViewCell {
             newsRowIcon.sd_setImage(with: URL(string: article.urlToImage ?? ""), placeholderImage: UIImage(named: "News_iOS_Icon"))
         }
     }
-    let screenWidth = UIScreen.main.bounds.width
-    let newsRowIcon = UIImageView(cornerRadius: 12)
-	let titleLabel = UILabel(text: "News Name", font: UIFont.preferredFont(forTextStyle: .body), numberOfLines: 3, color: .label)
+	
+	let newsRowIcon = UIImageView(cornerRadius: CellSize.imageCornerRadius)
+	let titleLabel = UILabel(text: "News Name", font: UIFont.preferredFont(forTextStyle: .body), numberOfLines: CellSize.titleNumberOfLines, color: .label)
 	let nameLabel = UILabel(text: "Publisher Name", font: UIFont.preferredFont(forTextStyle: .caption1), numberOfLines: 1, color: .secondaryLabel)
     
-    let separator: UIView = {
-        let view = UIView()
-		view.backgroundColor = .separator
-        return view
-    }()
+    let separator = SeparatorView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
 		backgroundColor = .systemGroupedBackground
-		newsRowIcon.constrainWidth(constant: frame.width/3.3)
-		newsRowIcon.constrainHeight(constant: frame.width/4.1)
-		newsRowIcon.layer.borderWidth = 2
+		newsRowIcon.clipsToBounds = true
+		newsRowIcon.constrainWidth(constant: CellSize.imageWidth)
+		newsRowIcon.constrainHeight(constant: CellSize.imageHeight)
+		newsRowIcon.layer.borderWidth = CellSize.cellBorderWidth
 		newsRowIcon.layer.borderColor = UIColor.systemGray.cgColor
+		
 		nameLabel.textAlignment = .right
+		
         let stackView = UIStackView(arrangedSubviews: [newsRowIcon, VerticalStackView(arrangedSubviews: [titleLabel, nameLabel], spacing: 4)])
-        stackView.spacing = 12
+		stackView.spacing = CellSize.spacingImage2Content
         stackView.alignment = .center
-        addSubview(stackView)
+		
+        addSubviews(stackView, separator)
         stackView.fillSuperview()
         
-        addSubview(separator)
-        separator.anchor(top: nil, leading: nameLabel.leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 0, left: 0, bottom: -8, right: 0), size: .init(width: 0, height: 1))
+		separator.anchor(top: nil, leading: nameLabel.leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 0, left: 0, bottom: CellSize.separatorPaddingfromBootm, right: 0), size: .init(width: 0, height: CellSize.separatorLineWidth))
     }
     
     

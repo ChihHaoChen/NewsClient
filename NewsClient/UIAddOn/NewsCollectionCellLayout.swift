@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct NewsCardLayout {
+struct NewsCollectionCellLayout {
 	
 	static func createCategoryCardLayout(in view: UIView) -> UICollectionViewFlowLayout {
 		
@@ -22,12 +22,11 @@ struct NewsCardLayout {
 	
 	
 	static func createSearchCellLayout(in view: UIView) -> UICollectionViewFlowLayout {
-		let spacing: CGFloat = 12
 		let searchCellLayout = UICollectionViewFlowLayout()
 		
-		searchCellLayout.itemSize = CGSize(width: view.frame.width, height: (view.frame.height - 6*spacing)/7)
-		searchCellLayout.minimumLineSpacing = spacing
-		searchCellLayout.sectionInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
+		searchCellLayout.itemSize = CGSize(width: view.frame.width-CellSize.minimumSpacingSection, height: CellSize.cellHeight)
+		searchCellLayout.minimumLineSpacing = CellSize.minimumSpacingSection
+		searchCellLayout.sectionInset = UIEdgeInsets(top: CellSize.minimumSpacingSection/2, left: CellSize.minimumSpacingSection/2, bottom: CellSize.minimumSpacingSection/2, right: CellSize.minimumSpacingSection/2)
 		
 		return searchCellLayout
 	}

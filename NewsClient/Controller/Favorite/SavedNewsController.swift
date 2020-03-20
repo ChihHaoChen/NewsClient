@@ -18,7 +18,6 @@ class SavedNewsController: UIViewController {
 	var didSelectHandler: ((Article)->())?
 	
 	let readingSavedArticle = true
-	fileprivate let spacing: CGFloat = 12
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,7 +50,8 @@ class SavedNewsController: UIViewController {
 	func configureTableView() {
 		view.addSubview(savedNewsTable)
 		savedNewsTable.frame = view.bounds
-		savedNewsTable.rowHeight = (view.frame.height - 6*spacing)/7
+		savedNewsTable.rowHeight = CellSize.cellHeight + CellSize.minimumSpacingSection
+		
 		savedNewsTable.separatorStyle = .none
 		
 		savedNewsTable.delegate = self

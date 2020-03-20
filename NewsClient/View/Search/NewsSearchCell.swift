@@ -12,39 +12,40 @@ class NewsSearchCell:  UICollectionViewCell  {
 	
     var articleResult: Article!   {
         didSet  {
-            nameLabel.text = articleResult.title
+            titleLabel.text = articleResult.title
             imageView.sd_setImage(with: URL(string: articleResult.urlToImage ?? ""), placeholderImage: UIImage(named: "News_iOS_Icon"))
-            descriptionLabel.text = "\(articleResult.source?.name ?? "") • \(articleResult.publishedAt?.prefix(10) ?? "")"
+            nameLabel.text = "\(articleResult.source?.name ?? "") • \(articleResult.publishedAt?.prefix(10) ?? "")"
         }
     }
    
-    let imageView = UIImageView(cornerRadius: 12)
-	let nameLabel = UILabel(text: "News Title", font: UIFont.preferredFont(forTextStyle: .subheadline), numberOfLines: 3, color: .label)
-	let descriptionLabel = UILabel(text: "Author Label", font: UIFont.preferredFont(forTextStyle: .body), numberOfLines: 1, color: .label)
-    let separator: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor(white: 0.3, alpha: 0.3)
-        return view
-    }()
+	let imageView = UIImageView(cornerRadius: CellSize.imageCornerRadius)
+	let titleLabel = UILabel(text: "News Title", font: UIFont.preferredFont(forTextStyle: .body), numberOfLines: CellSize.titleNumberOfLines, color: .label)
+	let nameLabel = UILabel(text: "Author Label", font: UIFont.preferredFont(forTextStyle: .caption1), numberOfLines: 1, color: .secondaryLabel)
+    
+	let separator = SeparatorView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+		backgroundColor = .systemBackground
+		
         imageView.image = #imageLiteral(resourceName: "News_iOS_Icon")
         imageView.clipsToBounds = true
-        imageView.constrainWidth(constant: self.frame.width/2.5 )
-        imageView.constrainHeight(constant: self.frame.width/4)
+		imageView.constrainWidth(constant: CellSize.imageWidth )
+		imageView.constrainHeight(constant: CellSize.imageHeight)
+		
+		nameLabel.textAlignment = .right
         
         let stackView = UIStackView(arrangedSubviews: [
             imageView,
-            VerticalStackView(arrangedSubviews: [nameLabel, descriptionLabel], spacing: 4)
-            ], customSpacing: 4)
-		stackView.spacing = 12.8*(ScreenSize.width/320)
-        addSubview(stackView)
-        stackView.fillSuperview(padding: .init(top: 0, left: 16, bottom: 0, right: 16))
+            VerticalStackView(arrangedSubviews: [titleLabel, nameLabel], spacing: 4)])
+		
+		stackView.spacing = CellSize.spacingImage2Content
         stackView.alignment = .center
-        addSubview(separator)
-        separator.anchor(top: nil, leading: nameLabel.leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 0, left: 0, bottom: -8, right: 0), size: .init(width: 0, height: 0.5))
+		
+		addSubviews(stackView, separator)
+		stackView.fillSuperview()
+        
+		separator.anchor(top: nil, leading: titleLabel.leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 0, left: 0, bottom: CellSize.separatorPaddingfromBootm, right: 0), size: .init(width: 0, height: CellSize.separatorLineWidth))
     }
     
     required init?(coder aDecoder: NSCoder) {

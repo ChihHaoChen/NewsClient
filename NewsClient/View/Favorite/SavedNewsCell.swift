@@ -12,20 +12,17 @@ class SavedNewsCell: UITableViewCell {
 
 	static let cellId = "savedNewsCell"
 	
-	let newsImageView = UIImageView(cornerRadius: 12)
-	let nameLabel = UILabel(text: "News Title", font: UIFont.preferredFont(forTextStyle: .subheadline), numberOfLines: 3, color: .label)
-	let descriptionLabel = UILabel(text: "Author Label", font: UIFont.preferredFont(forTextStyle: .body), numberOfLines: 1, color: .label)
-    let separator: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor(white: 0.3, alpha: 0.3)
-        return view
-    }()
+	let newsImageView = UIImageView(cornerRadius: CellSize.imageCornerRadius)
+	let titleLabel = UILabel(text: "News Title", font: UIFont.preferredFont(forTextStyle: .body), numberOfLines: CellSize.titleNumberOfLines, color: .label)
+	let sourceLabel = UILabel(text: "Author Label", font: UIFont.preferredFont(forTextStyle: .caption1), numberOfLines: CellSize.sourceNumberOfLines, color: .secondaryLabel)
+	
+	let separator = SeparatorView()
 
 	var articleResult: SavedArticle!   {
         didSet  {
-            nameLabel.text = articleResult.title
+            titleLabel.text = articleResult.title
             newsImageView.sd_setImage(with: URL(string: articleResult.urlToImage), placeholderImage: UIImage(named: "News_iOS_Icon"))
-            descriptionLabel.text = "\(articleResult.publisherName) • \(articleResult.publishedAt.prefix(10))"
+            sourceLabel.text = "\(articleResult.publisherName) • \(articleResult.publishedAt.prefix(10))"
         }
     }
 	
@@ -44,20 +41,22 @@ class SavedNewsCell: UITableViewCell {
 	private func configure() {
 		newsImageView.image = #imageLiteral(resourceName: "News_iOS_Icon")
         newsImageView.clipsToBounds = true
-        newsImageView.constrainWidth(constant: self.frame.width/2.5 )
-        newsImageView.constrainHeight(constant: self.frame.width/4)
+		newsImageView.constrainWidth(constant: CellSize.imageWidth )
+		newsImageView.constrainHeight(constant: CellSize.imageHeight)
+		newsImageView.layer.borderWidth = CellSize.cellBorderWidth
+		newsImageView.layer.borderColor = UIColor.systemGray.cgColor
+		
+		sourceLabel.textAlignment = .right
         
         let stackView = UIStackView(arrangedSubviews: [
             newsImageView,
-            VerticalStackView(arrangedSubviews: [nameLabel, descriptionLabel], spacing: 4)
-            ], customSpacing: 4)
+            VerticalStackView(arrangedSubviews: [titleLabel, sourceLabel], spacing: 4)])
+		stackView.spacing = CellSize.spacingImage2Content
+		stackView.alignment = .center
 		
 		addSubviews(stackView, separator)
-		
-		stackView.spacing = 12.8*(ScreenSize.width/320)
-        stackView.fillSuperview(padding: .init(top: 0, left: 16, bottom: 0, right: 16))
-        stackView.alignment = .center
+		stackView.fillSuperview(padding: .init(top: 0, left: CellSize.minimumSpacingSection/2, bottom: 0, right: CellSize.minimumSpacingSection/2))
 
-        separator.anchor(top: nil, leading: nameLabel.leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 0, left: 0, bottom: -8, right: 0), size: .init(width: 0, height: 0.5))
+		separator.anchor(top: nil, leading: sourceLabel.leadingAnchor, bottom: newsImageView.bottomAnchor, trailing: trailingAnchor, padding: .init(top: 0, left: 0, bottom: CellSize.separatorPaddingfromBootm, right: 0), size: .init(width: 0, height: CellSize.separatorLineWidth))
 	}
 }

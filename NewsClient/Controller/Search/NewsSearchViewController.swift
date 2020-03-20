@@ -47,7 +47,7 @@ class NewsSearchViewController: UIViewController, UICollectionViewDelegate, UICo
     // MARK: - TO configure searchCollectionView
 	func configureSearchCollectionView() {
 		
-		searchCollectionView = UICollectionView(frame: view.bounds, collectionViewLayout: NewsCardLayout.createSearchCellLayout(in: view))
+		searchCollectionView = UICollectionView(frame: view.bounds, collectionViewLayout: NewsCollectionCellLayout.createSearchCellLayout(in: view))
 		searchCollectionView.backgroundColor = .systemBackground
 		
 		searchCollectionView.delegate = self
@@ -130,7 +130,7 @@ class NewsSearchViewController: UIViewController, UICollectionViewDelegate, UICo
 	
 	
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-        let height: CGFloat = isDonePaginating ? 0 : 100
+		let height: CGFloat = isDonePaginating ? 0 : CellSize.cellHeight
         return .init(width: view.frame.width, height: height)
     }
 	

@@ -17,6 +17,21 @@ enum ScreenSize {
 }
 
 
+enum CellSize {
+	static let imageWidth = ScreenSize.width/3.3
+	static let imageHeight = ScreenSize.width/4.2
+	static let imageCornerRadius: CGFloat = 12
+	static let spacingImage2Content: CGFloat = 12
+	static let separatorPaddingfromBootm: CGFloat = -8
+	static let separatorLineWidth: CGFloat = 1
+	static let cellBorderWidth: CGFloat = 2
+	static let titleNumberOfLines: Int = 3
+	static let sourceNumberOfLines: Int = 1
+	static let cellHeight: CGFloat = 100
+	static let minimumSpacingSection: CGFloat = 16
+}
+
+
 enum DeviceTypes {
     static let idiom = UIDevice.current.userInterfaceIdiom
     static let nativeScale = UIScreen.main.nativeScale

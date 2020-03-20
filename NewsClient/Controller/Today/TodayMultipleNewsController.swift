@@ -123,7 +123,7 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
 	
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         if self.mode == .fullscreen {
-            return .init(width: collectionView.frame.width-16, height: 100)
+			return .init(width: collectionView.frame.width-16, height: CellSize.cellHeight)
         }
         return .init(width: collectionView.frame.width, height: 0)
     }
@@ -140,17 +140,15 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
     
 	
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let heightFixed: CGFloat = 100
         if self.mode == .fullscreen {
-            return .init(width: view.frame.width - 16, height: heightFixed)
+			return .init(width: view.frame.width - 16, height: CellSize.cellHeight)
         }
-        return .init(width: view.frame.width, height: heightFixed)
+		return .init(width: view.frame.width, height: CellSize.cellHeight)
     }
 	
 	
-    fileprivate let spacing: CGFloat = 16
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return spacing
+		return CellSize.minimumSpacingSection
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
