@@ -33,7 +33,7 @@ enum CellSize {
 
 enum ConfigEnv {
 	static let heightHeaderCell: CGFloat = 60
-	static let placeImage = UIImage(named: "News_iOS_Icon")
+	static let placeHolder = UIImage(named: "AppIcon")
 }
 
 

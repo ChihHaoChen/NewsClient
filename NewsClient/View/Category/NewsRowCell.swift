@@ -13,7 +13,7 @@ class NewsRowCell: UICollectionViewCell    {
         didSet  {
             publisherLabel.text = article.source?.name
             titleLabel.text = article.title
-            newsRowIcon.sd_setImage(with: URL(string: article.urlToImage ?? ""), placeholderImage: UIImage(named: "News_iOS_Icon"))
+			newsRowIcon.sd_setImage(with: URL(string: article.urlToImage ?? ""), placeholderImage: ConfigEnv.placeHolder)
         }
     }
     let newsRowIcon = UIImageView(cornerRadius: 12)

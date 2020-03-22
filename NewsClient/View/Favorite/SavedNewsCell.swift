@@ -21,7 +21,7 @@ class SavedNewsCell: UITableViewCell {
 	var articleResult: SavedArticle!   {
         didSet  {
             titleLabel.text = articleResult.title
-            newsImageView.sd_setImage(with: URL(string: articleResult.urlToImage), placeholderImage: UIImage(named: "News_iOS_Icon"))
+			newsImageView.sd_setImage(with: URL(string: articleResult.urlToImage), placeholderImage: ConfigEnv.placeHolder)
             sourceLabel.text = "\(articleResult.publisherName) • \(articleResult.publishedAt.prefix(10))"
         }
     }

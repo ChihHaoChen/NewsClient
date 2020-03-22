@@ -13,7 +13,7 @@ class SavedNewsHeaderCell: UICollectionViewCell  {
         didSet {
             newsTitle.text = article.title
             publishedAt.text = "\(article.publisherName) • \(article.publishedAt.prefix(10))"
-            newsImageView.sd_setImage(with: URL(string: article.urlToImage), placeholderImage: UIImage(named: "News_iOS_Icon"))
+			newsImageView.sd_setImage(with: URL(string: article.urlToImage), placeholderImage: ConfigEnv.placeHolder)
         }
     }
 	let newsTitle = UILabel(text: " ", font: UIFont.preferredFont(forTextStyle: .body), numberOfLines: 2, color: .label)
