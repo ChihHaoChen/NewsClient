@@ -313,8 +313,14 @@
     if (animated)
     {
         [UIView setAnimationsEnabled:YES];
-        [UIView beginAnimations:nil context:nil];
-        [UIView setAnimationDuration:self.fadeDuration];
+//        [UIView beginAnimations:nil context:nil];
+		[UIView animateWithDuration:1.0 animations:^{
+			nil;
+		}];
+//        [UIView setAnimationDuration:self.fadeDuration];
+		[UIView animateWithDuration:self.fadeDuration animations:^{
+			nil;
+		}];
     }
 
     touchView.frame = CGRectMake(touchView.center.x - touchView.frame.size.width, 
@@ -326,7 +332,7 @@
 
     if (animated)
     {
-        [UIView commitAnimations];
+//        [UIView commitAnimations];
         [UIView setAnimationsEnabled:animationsWereEnabled];
     }
     
