@@ -49,13 +49,14 @@ In order to get started, fork the project and clone it to your local machine. In
 
 We looking forward to receiving your contributions. 
 
-Additionally you may also assist as a beta tester. Periodically test-builds will become available via Testflight. In order to take part in testing those submit an email address used as an Apple-ID to [c.h.chen.developer@gmail.com@gmail.com](mailto:c.h.chen.developer@gmail.com@gmail.com) to be added to the list of testers.
+Additionally you may also assist as a beta tester. Periodically test-builds will become available via Testflight. In order to take part in testing those submit an email address used as an Apple-ID to [c.h.chen.developer@gmail.com](mailto:c.h.chen.developer@gmail.com) to be added to the list of testers.
 
 ## Future Developments
 I still have some thoughts about developing this App with the following features, including but not limited to:
 * [ ] Language localization;
 * [ ] Allows users to flexibly add the countries of their interest in Today, and Categories;
-* [ ] Share news articles with other people
-* [ ] Dependency Injection
-* [ ] Integrate XCTests and Bitrise/[Travis](https://travis-ci.org)
-* [ ] Integrate Firebase Crashlytics/[Fabric](https://get.fabric.io)
+* [ ] Share news articles with other people;
+* [ ] Dependency Injection;
+* [ ] Integrate XCTests and Bitrise/[Travis](https://travis-ci.org);
+* [ ] Integrate Firebase Crashlytics/[Fabric](https://get.fabric.io).
+If you have other good ideas, please kindly contact me via [c.h.chen.developer@gmail.com](mailto:c.h.chen.developer@gmail.com).
