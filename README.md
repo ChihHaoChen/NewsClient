@@ -6,6 +6,7 @@
 
 <p align="center">
 <a href="https://developer.apple.com/swift/"><img src="https://img.shields.io/badge/Swift-5-orange.svg?style=flat" alt="Swift"/></a>
+<a href="https://newsapi.org/"><img src="https://img.shields.io/badge/Powered by-NewsAPI.org-blueviolet.svg?style=flat" alt="Swift"/></a>
 <img src="https://img.shields.io/badge/Platform-iOS%2013.0+-lightgrey.svg" alt="Platform: iOS">
 <img src="https://img.shields.io/github/license/erikmartens/NearbyWeather.svg?style=flat" alt="License: MIT">
 <a href="https://github.com/ChihHaoChen/NewsClient/graphs/contributors"><img src="https://img.shields.io/github/contributors/ChihHaoChen/NewsClient.svg?style=flat" alt="Contributors"></a>
@@ -59,4 +60,5 @@ I still have some thoughts about developing this App with the following features
 * [ ] Dependency Injection;
 * [ ] Integrate XCTests and Bitrise/[Travis](https://travis-ci.org);
 * [ ] Integrate Firebase Crashlytics/[Fabric](https://get.fabric.io).
+
 If you have other good ideas, please kindly contact me via [c.h.chen.developer@gmail.com](mailto:c.h.chen.developer@gmail.com).
