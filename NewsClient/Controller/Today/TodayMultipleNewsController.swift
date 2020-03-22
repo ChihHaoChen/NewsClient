@@ -61,7 +61,6 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
             setupCloseButton()
 //			view.layer.borderWidth = 2
 //			view.layer.borderColor = UIColor.systemGray.cgColor
-			navigationController?.navigationBar.isHidden = true
         }   else    {
             collectionView.isScrollEnabled = false
 		}

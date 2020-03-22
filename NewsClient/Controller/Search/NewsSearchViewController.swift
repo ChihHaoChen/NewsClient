@@ -20,11 +20,12 @@ class NewsSearchViewController: UIViewController, UICollectionViewDelegate, UICo
 	fileprivate let footerId = "footerId"
 	
 	fileprivate let searchLimit: Int =  20
-	fileprivate let searchController = UISearchController(searchResultsController: nil)
+	fileprivate let searchController = UISearchController(searchResultsController: nil).searchBar
 	fileprivate var searchTerm: String = ""
 	fileprivate var searchCount: Int = 0
 	
 	let noResultsLabel = UILabel(text: "No reults found. \nPlease enter other search words.", font: UIFont.preferredFont(forTextStyle: .callout), numberOfLines: 0, color: .label)
+	let titleLabel = UILabel(text: "Search", font: UIFont.preferredFont(forTextStyle: .largeTitle).bold(), numberOfLines: 1, color: .label)
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -38,15 +39,26 @@ class NewsSearchViewController: UIViewController, UICollectionViewDelegate, UICo
 
 	// MARK: - To configure UI elements
 	func configureUIElements() {
-		view.addSubviews(searchCollectionView, activityIndicator)
+		titleLabel.textAlignment = .center
+		
+		view.addSubviews(titleLabel, searchController, searchCollectionView, activityIndicator)
 		activityIndicator.fillSuperview()
 		activityIndicator.stopAnimating()
+		
+		anchorUIElements()
 	}
 	
 	
+	func anchorUIElements() {
+		titleLabel.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 60, left: 8, bottom: 0, right: 8), size: .init(width: view.frame.width-16, height: 40))
+		
+		searchController.anchor(top: titleLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 0, bottom: 0, right: 0), size: .init(width: view.frame.width, height: 40))
+		
+		searchCollectionView.anchor(top: searchController.bottomAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 8, left: 0, bottom: 8, right: 0))
+	}
+	
     // MARK: - TO configure searchCollectionView
 	func configureSearchCollectionView() {
-		
 		searchCollectionView = UICollectionView(frame: view.bounds, collectionViewLayout: NewsCollectionCellLayout.createSearchCellLayout(in: view))
 		searchCollectionView.backgroundColor = .systemBackground
 		
@@ -63,12 +75,13 @@ class NewsSearchViewController: UIViewController, UICollectionViewDelegate, UICo
 	// MARK: - To configure searchBar
 	fileprivate func configureSearchNewsBar()	{
 		definesPresentationContext = true
-		navigationItem.searchController = searchController
-		navigationItem.hidesSearchBarWhenScrolling = false
 		
-		searchController.searchBar.placeholder = "Search News Articles"
-		searchController.searchBar.delegate = self
-		searchController.obscuresBackgroundDuringPresentation = false
+		searchController.backgroundColor = .systemBackground
+		searchController.searchBarStyle = .minimal
+		searchController.placeholder = "Search News Articles"
+		searchController.delegate = self
+
+//		searchController.obscuresBackgroundDuringPresentation = false
 	}
 	
 	
@@ -79,6 +92,9 @@ class NewsSearchViewController: UIViewController, UICollectionViewDelegate, UICo
 		searchTerm = searchBar.text ?? ""
 		articleResults = []
 		
+		searchBar.endEditing(true)
+		searchCount = 0
+		
 		fetchAPI(offset: 0)
 		
 		activityIndicator.startAnimating()
@@ -88,6 +104,7 @@ class NewsSearchViewController: UIViewController, UICollectionViewDelegate, UICo
 	
 	
 	func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+		searchCount = 0
 		isDonePaginating = true
 		articleResults.removeAll()
 		activityIndicator.stopAnimating()
@@ -117,6 +134,7 @@ class NewsSearchViewController: UIViewController, UICollectionViewDelegate, UICo
 	
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 		let detailView = NewsDetailController(mode: .readUnSavedArticle,article: articleResults[indexPath.item])
+		searchController.endEditing(true)
 		navigationController?.pushViewController(detailView, animated: true)
 		tabBarController?.tabBar.isHidden = true
 	}

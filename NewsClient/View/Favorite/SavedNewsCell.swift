@@ -39,6 +39,7 @@ class SavedNewsCell: UITableViewCell {
 	
 	
 	private func configure() {
+		backgroundColor = .systemBackground
 		newsImageView.image = #imageLiteral(resourceName: "News_iOS_Icon")
         newsImageView.clipsToBounds = true
 		newsImageView.constrainWidth(constant: CellSize.imageWidth )

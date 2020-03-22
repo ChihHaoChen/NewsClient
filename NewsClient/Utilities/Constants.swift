@@ -31,6 +31,11 @@ enum CellSize {
 	static let minimumSpacingSection: CGFloat = 16
 }
 
+enum ConfigEnv {
+	static let heightHeaderCell: CGFloat = 60
+	static let placeImage = UIImage(named: "News_iOS_Icon")
+}
+
 
 enum DeviceTypes {
     static let idiom = UIDevice.current.userInterfaceIdiom

@@ -11,21 +11,28 @@ import UIKit
 class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate   {
 	
 	let activityIndicator = UIActivityIndicatorView(color: .systemGray, style: .large)
+	
+    var topConstraint: NSLayoutConstraint?
+    var leadingConstraint: NSLayoutConstraint?
+    var widthConstraint: NSLayoutConstraint?
+    var heightConstraint: NSLayoutConstraint?
     
-	fileprivate let headerId = "headerId"
+    var startFrame: CGRect?
+    var todayMultipleNewsController: TodayMultipleNewsController!
+    
     var items = [TodayItem]()
     var topNewsUS, topNewsJapan, topNewsCanada, topNewsTaiwan: newsGroup?
 	
-	let screenRatio = UIScreen.main.bounds.width/414
 	let blurVisualEffect = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
 	
 	var todayMultipleNewsBeginOffset: CGFloat = 0
 	var anchoredConstraints: AnchoredConstraints?
 	
+	fileprivate let todayCellHeight: CGFloat = 4*CellSize.cellHeight + 6*CellSize.minimumSpacingSection + ConfigEnv.heightHeaderCell
+	
     override func viewDidLoad() {
         super.viewDidLoad()
 	
-	    navigationController?.setNavigationBarHidden(true, animated: false)
         setCollectionView()
         fetchAPI()
         setActivityIndicator()
@@ -44,7 +51,7 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
 	fileprivate func setCollectionView() {
 		collectionView.backgroundColor = .systemBackground
 		
-		collectionView.register(TodayWorldwideHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
+		collectionView.register(TitleCellCollectionView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TitleCellCollectionView.headerId)
 		collectionView.register(TodayControllerCell.self, forCellWithReuseIdentifier: TodayItem.CellType.multiple.rawValue)
 	}
 	
@@ -115,13 +122,6 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
         }
     }
     
-    var topConstraint: NSLayoutConstraint?
-    var leadingConstraint: NSLayoutConstraint?
-    var widthConstraint: NSLayoutConstraint?
-    var heightConstraint: NSLayoutConstraint?
-    
-    var startFrame: CGRect?
-    var todayMultipleNewsController: TodayMultipleNewsController!
     
     // MARK: To control rendering all items in fullscreen
     fileprivate func showDailyListFullScreen(_ indexPath: IndexPath) {
@@ -294,14 +294,16 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
 	
 	// MARK: - The setting of the header in TodayCotnroller
 	override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-		let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerId, for: indexPath) as! TodayWorldwideHeaderCell
+		let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TitleCellCollectionView.headerId, for: indexPath) as! TitleCellCollectionView
+		
+		header.titleLabel.text = "Worldwide Today"
 		
 		return header
 	}
     
 	
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-		return .init(width: collectionView.frame.width, height: 60)
+		return .init(width: collectionView.frame.width, height: ConfigEnv.heightHeaderCell)
 	}
 	
 	
@@ -322,11 +324,9 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
     }
     
 	
-	static let heightCell: CGFloat = 500
-	
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 		
-		return .init(width: view.frame.width - 16, height: ScreenSize.width*1.33)
+		return .init(width: view.frame.width - 16, height: todayCellHeight)
 	}
 	
 	

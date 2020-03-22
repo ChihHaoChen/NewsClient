@@ -13,7 +13,6 @@ class CategoryContoller: UIViewController, UICollectionViewDataSource, UICollect
 	
 	let realm = try! Realm()
 	
-	let headerId: String = "headerId"
     let cellId: String = "cellId"
 
 	var categoryCollectionView: UICollectionView!
@@ -45,7 +44,6 @@ class CategoryContoller: UIViewController, UICollectionViewDataSource, UICollect
 	
 	// MARK: - TO configure all the UI elements
 	func configureUIElements() {
-		self.navigationController?.navigationBar.isHidden = true
 		view.addSubviews(categoryCollectionView, activityIndicator)
 		activityIndicator.fillSuperview()
 	}
@@ -60,6 +58,7 @@ class CategoryContoller: UIViewController, UICollectionViewDataSource, UICollect
 		categoryCollectionView.delegate = self
 		categoryCollectionView.dataSource = self
 		
+		categoryCollectionView.register(TitleCellCollectionView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TitleCellCollectionView.headerId)
 		categoryCollectionView.register(NewsGroupCell.self, forCellWithReuseIdentifier: cellId)
 	}
 	
@@ -85,6 +84,15 @@ class CategoryContoller: UIViewController, UICollectionViewDataSource, UICollect
 			self?.pushView(article: article)
 		}
 		return cell
+	}
+	
+	
+	func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+		let header =  collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TitleCellCollectionView.headerId, for: indexPath) as! TitleCellCollectionView
+		
+		header.titleLabel.text = "Categories"
+		
+		return header
 	}
 	
 	

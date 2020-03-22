@@ -10,8 +10,9 @@ import UIKit
 import RealmSwift
 
 class SavedNewsController: UIViewController {
+	fileprivate let headerId = "headerId"
 	
-	let savedNewsTable = UITableView()
+	let savedNewsTable = UITableView(frame: UIScreen.main.bounds, style: UITableView.Style.grouped)
 	let realm = try! Realm()
 	
 	var savedNews: Results<SavedArticle>?
@@ -40,8 +41,6 @@ class SavedNewsController: UIViewController {
 	// MARK: - Configure the whole UI and the tableView
 	func configureViewController() {
 		view.backgroundColor = .systemBackground
-		title = "Saved News"
-		navigationController?.navigationBar.prefersLargeTitles = true
 		
 		configureTableView()
 	}
@@ -49,8 +48,11 @@ class SavedNewsController: UIViewController {
 	
 	func configureTableView() {
 		view.addSubview(savedNewsTable)
+		
 		savedNewsTable.frame = view.bounds
 		savedNewsTable.rowHeight = CellSize.cellHeight + CellSize.minimumSpacingSection
+		
+		savedNewsTable.backgroundColor = .systemBackground
 		
 		savedNewsTable.separatorStyle = .none
 		
@@ -58,6 +60,8 @@ class SavedNewsController: UIViewController {
 		savedNewsTable.dataSource = self
 		
 		savedNewsTable.register(SavedNewsCell.self, forCellReuseIdentifier: SavedNewsCell.cellId)
+		savedNewsTable.register(TitleCellTableView.self, forHeaderFooterViewReuseIdentifier: TitleCellTableView.reuseIdentifier)
+		
 		savedNewsTable.removeExcessCells()
 		
 	}
@@ -90,6 +94,21 @@ extension SavedNewsController: UITableViewDelegate, UITableViewDataSource {
 		}
 		
 		return cell
+	}
+	
+	
+	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+		guard let headerView = savedNewsTable.dequeueReusableHeaderFooterView(withIdentifier: TitleCellTableView.reuseIdentifier) as? TitleCellTableView else { return nil }
+		
+		headerView.titleLabel.text = "Favorites"
+		
+		
+		return headerView
+	}
+
+	
+	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+		return ConfigEnv.heightHeaderCell
 	}
 	
 	

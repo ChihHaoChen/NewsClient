@@ -19,8 +19,8 @@ class TodayControllerCell: BaseTodayCell    {
             todayMultipleNewsController.collectionView.reloadData()
         }
     }
-    let newsLabel = UILabel(text: "NewsLabel", font: UIFont.preferredFont(forTextStyle: .largeTitle), numberOfLines: 1, color: .label)
-	let countryLabel = UILabel(text: "Country", font: UIFont.preferredFont(forTextStyle: .title1), color: .secondaryLabel)
+	let newsLabel = UILabel(text: "NewsLabel", font: UIFont.preferredFont(forTextStyle: .largeTitle).bold(), numberOfLines: 1, color: .label)
+	let countryLabel = UILabel(text: "Country", font: UIFont.preferredFont(forTextStyle: .title1).bold(), color: .secondaryLabel)
     let todayMultipleNewsController = TodayMultipleNewsController(mode: .small)
     
     override init(frame: CGRect) {

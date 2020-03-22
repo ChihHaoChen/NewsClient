@@ -47,7 +47,6 @@ class NewsDetailController: UIViewController, UIScrollViewDelegate, WKNavigation
         super.viewDidLoad()
         let url = URL(string: self.detailedNews?.url ?? "")
         let detailWeb = URLRequest(url: url!)
-		self.navigationController?.setNavigationBarHidden(true, animated: true)
 		
         setupWebView()
         webView.load(detailWeb)

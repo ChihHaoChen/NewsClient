@@ -30,7 +30,7 @@ class BaseTabController: UITabBarController {
         
         viewControllers = [
 			createNavContoller(viewController: TodayController(), title: "Today", image: "today_icon"),
-            createNavContoller(viewController: CategoryContoller(), title: "Category", image: "categoryIcon"),
+            createNavContoller(viewController: CategoryContoller(), title: "Categories", image: "categoryIcon"),
 			createNavContoller(viewController: SavedNewsController(), title: "Favorites", image: "starFavorite"),
             createNavContoller(viewController: NewsSearchViewController(), title: "Search", image: "search")
         ]
@@ -41,13 +41,14 @@ class BaseTabController: UITabBarController {
         let backEnableController = BackEnabledNavigationController(rootViewController: viewController)
         viewController.view.backgroundColor = .systemBackground
         viewController.navigationItem.title = title
+		viewController.navigationController?.navigationBar.isHidden = true
         
         // In 2019 WWDC, Apple changed its Default Modal Presentation Style for UIModal.
         // By default UIViewController resolves UIModalPresentationAutomatic to UIModalPresentationPageSheet, but other system-provided view controllers may resolve UIModalPresentationAutomatic to other concrete presentation styles.
         backEnableController.modalPresentationStyle = .fullScreen
         backEnableController.tabBarItem.title = title
         backEnableController.tabBarItem.image = UIImage.init(named: image)
-        backEnableController.navigationBar.prefersLargeTitles = true
+        
         return backEnableController
     }
 }
