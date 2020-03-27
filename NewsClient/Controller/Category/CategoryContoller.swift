@@ -7,11 +7,8 @@
 //
 
 import UIKit
-import RealmSwift
 
 class CategoryContoller: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
-	
-	let realm = try! Realm()
 	
     let cellId: String = "cellId"
 
@@ -19,7 +16,6 @@ class CategoryContoller: UIViewController, UICollectionViewDataSource, UICollect
 	let activityIndicator = UIActivityIndicatorView(color: .systemGray, style: .large)
 	
 	var fetchNewsGroups = [categoryGroup]()
-    var savedNews: Results<SavedArticle>?
     var categoryArray = ["business", "technology", "science", "health", "sports", "entertainment"]
 	
 	var readingSavedArticle: Bool = false
@@ -30,18 +26,11 @@ class CategoryContoller: UIViewController, UICollectionViewDataSource, UICollect
 		configureCategoryCollectionView()
 		configureUIElements()
 		fetchData()
+		
+		pullToRefresh()
     }
 	
-	
-	// MARK: - To update the header cell after adding or removing saved articles
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		savedNews = realm.objects(SavedArticle.self)
-        // reloadData will reload all the sections including header.
-        categoryCollectionView.reloadData()
-	}
-	
-	
+		
 	// MARK: - TO configure all the UI elements
 	func configureUIElements() {
 		view.addSubviews(categoryCollectionView, activityIndicator)
@@ -101,13 +90,34 @@ class CategoryContoller: UIViewController, UICollectionViewDataSource, UICollect
 	}
 	
 	
+	// MARK: - To enable the feature of pulling to refresh content -
+	fileprivate func pullToRefresh() {
+		let refreshControl = UIRefreshControl()
+		refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh News")
+		refreshControl.addTarget(self, action: #selector(refreshFetch), for: .valueChanged)
+		
+		categoryCollectionView.addSubview(refreshControl)
+	}
+	
+	
+	@objc func refreshFetch(refreshControl: UIRefreshControl) {
+		activityIndicator.startAnimating()
+		
+		fetchData()
+		
+		refreshControl.endRefreshing()
+		
+		presentAlert(title: "Update Is Done", message: "All the categories are updated completely.", buttonTitle: "Gotcha!")
+	}
+	
+	
 	// MARK: - Function to fetch data from News API -
 	fileprivate func fetchData()   {
 		
 		var newsCategories = [categoryGroup?]()
 		// To sync fetch API requests
 		let dispatchGroup = DispatchGroup()
-		
+		newsCategories.removeAll()
 		categoryArray.forEach { (type) in
 			dispatchGroup.enter()
 			Service.shared.fetchCategoryNews(type: type)   { (articlesGroup, error) in
@@ -122,13 +132,16 @@ class CategoryContoller: UIViewController, UICollectionViewDataSource, UICollect
 		}
 		
 		// Completion
+		fetchNewsGroups.removeAll()
+		categoryCollectionView.reloadData()
+		
 		dispatchGroup.notify(queue: .main) {
 			newsCategories.forEach { (group) in
 				guard let newsGroup = group else { return }
 				self.fetchNewsGroups.append(newsGroup)
 			}
-			self.activityIndicator.stopAnimating()
 			self.categoryCollectionView.reloadData()
 		}
+		activityIndicator.stopAnimating()
 	}
 }

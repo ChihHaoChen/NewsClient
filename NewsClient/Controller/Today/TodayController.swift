@@ -37,6 +37,7 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
         fetchAPI()
         setActivityIndicator()
         setVisualEffect()
+		pullToRefresh()
     }
     
 
@@ -61,7 +62,27 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
 		activityIndicator.centerInSuperview()
 	}
 	
+	
+	// MARK: - To enable the feature of pulling to referesh content -
+	fileprivate func pullToRefresh() {
+		let refreshControl = UIRefreshControl()
+		refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh News")
+		refreshControl.addTarget(self, action: #selector(refreshFetch), for: .valueChanged)
+		
+		collectionView.addSubview(refreshControl)
+	}
+	
+	
+	@objc func refreshFetch(refreshControl: UIRefreshControl) {
+		activityIndicator.startAnimating()
+		
+		fetchAPI()
+		
+		refreshControl.endRefreshing()
+	}
+	
     
+	// MARK: - To fetch API
     func fetchAPI() {
         let dispatchGroup = DispatchGroup()
         
@@ -110,9 +131,9 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
 				TodayItem.init(category: "台灣", title: "頭條", image: #imageLiteral(resourceName: "News_iOS_Icon"), description: "All the New you are eager to know right way", backgroundColor: .systemGroupedBackground, cellType: .multiple, newsFetch: self.topNewsTaiwan?.articles ?? []),
 
             ]
-            self.activityIndicator.stopAnimating()
             self.collectionView.reloadData()
         }
+		activityIndicator.stopAnimating()
     }
     
     
