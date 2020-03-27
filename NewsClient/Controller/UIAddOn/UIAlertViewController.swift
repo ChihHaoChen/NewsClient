@@ -22,7 +22,7 @@ class UIAlertViewController: UIViewController {
 	
 	let titleLabel = UILabel(text: "No Saved Articles", font: UIFont.preferredFont(forTextStyle: .title2).bold(), color: .systemOrange)
 	let messageLabel = UILabel(text: "Save the articles of your interest by pinning them.", font: UIFont.preferredFont(forTextStyle: .body), color: .label)
-	let actionButton = UIButton(title: "Gotcha", titleColor: .label, font: UIFont.preferredFont(forTextStyle: .headline).bold(), width: ScreenSize.width-2*20, height: 44, cornerRadius: 16)
+	let actionButton = UIButton(title: "Gotcha", titleColor: .label, font: UIFont.preferredFont(forTextStyle: .headline).bold(), width: ScreenSize.width-2*20, height: 44, cornerRadius: CellSize.imageCornerRadius)
 	
 	init(alertTitle: String, message: String, buttonTitle: String)   {
 		super.init(nibName: nil, bundle: nil)

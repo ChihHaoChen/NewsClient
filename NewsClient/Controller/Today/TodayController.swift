@@ -39,7 +39,7 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
         setVisualEffect()
     }
     
-	
+
 	fileprivate func setVisualEffect()  {
 		// Add blur effect to the frame
 		view.addSubview(blurVisualEffect)
@@ -60,14 +60,7 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
 		view.addSubview(activityIndicator)
 		activityIndicator.centerInSuperview()
 	}
-    
 	
-    // To clear the issue of wrong layout of the tab-bar after dismissing the TodayMultipleAppsController.
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        // Invalidates the current layout of the receiver and triggers a layout update during the next update cycle.
-        tabBarController?.tabBar.superview?.setNeedsLayout()
-    }
     
     func fetchAPI() {
         let dispatchGroup = DispatchGroup()
@@ -142,7 +135,7 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
             self.handleRemoveTodayMultipleNewsViewByButton()
         }
         self.todayMultipleNewsController = todayMultipleNewsController
-        self.todayMultipleNewsController.view.layer.cornerRadius = 16
+		self.todayMultipleNewsController.view.layer.cornerRadius = CellSize.imageCornerRadius
         // To set up the pan gesture
         let gesture = UIPanGestureRecognizer(target: self, action: #selector(handleDragTodayMultipleNews))
         gesture.delegate = self

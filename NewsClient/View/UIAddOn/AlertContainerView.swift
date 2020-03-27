@@ -23,7 +23,7 @@ class AlertContainerView: UIView {
 	
 	func configure()   {
         backgroundColor = .systemBackground
-        layer.cornerRadius = 16
+		layer.cornerRadius = CellSize.imageCornerRadius
         layer.borderWidth = 2
 		layer.borderColor = UIColor.gray.cgColor
         translatesAutoresizingMaskIntoConstraints = false

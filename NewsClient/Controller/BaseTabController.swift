@@ -42,10 +42,11 @@ class BaseTabController: UITabBarController {
         viewController.view.backgroundColor = .systemBackground
         viewController.navigationItem.title = title
 		viewController.navigationController?.navigationBar.isHidden = true
+
         
         // In 2019 WWDC, Apple changed its Default Modal Presentation Style for UIModal.
         // By default UIViewController resolves UIModalPresentationAutomatic to UIModalPresentationPageSheet, but other system-provided view controllers may resolve UIModalPresentationAutomatic to other concrete presentation styles.
-        backEnableController.modalPresentationStyle = .fullScreen
+		backEnableController.modalPresentationStyle = .overFullScreen
         backEnableController.tabBarItem.title = title
         backEnableController.tabBarItem.image = UIImage.init(named: image)
         

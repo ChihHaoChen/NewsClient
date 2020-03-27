@@ -74,7 +74,6 @@ class NewsDetailController: UIViewController, UIScrollViewDelegate, WKNavigation
 	
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-	
         self.tabBarController?.tabBar.isHidden = false
     }
     

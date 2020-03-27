@@ -18,7 +18,7 @@ class SavedNewsHeaderCell: UICollectionViewCell  {
     }
 	let newsTitle = UILabel(text: " ", font: UIFont.preferredFont(forTextStyle: .body), numberOfLines: 2, color: .label)
 	let publishedAt = UILabel(text: " ", font: UIFont.preferredFont(forTextStyle: .subheadline), numberOfLines: 1, color: .label)
-    let newsImageView = UIImageView(cornerRadius: 12)
+	let newsImageView = UIImageView(cornerRadius: CellSize.imageCornerRadius)
     
     override init(frame: CGRect) {
         super.init(frame: frame)

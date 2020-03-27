@@ -40,7 +40,6 @@
 		B2F72541235E2F7100808630 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2F7253F235E2F7100808630 /* LaunchScreen.storyboard */; };
 		B2F7254C235E2F7100808630 /* NewsClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F7254B235E2F7100808630 /* NewsClientTests.swift */; };
 		B2F72557235E2F7100808630 /* NewsClientUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F72556235E2F7100808630 /* NewsClientUITests.swift */; };
-		B2F7256A235E335900808630 /* MBFingerTipWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F72568235E335900808630 /* MBFingerTipWindow.m */; };
 		B2F7256D235E349300808630 /* BaseTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F7256C235E349300808630 /* BaseTabController.swift */; };
 		B2F72572235E3A2500808630 /* TodayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F72571235E3A2500808630 /* TodayController.swift */; };
 		B2F72575235E3A9900808630 /* newsGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F72574235E3A9900808630 /* newsGroup.swift */; };
@@ -119,9 +118,6 @@
 		B2F72552235E2F7100808630 /* NewsClientUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NewsClientUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2F72556235E2F7100808630 /* NewsClientUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsClientUITests.swift; sourceTree = "<group>"; };
 		B2F72558235E2F7100808630 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B2F72567235E335800808630 /* NewsClient-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NewsClient-Bridging-Header.h"; sourceTree = "<group>"; };
-		B2F72568235E335900808630 /* MBFingerTipWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBFingerTipWindow.m; sourceTree = "<group>"; };
-		B2F72569235E335900808630 /* MBFingerTipWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBFingerTipWindow.h; sourceTree = "<group>"; };
 		B2F7256C235E349300808630 /* BaseTabController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTabController.swift; sourceTree = "<group>"; };
 		B2F72571235E3A2500808630 /* TodayController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodayController.swift; sourceTree = "<group>"; };
 		B2F72574235E3A9900808630 /* newsGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = newsGroup.swift; sourceTree = "<group>"; };
@@ -340,9 +336,6 @@
 			isa = PBXGroup;
 			children = (
 				B2F72576235E3AAA00808630 /* Service.swift */,
-				B2F72569235E335900808630 /* MBFingerTipWindow.h */,
-				B2F72568235E335900808630 /* MBFingerTipWindow.m */,
-				B2F72567235E335800808630 /* NewsClient-Bridging-Header.h */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -623,7 +616,6 @@
 				B2E41B4323E6656000321428 /* NewsCollectionCellLayout.swift in Sources */,
 				B2F72535235E2F7000808630 /* AppDelegate.swift in Sources */,
 				B26D02CF240BE0BC00B1CD3F /* Constants.swift in Sources */,
-				B2F7256A235E335900808630 /* MBFingerTipWindow.m in Sources */,
 				B2156F0B236D130A00DC3131 /* categoryGroup.swift in Sources */,
 				B2F7259B235E3BB300808630 /* Extensions.swift in Sources */,
 				B26D02CA240BB44800B1CD3F /* SavedNewsController.swift in Sources */,
@@ -809,7 +801,6 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.chih-hao.NewsClient-chao700716";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "NewsClient/Service/NewsClient-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -832,7 +823,6 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.chih-hao.NewsClient-chao700716";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "NewsClient/Service/NewsClient-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

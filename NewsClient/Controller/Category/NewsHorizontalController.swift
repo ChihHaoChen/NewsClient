@@ -41,7 +41,7 @@ class NewsHorizontalController: HorizontalSnappingController, UICollectionViewDe
         collectionView.contentInset = .init(top: 0, left: 12, bottom: 0, right: 12)
 		collectionView.layer.borderWidth = 2
 		collectionView.layer.borderColor = UIColor.systemGray.cgColor
-		collectionView.layer.cornerRadius = 12
+		collectionView.layer.cornerRadius = CellSize.imageCornerRadius
 	}
     // MARK: -- Cell layout settings inside HorizontalController
     let topBottomPadding: CGFloat = 8

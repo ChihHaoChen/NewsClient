@@ -59,29 +59,21 @@ class TodayMultipleNewsController: BaseCollectionViewController, UICollectionVie
         // Never put the API fetch inside sub-viewController
         if self.mode == .fullscreen {
             setupCloseButton()
-//			view.layer.borderWidth = 2
-//			view.layer.borderColor = UIColor.systemGray.cgColor
+			view.layer.borderWidth = 2
+			view.layer.borderColor = UIColor.systemGray.cgColor
         }   else    {
             collectionView.isScrollEnabled = false
 		}
     }
 	
 	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		if self.mode == .fullscreen {
-			tabBarController?.tabBar.isHidden = true
-		}
-	}
-
-	
-    override var prefersStatusBarHidden: Bool  { return true }
+	override var prefersStatusBarHidden: Bool  { return true }
     
 	
     // MARK: - Register collectionViewCells and UI elements -
     fileprivate func setupCollectionView() {
 		collectionView.backgroundColor = .systemGroupedBackground
-        collectionView.layer.cornerRadius = 16
+		collectionView.layer.cornerRadius = CellSize.imageCornerRadius
         collectionView.register(TodayMultipleNewsHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
         collectionView.register(TodayMultipleNewsCell.self, forCellWithReuseIdentifier: cellId)
     }
