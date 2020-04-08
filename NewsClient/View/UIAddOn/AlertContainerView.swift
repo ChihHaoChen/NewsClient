@@ -9,8 +9,8 @@
 import UIKit
 
 class AlertContainerView: UIView {
-
-    	override init(frame: CGRect) {
+	
+	override init(frame: CGRect) {
 		super.init(frame: frame)
 		configure()
 	}
@@ -22,10 +22,10 @@ class AlertContainerView: UIView {
 	
 	
 	func configure()   {
-        backgroundColor = .systemBackground
+		backgroundColor = .systemBackground
 		layer.cornerRadius = CellSize.imageCornerRadius
-        layer.borderWidth = 2
+		layer.borderWidth = 2
 		layer.borderColor = UIColor.gray.cgColor
-        translatesAutoresizingMaskIntoConstraints = false
-    }
+		translatesAutoresizingMaskIntoConstraints = false
+	}
 }

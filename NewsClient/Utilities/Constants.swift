@@ -33,7 +33,10 @@ enum CellSize {
 
 enum ConfigEnv {
 	static let heightHeaderCell: CGFloat = 60
-	static let placeHolder = UIImage(named: "AppIcon")
+	static let placeHolder = UIImage(named: "iconPlaceholder")
+	static let buttonHorizontalPadding: CGFloat = 20
+	static let buttonVerticalPadding: CGFloat = 20
+	static let containerWidth: CGFloat = ScreenSize.width*0.67
 }
 
 

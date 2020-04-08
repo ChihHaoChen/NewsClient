@@ -73,8 +73,16 @@ class SavedNewsController: UIViewController {
 	
 	
 	fileprivate func alertWhenNoSavedArticles() {
-		if savedNews?.count == 0 {
+		if savedNews?.isEmpty ?? true {
 			presentAlertOnMainThread(title: "No Saved News", message: "Add the news article you'd like to read/collect.", buttonTitle: "Gotcha!")
+			
+			let message = "Pin the articles that you're interested \n by pressing"
+			
+			DispatchQueue.main.async {
+				self.showEmptySavedArticles(with: message, in: self.view)
+			}
+			
+			return
 		}
 	}
 }
@@ -131,5 +139,13 @@ extension SavedNewsController: UITableViewDelegate, UITableViewDataSource {
 		
 		deleteArticle(title: selectedSavedNews.title)
 		savedNewsTable.reloadDataOnMainThread()
+	}
+	
+	
+	func showEmptySavedArticles(with message: String, in view: UIView) {
+		let emptyArticlesView = EmptySavedNewsView(message: message)
+		
+		emptyArticlesView.frame = view.bounds
+		view.addSubview(emptyArticlesView)
 	}
 }

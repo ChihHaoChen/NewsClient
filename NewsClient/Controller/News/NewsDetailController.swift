@@ -11,16 +11,18 @@ import WebKit
 import RealmSwift
 
 class NewsDetailController: UIViewController, UIScrollViewDelegate, WKNavigationDelegate{
-    
-    let realm = try! Realm()
-    var detailedNews: Article?
-    let activityIndicator = UIActivityIndicatorView(color: .systemGray, style: .large)
+	
+	let realm = try! Realm()
+	var detailedNews: Article?
+	
+	let activityIndicator = UIActivityIndicatorView(color: .systemGray, style: .large)
+	lazy var floatingContainerView = WebButtonView(viewBackgroundColor: ((mode == .readUnSavedArticle) ? .green : .red), buttonImage: ((mode == .readUnSavedArticle) ? "push-pin-90" : "unpin-90"))
 	
 	var savedArticle = SavedArticle()
-    let filePathRealm = Realm.Configuration.defaultConfiguration.fileURL
+	let filePathRealm = Realm.Configuration.defaultConfiguration.fileURL
 	
 	
-    let webView: WKWebView =    {
+	let webView: WKWebView =    {
         let view = WKWebView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -31,6 +33,7 @@ class NewsDetailController: UIViewController, UIScrollViewDelegate, WKNavigation
         case readSavedArticle, readUnSavedArticle
     }
     
+	
     init(mode: Mode, article: Article)   {
         self.mode = mode
         self.detailedNews = article
@@ -79,38 +82,12 @@ class NewsDetailController: UIViewController, UIScrollViewDelegate, WKNavigation
     
 	
     // MARK: - To setup a floating view to save news of interest and its function -
-    let floatingContainerView = UIView()
     fileprivate func setupFloatingControls()    {
-        floatingContainerView.clipsToBounds = true
-        floatingContainerView.layer.cornerRadius = 32
         self.view.addSubview(floatingContainerView)
         
         floatingContainerView.centerXInSuperview()
         floatingContainerView.anchor(top: nil, leading: nil, bottom: self.view.bottomAnchor, trailing: nil, padding: .init(top: 0, left: 0, bottom: -90, right: 0), size: .init(width: 64, height: 64))
-        let blurVisualEffect = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
-        
-        blurVisualEffect.fillSuperview()
-        
-        // Add the floating "Save" button to the current view
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap)))
-        floatingContainerView.addSubview(blurVisualEffect)
-        let buttonString = (self.mode == .readUnSavedArticle) ? "push-pin-90" : "unpin-90"
-        let getButton = UIButton(title: "", titleColor: .red, font: .boldSystemFont(ofSize: 12), width: 64, height: 64, cornerRadius: 0)
-        getButton.alpha = 0.9
-        getButton.setImage(UIImage(named: buttonString), for: .normal)
-        getButton.addTarget(self, action: #selector(handlePressed), for: .touchUpInside)
-
-        floatingContainerView.backgroundColor = ((self.mode == .readUnSavedArticle) ? .green : .red)
-        floatingContainerView.addSubview(getButton)
-               
-        getButton.fillSuperview()
-    }
-    
-	
-    @objc fileprivate func handleTap()   {
-        UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-            self.floatingContainerView.transform = .identity
-        }, completion: nil)
+		floatingContainerView.button.addTarget(self, action: #selector(handlePressed), for: .touchUpInside)
     }
     
 	
@@ -125,7 +102,7 @@ class NewsDetailController: UIViewController, UIScrollViewDelegate, WKNavigation
 	
 	
     // MARK: - To set up operations to write persistent data with Realm
-    @objc fileprivate func handlePressed()   {
+    @objc func handlePressed()   {
         mappingSavedArticle()
         switch self.mode    {
         case .readSavedArticle:
