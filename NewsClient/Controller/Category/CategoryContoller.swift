@@ -140,6 +140,7 @@ class CategoryContoller: UIViewController, UICollectionViewDataSource, UICollect
 				guard let newsGroup = group else { return }
 				self.fetchNewsGroups.append(newsGroup)
 			}
+			self.fetchNewsGroups = self.fetchNewsGroups.sorted { $0.category < $1.category }
 			self.categoryCollectionView.reloadData()
 		}
 		activityIndicator.stopAnimating()

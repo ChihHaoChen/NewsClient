@@ -73,16 +73,18 @@ class SavedNewsController: UIViewController {
 	
 	
 	fileprivate func alertWhenNoSavedArticles() {
-		if savedNews?.isEmpty ?? true {
+		if savedNews?.isEmpty ?? false {
 			presentAlertOnMainThread(title: "No Saved News", message: "Add the news article you'd like to read/collect.", buttonTitle: "Gotcha!")
 			
 			let message = "Pin the articles that you're interested \n by pressing"
-			
-			DispatchQueue.main.async {
-				self.showEmptySavedArticles(with: message, in: self.view)
-			}
+			self.showEmptySavedArticles(with: message, in: self.view)
 			
 			return
+		} else {
+			DispatchQueue.main.async {
+				self.savedNewsTable.reloadData()
+				self.view.bringSubviewToFront(self.savedNewsTable)
+			}
 		}
 	}
 }

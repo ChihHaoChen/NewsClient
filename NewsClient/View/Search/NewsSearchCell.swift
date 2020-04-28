@@ -28,7 +28,7 @@ class NewsSearchCell:  UICollectionViewCell  {
         super.init(frame: frame)
 		backgroundColor = .systemBackground
 		
-        imageView.image = #imageLiteral(resourceName: "News_iOS_Icon")
+        imageView.image = #imageLiteral(resourceName: "iconPlaceholder")
         imageView.clipsToBounds = true
 		imageView.constrainWidth(constant: CellSize.imageWidth )
 		imageView.constrainHeight(constant: CellSize.imageHeight)

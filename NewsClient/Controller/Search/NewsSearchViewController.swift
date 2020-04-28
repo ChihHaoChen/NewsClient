@@ -12,6 +12,7 @@ class NewsSearchViewController: UIViewController, UICollectionViewDelegate, UICo
 
 	var searchCollectionView: UICollectionView!
 	let activityIndicator = UIActivityIndicatorView(color: .systemGray, style: .large)
+	
 	var articleResults = [Article]()
 	
 	fileprivate var isPaginating = false
@@ -80,8 +81,10 @@ class NewsSearchViewController: UIViewController, UICollectionViewDelegate, UICo
 		searchController.searchBarStyle = .minimal
 		searchController.placeholder = "Search News Articles"
 		searchController.delegate = self
-
-//		searchController.obscuresBackgroundDuringPresentation = false
+		
+		let tap = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
+		tap.cancelsTouchesInView = false
+		view.addGestureRecognizer(tap)
 	}
 	
 	
