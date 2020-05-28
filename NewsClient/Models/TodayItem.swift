@@ -11,7 +11,6 @@ import UIKit
 struct TodayItem {
     let category: String
     let title: String
-    let description: String
     let backgroundColor: UIColor
 
     // enum type

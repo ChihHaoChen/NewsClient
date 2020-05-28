@@ -125,10 +125,10 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
         // Completion
         dispatchGroup.notify(queue: .main)  {
             self.items = [
-				TodayItem.init(category: "日本", title: "トップ", description: "All the New you are eager to know right way", backgroundColor: .systemGroupedBackground, cellType: .multiple, newsFetch: self.topNewsJapan?.articles ?? []),
-				TodayItem.init(category: "Canada", title: "Top News", description: "All the New you are eager to know right way", backgroundColor: .systemGroupedBackground, cellType: .multiple, newsFetch: self.topNewsCanada?.articles ?? []),
-                TodayItem.init(category: "US", title: "Top News", description: "All the New you are eager to know right way", backgroundColor: .systemGroupedBackground, cellType: .multiple, newsFetch: self.topNewsUS?.articles ?? []),
-				TodayItem.init(category: "台灣", title: "頭條", description: "All the New you are eager to know right way", backgroundColor: .systemGroupedBackground, cellType: .multiple, newsFetch: self.topNewsTaiwan?.articles ?? []),
+				TodayItem.init(category: "日本", title: "トップ", backgroundColor: .systemGroupedBackground, cellType: .multiple, newsFetch: self.topNewsJapan?.articles ?? []),
+				TodayItem.init(category: "Canada", title: "Top News", backgroundColor: .systemGroupedBackground, cellType: .multiple, newsFetch: self.topNewsCanada?.articles ?? []),
+                TodayItem.init(category: "US", title: "Top News", backgroundColor: .systemGroupedBackground, cellType: .multiple, newsFetch: self.topNewsUS?.articles ?? []),
+				TodayItem.init(category: "台灣", title: "頭條", backgroundColor: .systemGroupedBackground, cellType: .multiple, newsFetch: self.topNewsTaiwan?.articles ?? []),
 
             ]
             self.collectionView.reloadData()
