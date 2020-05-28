@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate   {
+class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlowLayout  {
 	
 	let activityIndicator = UIActivityIndicatorView(color: .systemGray, style: .large)
 	
@@ -30,6 +30,8 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
 	
 	fileprivate let todayCellHeight: CGFloat = 4*CellSize.cellHeight + 6*CellSize.minimumSpacingSection + ConfigEnv.heightHeaderCell
 	
+	
+	// MARK: - To configure UI elements
     override func viewDidLoad() {
         super.viewDidLoad()
 	
@@ -63,25 +65,6 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
 	}
 	
 	
-	// MARK: - To enable the feature of pulling to referesh content -
-	fileprivate func pullToRefresh() {
-		let refreshControl = UIRefreshControl()
-		refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh News")
-		refreshControl.addTarget(self, action: #selector(refreshFetch), for: .valueChanged)
-		
-		collectionView.addSubview(refreshControl)
-	}
-	
-	
-	@objc func refreshFetch(refreshControl: UIRefreshControl) {
-		activityIndicator.startAnimating()
-		
-		fetchAPI()
-		
-		refreshControl.endRefreshing()
-	}
-	
-    
 	// MARK: - To fetch API
     func fetchAPI() {
         let dispatchGroup = DispatchGroup()
@@ -128,8 +111,7 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
 				TodayItem.init(category: "日本", title: "トップ", backgroundColor: .systemGroupedBackground, cellType: .multiple, newsFetch: self.topNewsJapan?.articles ?? []),
 				TodayItem.init(category: "Canada", title: "Top News", backgroundColor: .systemGroupedBackground, cellType: .multiple, newsFetch: self.topNewsCanada?.articles ?? []),
                 TodayItem.init(category: "US", title: "Top News", backgroundColor: .systemGroupedBackground, cellType: .multiple, newsFetch: self.topNewsUS?.articles ?? []),
-				TodayItem.init(category: "台灣", title: "頭條", backgroundColor: .systemGroupedBackground, cellType: .multiple, newsFetch: self.topNewsTaiwan?.articles ?? []),
-
+				TodayItem.init(category: "台灣", title: "頭條", backgroundColor: .systemGroupedBackground, cellType: .multiple, newsFetch: self.topNewsTaiwan?.articles ?? [])
             ]
             self.collectionView.reloadData()
         }
@@ -137,7 +119,7 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
     }
     
     
-    // MARK: To control rendering all items in fullscreen
+    // MARK: - To control rendering all items in fullscreen
     fileprivate func showDailyListFullScreen(_ indexPath: IndexPath) {
         setupMultipleNewsFullScreen(indexPath)
 
@@ -165,6 +147,7 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
     }
     
 	
+	// MARK: - To record the frames of animation
     fileprivate func setupMultipleNewsStartPosition(_ indexPath: IndexPath)   {
         guard let todayMultipleNewsView = todayMultipleNewsController.view else { return }
         
@@ -178,59 +161,6 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
         todayMultipleNewsView.translatesAutoresizingMaskIntoConstraints = false
         self.anchoredConstraints = todayMultipleNewsView.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: startFrame.origin.y, left: startFrame.origin.x, bottom: 0, right: 0), size: .init(width: startFrame.width, height: startFrame.height))
         self.collectionView.layoutIfNeeded()
-    }
-    
-	
-	@objc fileprivate func handleMultipleNewsTap(gesture: UIGestureRecognizer)   {
-		let collectionView = gesture.view
-		// To figure out which cell was clicking at
-		var superView =  collectionView?.superview
-		while (superView != nil)   {
-			if let cell = superView as? TodayControllerCell    {
-				guard let indexPath = self.collectionView.indexPath(for: cell) else { return }
-				showDailyListFullScreen(indexPath)
-				return
-			}
-			superView = superView?.superview
-		}
-	}
-    
-    
-    @objc fileprivate func handleDragTodayMultipleNews (gesture: UIPanGestureRecognizer)    {
-        if gesture.state == .began  {
-            todayMultipleNewsBeginOffset = todayMultipleNewsController.collectionView.contentOffset.y
-        }
-        let point:CGPoint = .init(x: 0, y: todayMultipleNewsController.offsetHeader)
-        let transitionY = gesture.translation(in: todayMultipleNewsController.collectionView).y
-        if todayMultipleNewsController.collectionView.contentOffset.y > 0 {
-            return
-        }
-        var scale: CGFloat = 1
-
-        if transitionY > 30  {
-            if gesture.state == .changed  {
-                let trueOffset = transitionY
-                    scale = 1 - trueOffset/1000
-                    scale = min(1, scale)
-                    scale = max(0.85, scale)
-                    let transform: CGAffineTransform = .init(scaleX: scale, y: scale)
-                    todayMultipleNewsController.collectionView.contentOffset = point
-                    todayMultipleNewsController.view.transform = transform
-            }
-            else if gesture.state == .ended {
-                todayMultipleNewsController.closeButton.alpha = 0
-                handleRemoveTodayMultipleNewsViewByButton()
-            }
-        }
-        if (transitionY < 30 && transitionY > 0) || gesture.state == .failed || gesture.state == .cancelled {
-            todayMultipleNewsController.view.transform = .identity
-        }
-    }
-    
-    
-    // This function allows the pan gesture not interfered with the original UITableView Scrolling-Up or -Down
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
     }
     
 	
@@ -261,49 +191,10 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
 	}
     
 	
+	// MARK: - The operations when clicking the cells
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         showDailyListFullScreen(indexPath)
     }
-    
-	
-    @objc func handleRemoveTodayMultipleNewsViewByButton()    {
-           if let StatusbarView = UIApplication.shared.statusBarUIView {
-			StatusbarView.backgroundColor = .systemGroupedBackground
-           }
-           UIView.animate(withDuration: 0.1, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-               // By setting contentOffset = .zero, the content inside the cell, even after being scrolled down to the bottom, the animated content will still shows the top with higher priority
-               self.todayMultipleNewsController.collectionView.contentOffset = .zero
-               // To disalbe the blur effect
-               self.blurVisualEffect.alpha = 0
-               // To restore the transform
-               self.todayMultipleNewsController.view.transform = .identity
-            
-
-               guard let startFrame = self.startFrame else { return }
-			print("starFrame.width = \(startFrame.width)", "frame.width = \(self.view.frame.width)")
-               self.anchoredConstraints?.top?.constant = startFrame.origin.y
-               self.anchoredConstraints?.leading?.constant = startFrame.origin.x
-               self.anchoredConstraints?.width?.constant = startFrame.width
-               self.anchoredConstraints?.height?.constant = startFrame.height
- 
-               // Lays out the subviews immediately, if layout updates are pending.
-			   let point:CGPoint = .init(x: 0, y: self.todayMultipleNewsController.offsetHeader)
-               self.todayMultipleNewsController.collectionView.contentOffset = point
-                
-            
-               self.todayMultipleNewsController.view.layoutIfNeeded() // To start the animation
-               if let tabBarFrame = self.tabBarController?.tabBar.frame {
-                   self.tabBarController?.tabBar.frame.origin.y = self.view.frame.size.height - tabBarFrame.height
-               }
-               self.todayMultipleNewsController.closeButton.alpha = 0
-			   
-           }, completion: { _ in
-               self.todayMultipleNewsController.view.removeFromSuperview()
-               self.todayMultipleNewsController?.removeFromParent()
-               self.tabBarController?.tabBar.isHidden = false
-               self.collectionView.isUserInteractionEnabled = true
-           })
-       }
 	
 	
 	// MARK: - The setting of the header in TodayCotnroller
@@ -333,7 +224,10 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
 		
 		cell.todayItem = items[indexPath.item]
 		
+		// MARK: Add gestures to the cells
 		(cell as? TodayControllerCell)?.todayMultipleNewsController.collectionView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleMultipleNewsTap)))
+		(cell as? TodayControllerCell)?.todayMultipleNewsController.collectionView.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(handleLongPressed)))
+		
 		return cell
     }
     
@@ -352,4 +246,148 @@ class TodayController: BaseCollectionViewController, UICollectionViewDelegateFlo
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
 		return .init(top: 12, left: 0, bottom: 12, right: 0)
 	}
+}
+
+
+extension TodayController: UIGestureRecognizerDelegate {
+	
+	// MARK: - To enable drag function to move cells -
+	override func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
+		return true
+	}
+	
+	
+	override func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let itemDragged = items.remove(at: sourceIndexPath.item)
+        items.insert(itemDragged, at: destinationIndexPath.item)
+    }
+
+	
+	// MARK: - To enable the feature of pulling to referesh content -
+	fileprivate func pullToRefresh() {
+		let refreshControl = UIRefreshControl()
+		refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh News")
+		refreshControl.addTarget(self, action: #selector(refreshFetch), for: .valueChanged)
+		
+		collectionView.addSubview(refreshControl)
+	}
+	
+	
+	// MARK: To allow the pan gesture not interfered with the original UICollectionView Scrolling-Up or -Down
+	  func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+		  return true
+	  }
+	  
+	
+	@objc func refreshFetch(refreshControl: UIRefreshControl) {
+		activityIndicator.startAnimating()
+		
+		fetchAPI()
+		
+		refreshControl.endRefreshing()
+	}
+	
+	
+	// MARK: - ObjectC functions for gesture
+	@objc fileprivate func handleMultipleNewsTap(gesture: UIGestureRecognizer)   {
+		let collectionView = gesture.view
+		// To figure out which cell was clicking at
+		var superView =  collectionView?.superview
+		while (superView != nil)   {
+			if let cell = superView as? TodayControllerCell    {
+				guard let indexPath = self.collectionView.indexPath(for: cell) else { return }
+				showDailyListFullScreen(indexPath)
+				return
+			}
+			superView = superView?.superview
+		}
+	}
+    
+	
+	@objc fileprivate func handleLongPressed(gesture: UILongPressGestureRecognizer) {
+		switch(gesture.state) {
+			case .began:
+				guard let selectedIndexPath = collectionView.indexPathForItem(at: gesture.location(in: collectionView)) else { return }
+				collectionView.beginInteractiveMovementForItem(at: selectedIndexPath)
+			case .changed:
+				collectionView.updateInteractiveMovementTargetPosition(gesture.location(in: gesture.view))
+			case .ended:
+				collectionView.endInteractiveMovement()
+			default:
+				collectionView.cancelInteractiveMovement()
+		}
+		
+	}
+    
+	
+    @objc fileprivate func handleDragTodayMultipleNews (gesture: UIPanGestureRecognizer)    {
+        if gesture.state == .began  {
+            todayMultipleNewsBeginOffset = todayMultipleNewsController.collectionView.contentOffset.y
+        }
+        let point:CGPoint = .init(x: 0, y: todayMultipleNewsController.offsetHeader)
+        let transitionY = gesture.translation(in: todayMultipleNewsController.collectionView).y
+        if todayMultipleNewsController.collectionView.contentOffset.y > 0 {
+            return
+        }
+        var scale: CGFloat = 1
+
+        if transitionY > 30  {
+            if gesture.state == .changed  {
+                let trueOffset = transitionY
+                    scale = 1 - trueOffset/1000
+                    scale = min(1, scale)
+                    scale = max(0.85, scale)
+                    let transform: CGAffineTransform = .init(scaleX: scale, y: scale)
+                    todayMultipleNewsController.collectionView.contentOffset = point
+                    todayMultipleNewsController.view.transform = transform
+            }
+            else if gesture.state == .ended {
+                todayMultipleNewsController.closeButton.alpha = 0
+                handleRemoveTodayMultipleNewsViewByButton()
+            }
+        }
+        if (transitionY < 30 && transitionY > 0) || gesture.state == .failed || gesture.state == .cancelled {
+            todayMultipleNewsController.view.transform = .identity
+        }
+    }
+	
+	
+	@objc func handleRemoveTodayMultipleNewsViewByButton()    {
+			  if let StatusbarView = UIApplication.shared.statusBarUIView {
+			   StatusbarView.backgroundColor = .systemGroupedBackground
+			  }
+			  UIView.animate(withDuration: 0.1, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+				  // By setting contentOffset = .zero, the content inside the cell, even after being scrolled down to the bottom, the animated content will still shows the top with higher priority
+				  self.todayMultipleNewsController.collectionView.contentOffset = .zero
+				  // To disalbe the blur effect
+				  self.blurVisualEffect.alpha = 0
+				  // To restore the transform
+				  self.todayMultipleNewsController.view.transform = .identity
+			   
+
+				  guard let startFrame = self.startFrame else { return }
+			   print("starFrame.width = \(startFrame.width)", "frame.width = \(self.view.frame.width)")
+				  self.anchoredConstraints?.top?.constant = startFrame.origin.y
+				  self.anchoredConstraints?.leading?.constant = startFrame.origin.x
+				  self.anchoredConstraints?.width?.constant = startFrame.width
+				  self.anchoredConstraints?.height?.constant = startFrame.height
+	
+				  // Lays out the subviews immediately, if layout updates are pending.
+				  let point:CGPoint = .init(x: 0, y: self.todayMultipleNewsController.offsetHeader)
+				  self.todayMultipleNewsController.collectionView.contentOffset = point
+				   
+			   
+				  self.todayMultipleNewsController.view.layoutIfNeeded() // To start the animation
+				  if let tabBarFrame = self.tabBarController?.tabBar.frame {
+					  self.tabBarController?.tabBar.frame.origin.y = self.view.frame.size.height - tabBarFrame.height
+				  }
+				  self.todayMultipleNewsController.closeButton.alpha = 0
+				  
+			  }, completion: { _ in
+				  self.todayMultipleNewsController.view.removeFromSuperview()
+				  self.todayMultipleNewsController?.removeFromParent()
+				  self.tabBarController?.tabBar.isHidden = false
+				  self.collectionView.isUserInteractionEnabled = true
+			  })
+		  }
 }

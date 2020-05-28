@@ -12,3 +12,4 @@ struct categoryGroup: Decodable {
     var category: String
     var newsGroup: newsGroup
 }
+
